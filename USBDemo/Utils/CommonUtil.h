@@ -34,8 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// 加密手机号
 + (NSString *)encryptPhoneNumber:(NSString *)phone;
 
-/// 生日转化
+/// 出生日期转化为年龄
 + (NSString *)calAgeByBirthday:(NSString *)birthday;
+/// 年龄转化为出生日期
++ (NSString *)calBirthdayByAge:(NSString *)age;
 
 /// 计算开始唯一标识
 + (NSString *)calUniqueFlag;

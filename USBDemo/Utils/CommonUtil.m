@@ -42,6 +42,8 @@
     }
 }
 
+
+
 //将十进制转化为十六进制
 + (NSString *)decimalismToHex:(NSInteger)tmpid {
     NSString *nLetterValue;
@@ -168,7 +170,7 @@
     return encryptPhone;
 }
 
-// 生日转化
+/// 出生日期转化为年龄
 + (NSString *)calAgeByBirthday:(NSString *)birthday
 {
     NSCalendar *calendar = [NSCalendar currentCalendar];//定义一个NSCalendar对象
@@ -194,6 +196,18 @@
         tempAge = @"0岁";
     }
     return tempAge;
+}
+
+/// 年龄转化为出生日期
++ (NSString *)calBirthdayByAge:(NSString *)age
+{
+    NSDate *changeDate = [self getNewDateDistanceNowWithYear:-[age intValue] withMonth:0 withDays:0];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd";
+    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+    
+    return [dateFormatter stringFromDate:changeDate];
 }
 
 /// 计算开始唯一标识

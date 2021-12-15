@@ -132,7 +132,7 @@
                     userInfoModel.name = [self.nameValue.stringValue isEqualToString:@""] ? [CommonUtil dataProcessing:responseObject title:@"name" isInt:NO] : self.nameValue.stringValue;
                     userInfoModel.genderType = [@"男" isEqualToString:self.genderValue.selectedItem.title] ? GenderType_male : [@"女" isEqualToString:self.genderValue.selectedItem.title] ? GenderType_female : GenderType_unknow;
                     NSDate *changeDate = [CommonUtil getNewDateDistanceNowWithYear:-[self.ageValue.stringValue intValue] withMonth:0 withDays:0];
-                    userInfoModel.birthday = [self.ageValue.stringValue isEqualToString:@""] ? [CommonUtil dataProcessing:responseObject title:@"birthdate" isInt:NO] : [CommonUtil getStrDateWithDateFormatter:@"yyyy-MM-dd" date:changeDate];
+                    userInfoModel.birthday = [self.ageValue.stringValue isEqualToString:@""] ? [CommonUtil dataProcessing:responseObject title:@"birthdate" isInt:NO] : [CommonUtil calBirthdayByAge:self.ageValue.stringValue];
                     userInfoModel.height = [self.heightValue.stringValue isEqualToString:@""] ? [CommonUtil dataProcessing:responseObject title:@"height" isInt:NO] : self.heightValue.stringValue;
                     userInfoModel.weight = [self.weightValue.stringValue isEqualToString:@""] ? [CommonUtil dataProcessing:responseObject title:@"weight" isInt:NO] : self.weightValue.stringValue;
                     SCAppVaribleHandleInstance.userInfoModel = userInfoModel;

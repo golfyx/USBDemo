@@ -15,6 +15,31 @@ typedef enum : NSUInteger {
     ReadingStatusRead,   // 进入读取模式
 } ReadingStatus;
 
+
+#define  SAVE_DATA_NAME_LEN             20
+#define  SAVE_DATA_PHONE_LEN            16
+#define  SAVE_DATA_GENDER_LEN           4
+#define  SAVE_DATA_AGE_LEN              4
+#define  SAVE_DATA_HEIGHT_LEN           4
+#define  SAVE_DATA_WEIGHT_LEN           4
+#define  SAVE_BULK_USER_INFO_LEN        52
+
+typedef struct _BULK_BASE_USER_INFO_
+{
+    uint8_t DataName[SAVE_DATA_NAME_LEN];
+    uint8_t DataPhone[SAVE_DATA_PHONE_LEN];
+    uint8_t DataGender[SAVE_DATA_GENDER_LEN];
+    uint8_t DataAge[SAVE_DATA_AGE_LEN];
+    uint8_t DataHeight[SAVE_DATA_HEIGHT_LEN];
+    uint8_t DataWeight[SAVE_DATA_WEIGHT_LEN];
+} BULK_BASE_USER_INFO;
+
+typedef union __SAVE_BULK_USER_INFO__
+{
+    uint8_t dataBuffer[SAVE_BULK_USER_INFO_LEN];
+    BULK_BASE_USER_INFO bulkBaseUserInfo;
+} SAVE_BULK_USER_INFO;
+
 @protocol SCBleDataHandleDelegate <NSObject>
 @optional
 - (void)didReceiveBleDataReadBuffer:(unsigned char *)readBuffer;

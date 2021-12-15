@@ -233,8 +233,15 @@
     
     SAVE_BLK_DETAILED_INFOR saveBulkDetailedInfor;
     NSMutableData *phoneData = [NSMutableData data];
-    [phoneData appendData:[SCAppVaribleHandleInstance.userInfoModel.phoneNum dataUsingEncoding:NSUTF8StringEncoding]];
-    [phoneData appendData:[SCAppVaribleHandleInstance.userInfoModel.name dataUsingEncoding:NSUTF8StringEncoding]];
+    [phoneData appendBytes:[SCAppVaribleHandleInstance.userInfoModel.name cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_NAME_LEN];
+    [phoneData appendBytes:[SCAppVaribleHandleInstance.userInfoModel.phoneNum cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_PHONE_LEN];
+    [phoneData appendBytes:[[NSString stringWithFormat:@"%lu",(unsigned long)SCAppVaribleHandleInstance.userInfoModel.genderType] cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_GENDER_LEN];
+    NSString *ageStr = [CommonUtil calAgeByBirthday:SCAppVaribleHandleInstance.userInfoModel.birthday];
+    ageStr = [ageStr substringToIndex:ageStr.length - 1];
+    [phoneData appendBytes:[ageStr cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_AGE_LEN];
+    [phoneData appendBytes:[SCAppVaribleHandleInstance.userInfoModel.height cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_HEIGHT_LEN];
+    [phoneData appendBytes:[SCAppVaribleHandleInstance.userInfoModel.weight cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_WEIGHT_LEN];
+    
     NSUInteger phoneLen = phoneData.length; // 这样设置是为了防止动态变化长度
     
     if (phoneLen <= VALID_SAVE_DATA_PROPERTY_LENGTH) {
@@ -436,14 +443,24 @@
                 if (isReadUserInfo == 0) {
                     if (SCAppVaribleHandleInstance.isReadBlockUserInfo) {
                         
-                        Byte *tmpPhoneData = (Byte *)[[deviceInfo.perBagData subdataWithRange:NSMakeRange(15, 11)] bytes];
-                        NSString *phoneStr = @"";
-                        for (int i = 0; i < 11; i++) {
-                            phoneStr = [NSString stringWithFormat:@"%@%c", phoneStr, tmpPhoneData[i]]; //A
-                        }
+                        
+                        SAVE_BULK_USER_INFO saveBulkUserInfo;
+                        memcpy(saveBulkUserInfo.dataBuffer, (Byte *)[[deviceInfo.perBagData subdataWithRange:NSMakeRange(15, SAVE_BULK_USER_INFO_LEN)] bytes], SAVE_BULK_USER_INFO_LEN);
+                        
+                        NSString *name = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataName encoding:NSUTF8StringEncoding];
+                        NSString *phone = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataPhone encoding:NSUTF8StringEncoding];
+                        NSString *gender = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataGender encoding:NSUTF8StringEncoding];
+                        NSString *age = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataAge encoding:NSUTF8StringEncoding];
+                        NSString *height = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataHeight encoding:NSUTF8StringEncoding];
+                        NSString *weight = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataWeight encoding:NSUTF8StringEncoding];
                         
                         SCUserInfoModel *userInfoModel = SCAppVaribleHandleInstance.userInfoModel;
-                        userInfoModel.phoneNum = phoneStr;
+                        userInfoModel.phoneNum = phone;
+                        userInfoModel.name = name;
+                        userInfoModel.genderType = [gender intValue];
+                        userInfoModel.birthday = [CommonUtil calBirthdayByAge:age];
+                        userInfoModel.height = height;
+                        userInfoModel.weight = weight;
                         SCAppVaribleHandleInstance.userInfoModel = userInfoModel;
                         deviceInfo.userInfoModel = userInfoModel;
                         
