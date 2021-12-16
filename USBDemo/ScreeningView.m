@@ -177,9 +177,18 @@
         [self.holterChartView clearCanvas];
     });
     
-    for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
-        // 停止Dongle
-        [[SCBleDataHandle sharedManager] setDongleActive:0x02 device:pDev];
+    NSArray *deviceArray = [[SCBleDataHandle sharedManager] getDeviceArray];
+    if (deviceArray.count > 0) {
+        for (DeviceObject *pDev in deviceArray) {
+            // 停止Dongle
+            [[SCBleDataHandle sharedManager] setDongleActive:0x02 device:pDev];
+        }
+    } else {
+        [CommonUtil showMessageWithTitle:@"当前没有连接的USB设备！"];
+        
+        if ([self.delegate respondsToSelector:@selector(didCompleteUploadData)]) {
+            [self.delegate didCompleteUploadData];
+        }
     }
 }
 - (IBAction)openUsersTable:(NSButton *)sender {
