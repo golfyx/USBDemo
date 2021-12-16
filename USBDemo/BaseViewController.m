@@ -87,7 +87,7 @@
     if (!self.presentingViewController) {
         self.progressIndicator = (SCProgressIndicator *)[CommonUtil getViewFromNibName:@"SCProgressIndicator"];
     }
-    self.progressIndicator.progressTitle.stringValue = @"正在上传数据。。。";
+    self.progressIndicator.progressTitle.stringValue = @"正在上传数据，请稍后...";
     [self.progressIndicator layoutSubviews:self.view.frame];
     [self.view addSubview:self.progressIndicator];
     [self.progressIndicator startAnimation];
