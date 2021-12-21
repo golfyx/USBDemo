@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^CompleteBlock)(void);
+
 @interface CommonUtil : NSObject
 
 /// 手机号判断
@@ -52,6 +54,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDate *)getNewDateDistanceNowWithYear:(NSInteger)year withMonth:(NSInteger)month withDays:(NSInteger)days;
 
 + (NSString *)getStrDateWithDateFormatter:(NSString *)formatter date:(NSDate *)date;
+
+/// 弹出提示框
++ (void)showMessageWithTitle:(NSString *)title
+            firstButtonTitle:(NSString *)firstButtonTitle
+                  firstBlock:(CompleteBlock)firstBlock
+           secondButtonTitle:(NSString *)secondButtonTitle
+                 secondBlock:(CompleteBlock)secondBlock;
 
 /// 弹出提示框
 + (void)showMessageWithTitle:(NSString *)title;

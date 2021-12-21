@@ -377,6 +377,52 @@ static AFHTTPSessionManager *_sessionManager;
     return sessionTask;
 }
 
+#pragma mark - 下载文件
++ (NSURLSessionTask *)downloadWithURL:(NSString *)URL
+                              fileDir:(NSString *)fileDir
+                             progress:(HttpProgress)progress
+                              success:(void (^)(NSString *))success
+                              failure:(HttpRequestFailed)failure {
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
+    __block NSURLSessionDownloadTask *downloadTask = [_sessionManager downloadTaskWithRequest:request
+                                                                                     progress:^(NSProgress *_Nonnull downloadProgress) {
+                                                                                         //下载进度
+                                                                                         dispatch_sync(dispatch_get_main_queue(), ^{
+                                                                                             progress ? progress(downloadProgress) : nil;
+                                                                                         });
+                                                                                     }
+                                                                                  destination:^NSURL *_Nonnull(NSURL *_Nonnull targetPath, NSURLResponse *_Nonnull response) {
+                                                                                      //拼接缓存目录
+                                                                                      NSString *downloadDir = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:fileDir ? fileDir : @"Download"];
+                                                                                      //打开文件管理器
+                                                                                      NSFileManager *fileManager = [NSFileManager defaultManager];
+                                                                                      //创建Download目录
+                                                                                      [fileManager createDirectoryAtPath:downloadDir withIntermediateDirectories:YES attributes:nil error:nil];
+                                                                                      //拼接文件路径
+                                                                                      NSString *filePath = [downloadDir stringByAppendingPathComponent:response.suggestedFilename];
+                                                                                      //返回文件位置的URL路径
+                                                                                      return [NSURL fileURLWithPath:filePath];
+                                                                                      
+                                                                                  }
+                                                                            completionHandler:^(NSURLResponse *_Nonnull response, NSURL *_Nullable filePath, NSError *_Nullable error) {
+                                                                                
+                                                                                [[self allSessionTask] removeObject:downloadTask];
+                                                                                if (failure && error) {
+                                                                                    failure(error);
+                                                                                    return;
+                                                                                };
+                                                                                success ? success(filePath.absoluteString /** NSURL->NSString*/) : nil;
+                                                                                
+                                                                            }];
+    //开始下载
+    [downloadTask resume];
+    // 添加sessionTask到数组
+    downloadTask ? [[self allSessionTask] addObject:downloadTask] : nil;
+    
+    return downloadTask;
+}
+
+
 #pragma mark 返回值成功回调处理
 + (void)handelSuccessDataWithRequestData:(id)responseObject task:(NSURLSessionDataTask *)task success:(HttpRequestSuccess)success {
     

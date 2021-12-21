@@ -1,16 +1,20 @@
 PODS:
   - Masonry (1.1.0)
+  - MJExtension (3.4.1)
 
 DEPENDENCIES:
   - Masonry
+  - MJExtension
 
 SPEC REPOS:
   trunk:
     - Masonry
+    - MJExtension
 
 SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MJExtension: 21c5f6f8c4d5d8844b7ae8fbae08fed0b501f961
 
-PODFILE CHECKSUM: 28fc420148df10a967b48d89a291d96bebb95500
+PODFILE CHECKSUM: 47bd5802c1ec9ca50416251ed3a3017e5e7152c6
 
 COCOAPODS: 1.11.2

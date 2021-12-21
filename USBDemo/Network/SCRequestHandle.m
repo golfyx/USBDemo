@@ -11,6 +11,7 @@
 #import "ConstServerHeader.h"
 #import "NetworkHelper.h"
 #import "SCAppVaribleHandle.h"
+#import "WDLog.h"
 
 @implementation SCRequestHandle
 
@@ -21,11 +22,11 @@
 + (void)userLoginWithPhone:(NSString *)phone captcha:(NSString *)captcha completion:(void(^)(BOOL success, id responseObject))completion {
     
     NSString *url = [NSString stringWithFormat:@"%@%@?phone=%@&code=%@", ServerUrlString, PhoneCaptchaLogin, phone, captcha];
-    NSLog( @"登录, url = %@", url);
+    WDLog(LOG_MODUL_HTTPREQUEST,  @"登录, url = %@", url);
     
     [NetworkHelper GET:url parameters:nil success:^(id  _Nonnull responseObject, NSInteger successCode) {
         //
-        NSLog( @"responseObject = %@", responseObject);
+        WDLog(LOG_MODUL_HTTPREQUEST,  @"responseObject = %@", responseObject);
         int code = [responseObject[@"code"] intValue];
         if (successCode == ResponseErrCode_Success)
         {
@@ -34,13 +35,13 @@
                 if (completion) { completion(YES, responseObject); }
             } else {
                 NSString *msg = responseObject[@"msg"];
-                NSLog(@"登录遇到错误 --> %@", msg);
+                WDLog(LOG_MODUL_HTTPREQUEST, @"登录遇到错误 --> %@", msg);
                 if (completion) completion(NO, responseObject);
             }
         }
         else
         {
-            NSLog( @"登录遇到错误>>>>>>");
+            WDLog(LOG_MODUL_HTTPREQUEST,  @"登录遇到错误>>>>>>");
             NSString *phoneCode = responseObject[@"number"][0][@"code"];
             if ([@"NotRegistered" isEqualToString:phoneCode])
             {
@@ -60,7 +61,7 @@
             }
         }
     } failure:^(NSError * _Nonnull error) {
-        NSLog( @"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST,  @"%@", error.description);
         [CommonUtil showMessageWithTitle:@"网络异常"];
         if (completion) {
             completion(NO, nil);
@@ -77,11 +78,11 @@
     }
     
     NSString *url = [NSString stringWithFormat:@"%@%@/%@", ServerUrlString, GetVerifyCode, phone];
-    NSLog(@"获取验证码, url = %@", url);
+    WDLog(LOG_MODUL_HTTPREQUEST, @"获取验证码, url = %@", url);
     
     [NetworkHelper GET:url parameters:nil success:^(id  _Nonnull responseObject, NSInteger successCode) {
         
-        NSLog( @"getMsgCode ===> %@", responseObject);
+        WDLog(LOG_MODUL_HTTPREQUEST,  @"getMsgCode ===> %@", responseObject);
         if (successCode != ResponseErrCode_Success)
         {
             NSString *code = responseObject[@"code"];
@@ -98,11 +99,11 @@
         if (200 == code) {
         } else {
             NSString *msg = responseObject[@"msg"];
-            NSLog(@"获取验证码遇到错误 --> %@", msg);
+            WDLog(LOG_MODUL_HTTPREQUEST, @"获取验证码遇到错误 --> %@", msg);
         }
         
     } failure:^(NSError * _Nonnull error) {
-        NSLog( @"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST,  @"%@", error.description);
         [CommonUtil showMessageWithTitle:@"网络异常"];
     }];
     
@@ -112,24 +113,24 @@
 /// 获取当前登录用户信息
 + (void)getCurUserInfoCompletion:(void(^)(BOOL success, id responseObject))completion {
     NSString *url = [NSString stringWithFormat:@"%@%@", ServerUrlString, GetUserInfo];
-    NSLog(@"url = %@", url);
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@", url);
 
     [NetworkHelper GET:url parameters:nil success:^(id  _Nonnull responseObject, NSInteger successCode) {
 
-        NSLog(@"%@", responseObject);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject);
         
         int code = [responseObject[@"code"] intValue];
         if (200 == code) {
             if (completion) completion(YES, responseObject);
         } else {
             NSString *msg = responseObject[@"msg"];
-            NSLog(@"获取用户信息遇到错误 --> %@", msg);
+            WDLog(LOG_MODUL_HTTPREQUEST, @"获取用户信息遇到错误 --> %@", msg);
             if (completion) completion(NO, responseObject);
         }
 
     } failure:^(NSError * _Nonnull error) {
 
-        NSLog(@"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
         if (completion) completion(NO, nil);
     }];
 }
@@ -137,11 +138,11 @@
 /// 获取成员基本信息
 + (void)getMemberUserInfoCompletion:(void(^)(BOOL success, id responseObject))completion {
     NSString *url = [NSString stringWithFormat:@"%@%@%d/", ServerUrlString, GetMemberInfo, SCAppVaribleHandleInstance.userInfoModel.userID];
-    NSLog(@"url = %@", url);
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@", url);
 
     [NetworkHelper GET:url parameters:nil success:^(id  _Nonnull responseObject, NSInteger successCode) {
 
-        NSLog(@"%@", responseObject);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject);
         
         int code = [responseObject[@"code"] intValue];
         if (200 == code) {
@@ -160,13 +161,13 @@
             if (completion) completion(YES, responseObject);
         } else {
             NSString *msg = responseObject[@"msg"];
-            NSLog(@"获取成员信息遇到错误 --> %@", msg);
+            WDLog(LOG_MODUL_HTTPREQUEST, @"获取成员信息遇到错误 --> %@", msg);
             if (completion) completion(NO, responseObject);
         }
 
     } failure:^(NSError * _Nonnull error) {
 
-        NSLog(@"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
         if (completion) completion(NO, nil);
     }];
 }
@@ -181,18 +182,18 @@
                                            @"height":SCAppVaribleHandleInstance.userInfoModel.height,
                                            @"weight":SCAppVaribleHandleInstance.userInfoModel.weight,
                                            @"birthdate":SCAppVaribleHandleInstance.userInfoModel.birthday};
-    NSLog(@"url = %@, dict = %@", url, dict);
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, dict = %@", url, dict);
 
     [NetworkHelper POST:url parameters:dict success:^(id  _Nonnull responseObject, NSInteger successCode) {
         //
-        NSLog(@"%@", responseObject);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject);
         if (ResponseErrCode_Success == successCode) {
             int code = [responseObject[@"code"] intValue];
             if (200 == code) {
                 if (completion) completion(YES, responseObject);
             } else {
                 NSString *msg = responseObject[@"msg"];
-                NSLog(@"更新用户信息遇到错误 --> %@", msg);
+                WDLog(LOG_MODUL_HTTPREQUEST, @"更新用户信息遇到错误 --> %@", msg);
                 if (completion) completion(NO, responseObject);
             }
         } else {
@@ -200,7 +201,7 @@
         }
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
         if (completion) completion(NO, nil);
     }];
 }
@@ -210,18 +211,18 @@
     NSString *url = [NSString stringWithFormat:@"%@%@/%lld", ServerUrlString, SaveUserProcessingTime, SCAppVaribleHandleInstance.startRecordTimestamp];
     NSDictionary *dict = @{};
 //    NSDictionary *dict = @{@"processingTime": @(SCAppVaribleHandleInstance.startRecordTimestamp)};
-    NSLog(@"url = %@, dict = %@", url, dict);
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, dict = %@", url, dict);
 
     [NetworkHelper POST:url parameters:dict success:^(id  _Nonnull responseObject, NSInteger successCode) {
         //
-        NSLog(@"%@", responseObject);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject);
         if (ResponseErrCode_Success == successCode) {
             int code = [responseObject[@"code"] intValue];
             if (200 == code) {
                 if (completion) completion(YES, responseObject);
             } else {
                 NSString *msg = responseObject[@"msg"];
-                NSLog(@"保存24小时记录遇到错误 --> %@", msg);
+                WDLog(LOG_MODUL_HTTPREQUEST, @"保存24小时记录遇到错误 --> %@", msg);
                 if (completion) completion(NO, responseObject);
             }
         } else {
@@ -229,7 +230,7 @@
         }
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
         if (completion) completion(NO, nil);
     }];
 }
@@ -249,18 +250,18 @@
         @"samplingRate" : @(uploadDataInfo.samplingRate),
 //        @"toBin" : @(uploadDataInfo.isToBin)
     };
-//    NSLog(@"url = %@, dict = %@", url, dict);
+//    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, dict = %@", url, dict);
 
     [NetworkHelper POST:url parameters:dict success:^(id  _Nonnull responseObject, NSInteger successCode) {
         //
-        NSLog(@"%@", responseObject[@"data"]);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject[@"data"]);
         if (ResponseErrCode_Success == successCode) {
             int code = [responseObject[@"code"] intValue];
             if (200 == code) {
                 if (completion) completion(YES, responseObject);
             } else {
                 NSString *msg = responseObject[@"msg"];
-                NSLog(@"上传心电数据遇到错误 --> %@", msg);
+                WDLog(LOG_MODUL_HTTPREQUEST, @"上传心电数据遇到错误 --> %@", msg);
                 if (completion) completion(NO, responseObject);
             }
         } else {
@@ -268,7 +269,7 @@
         }
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
         if (completion) completion(NO, nil);
     }];
 }
@@ -288,18 +289,18 @@
         @"samplingRate" : @(uploadDataInfo.samplingRate),
 //        @"toBin" : @(uploadDataInfo.isToBin)
     };
-    NSLog(@"url = %@, dict = %@", url, dict);
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, dict = %@", url, dict);
 
     [NetworkHelper POST:url parameters:dict success:^(id  _Nonnull responseObject, NSInteger successCode) {
         //
-        NSLog(@"%@", responseObject[@"data"]);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject[@"data"]);
         if (ResponseErrCode_Success == successCode) {
             int code = [responseObject[@"code"] intValue];
             if (200 == code) {
                 if (completion) completion(YES, responseObject);
             } else {
                 NSString *msg = responseObject[@"msg"];
-                NSLog(@"完成上传心电数据遇到错误 --> %@", msg);
+                WDLog(LOG_MODUL_HTTPREQUEST, @"完成上传心电数据遇到错误 --> %@", msg);
                 if (completion) completion(NO, responseObject);
             }
         } else {
@@ -307,22 +308,22 @@
         }
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
         if (completion) completion(NO, nil);
     }];
 }
 
 /// 获取记录列表
-+ (void)getECGRecordListCompletion:(void(^)(BOOL success, id responseObject))completion {
++ (void)getECGRecordList:(int)memberId completion:(void(^)(BOOL success, id responseObject))completion {
     NSString *url = [NSString stringWithFormat:@"%@%@", ServerUrlString, ECGRecordList];
     NSDictionary *dict = @{
-        @"memberId" : @(SCAppVaribleHandleInstance.userInfoModel.memberID)
+        @"memberId" : @(memberId)
     };
-    NSLog(@"url = %@, dict = %@", url, dict);
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, dict = %@", url, dict);
 
     [NetworkHelper POST:url parameters:dict success:^(id  _Nonnull responseObject, NSInteger successCode) {
         //
-        NSLog(@"%@", responseObject[@"data"]);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject[@"data"]);
         if (ResponseErrCode_Success == successCode) {
             if (completion) completion(YES, responseObject);
         } else {
@@ -330,7 +331,22 @@
         }
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
+        if (completion) completion(NO, nil);
+    }];
+}
+
+/// 下载PDF报告
++ (void)downloadPDFReportUrl:(NSString *)reportUrl fileDir:(NSString *)fileDir completion:(void(^)(BOOL success, id responseObject))completion {
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, fileDir = %@", reportUrl, fileDir);
+
+    [NetworkHelper downloadWithURL:reportUrl fileDir:fileDir progress:^(NSProgress * _Nonnull progress) {
+        WDLog(LOG_MODUL_HTTPREQUEST, @"progress --> %@", progress);
+    } success:^(NSString * _Nonnull filePath) {
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", filePath);
+        if (completion) completion(YES, filePath);
+    } failure:^(NSError * _Nonnull error) {
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
         if (completion) completion(NO, nil);
     }];
 }
@@ -338,18 +354,18 @@
 /// 清楚缓存
 + (void)clearCacheDataDeviceInfo:(SCMultiDeviceInfo *)deviceInfo completion:(void(^)(BOOL success, id responseObject))completion {
     NSString *url = [NSString stringWithFormat:@"%@%@?memberId=%d&mac=%@", ServerUrlString, ClearCacheData, SCAppVaribleHandleInstance.userInfoModel.memberID, deviceInfo.curBlockInfo.deviceMacAddress];
-    NSLog(@"url = %@", url);
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@", url);
 
     [NetworkHelper GET:url parameters:nil success:^(id  _Nonnull responseObject, NSInteger successCode) {
         //
-        NSLog(@"%@", responseObject[@"data"]);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject[@"data"]);
         if (ResponseErrCode_Success == successCode) {
             int code = [responseObject[@"code"] intValue];
             if (200 == code) {
                 if (completion) completion(YES, responseObject);
             } else {
                 NSString *msg = responseObject[@"msg"];
-                NSLog(@"清楚缓存数据遇到错误 --> %@", msg);
+                WDLog(LOG_MODUL_HTTPREQUEST, @"清楚缓存数据遇到错误 --> %@", msg);
                 if (completion) completion(NO, responseObject);
             }
         } else {
@@ -357,7 +373,7 @@
         }
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
         if (completion) completion(NO, nil);
     }];
 }
@@ -366,18 +382,18 @@
 /// 获取当前用户检测 进行判断当前上传的页数
 + (void)getCurrentDetectionDeviceInfo:(SCMultiDeviceInfo *)deviceInfo completion:(void(^)(BOOL success, id responseObject))completion {
     NSString *url = [NSString stringWithFormat:@"%@%@?mac=%@", ServerUrlString, GetCurrentDetection, deviceInfo.curBlockInfo.deviceMacAddress];
-    NSLog(@"url = %@", url);
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@", url);
 
     [NetworkHelper GET:url parameters:nil success:^(id  _Nonnull responseObject, NSInteger successCode) {
         //
-        NSLog(@"%@", responseObject[@"data"]);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject[@"data"]);
         if (ResponseErrCode_Success == successCode) {
             int code = [responseObject[@"code"] intValue];
             if (200 == code) {
                 if (completion) completion(YES, responseObject);
             } else {
                 NSString *msg = responseObject[@"msg"];
-                NSLog(@"获取当前用户检测数据遇到错误 --> %@", msg);
+                WDLog(LOG_MODUL_HTTPREQUEST, @"获取当前用户检测数据遇到错误 --> %@", msg);
                 if (completion) completion(NO, responseObject);
             }
         } else {
@@ -385,7 +401,7 @@
         }
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"%@", error.description);
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
         if (completion) completion(NO, nil);
     }];
 }

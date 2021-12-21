@@ -173,6 +173,9 @@
 /// 出生日期转化为年龄
 + (NSString *)calAgeByBirthday:(NSString *)birthday
 {
+    if ([@"" isEqualToString:birthday] || !birthday) {
+        return @"0岁";
+    }
     NSCalendar *calendar = [NSCalendar currentCalendar];//定义一个NSCalendar对象
         
     NSDate *nowDate = [NSDate date];
@@ -244,21 +247,42 @@
 }
 
 /// 弹出提示框
++ (void)showMessageWithTitle:(NSString *)title
+            firstButtonTitle:(NSString *)firstButtonTitle
+                  firstBlock:(CompleteBlock)firstBlock
+           secondButtonTitle:(NSString *)secondButtonTitle
+                 secondBlock:(CompleteBlock)secondBlock {
+    
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.alertStyle = NSAlertStyleCritical;
+    [alert addButtonWithTitle:firstButtonTitle];
+    [alert addButtonWithTitle:secondButtonTitle];
+    alert.messageText = @"Tips!";
+    alert.informativeText = title;
+
+    [alert beginSheetModalForWindow:[NSApplication sharedApplication].mainWindow completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSAlertFirstButtonReturn) {
+            firstBlock();
+        } else if (returnCode == NSAlertSecondButtonReturn) {
+            secondBlock();
+        } else {
+            
+        }
+    }];
+    
+}
+
+/// 弹出提示框
 + (void)showMessageWithTitle:(NSString *)title {
     NSAlert *alert = [[NSAlert alloc] init];
     alert.alertStyle = NSAlertStyleCritical;
     [alert addButtonWithTitle:@"确定"];
-//    [alert addButtonWithTitle:@"取消"];
     alert.messageText = @"Tips!";
     alert.informativeText = title;
 
-    [alert beginSheetModalForWindow:[NSApplication sharedApplication].keyWindow completionHandler:^(NSModalResponse returnCode) {
+    [alert beginSheetModalForWindow:[NSApplication sharedApplication].mainWindow completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSAlertFirstButtonReturn) {
-            NSLog(@"确定");
-        } else if (returnCode == NSAlertSecondButtonReturn) {
-            NSLog(@"取消");
-        } else {
-            NSLog(@"else");
+            
         }
     }];
 }

@@ -9,7 +9,6 @@
 #ifndef ConstServerHeader_h
 #define ConstServerHeader_h
 
-// 登录注册相关接口
 // 测试服务器需要定义该宏, 正式环境则去掉此宏(Target macr中已配置此宏)
 //#define DEBUG_ENVIRONMNET
 #ifdef DEBUG_ENVIRONMNET // 开发环境
@@ -45,6 +44,8 @@
 #define FinishFor24Hours @"api/detection/finish-for-24Hours"
 /// 获取记录列表
 #define ECGRecordList @"/api/detection/list"
+/// 获取记录详情
+#define GetECGRecordDetail @"/api/detection/get-detail"
 
 /// 清楚缓存
 #define ClearCacheData @"/api/detection/clear-cache-data"

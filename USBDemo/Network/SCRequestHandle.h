@@ -43,7 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 24小时完成
 + (void)finishFor24HoursWithUploadDataInfo:(SCUploadDataInfo *)uploadDataInfo Completion:(void(^)(BOOL success, id responseObject))completion;
 /// 获取记录列表
-+ (void)getECGRecordListCompletion:(void(^)(BOOL success, id responseObject))completion;
++ (void)getECGRecordList:(int)memberId completion:(void(^)(BOOL success, id responseObject))completion;
+/// 下载PDF报告
++ (void)downloadPDFReportUrl:(NSString *)reportUrl fileDir:(NSString *)fileDir completion:(void(^)(BOOL success, id responseObject))completion;
 
 /// 清楚缓存
 + (void)clearCacheDataDeviceInfo:(SCMultiDeviceInfo *)deviceInfo completion:(void(^)(BOOL success, id responseObject))completion;
