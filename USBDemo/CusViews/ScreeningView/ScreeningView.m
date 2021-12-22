@@ -14,6 +14,7 @@
 #import "WDLog.h"
 #import "EMRToast.h"
 #import "OnlyIntegerValueFormatter.h"
+#import "YYModel.h"
 
 @interface ScreeningView()<SCBleDataHandleDelegate>
 
@@ -526,24 +527,30 @@
     });
     
     self.dateFormatter.dateFormat = @"yyyy-MM-dd";
-    NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:deviceInfo.start_timestamp];
-    NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:deviceInfo.end_timestamp];
-    NSString *startTime = [self.dateFormatter stringFromDate:startDate];
+    NSString *endTime = [self.dateFormatter stringFromDate:[NSDate date]];
     NSString *tmpCheckInTime = SCAppVaribleHandleInstance.endCheckInTime;
-    if (![startTime isEqualToString:tmpCheckInTime]) {
+    if (![endTime isEqualToString:tmpCheckInTime]) {
         SCAppVaribleHandleInstance.endSerialNumber = 0;
         [SCAppVaribleHandleInstance saveCurrentEndSerialNumber];
-        SCAppVaribleHandleInstance.endCheckInTime = startTime;
+        SCAppVaribleHandleInstance.endCheckInTime = endTime;
         [SCAppVaribleHandleInstance saveCurrentEndCheckIn];
     }
     
-    NSString *xlsxName = [NSString stringWithFormat:@"%@结束表.xls", startTime];
+    NSString *xlsxName = [NSString stringWithFormat:@"%@结束表.xls", endTime];
     [self createFileAtPath:xlsxName];
     
     self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:deviceInfo.start_timestamp];
+    NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:deviceInfo.end_timestamp];
     NSString *gender = deviceInfo.userInfoModel.genderType == GenderType_female ? @"女" : @"男";
     NSString *dataStr = [NSString stringWithFormat:@"%ld\t%@\t%@\t%@\t%d\t%@\t%@\t%@\t%@cm\t%@kg\t%@\n", (long)SCAppVaribleHandleInstance.endSerialNumber, deviceInfo.curBlockInfo.deviceSerialNumber, [self.dateFormatter stringFromDate:startDate], [self.dateFormatter stringFromDate:endDate], deviceInfo.blockCount, deviceInfo.userInfoModel.name, gender, [CommonUtil calAgeByBirthday:deviceInfo.userInfoModel.birthday], deviceInfo.userInfoModel.height, deviceInfo.userInfoModel.weight, deviceInfo.userInfoModel.phoneNum];
     [self writeCheckInDataToFile:dataStr];
+    
+    if (!SCAppVaribleHandleInstance.userInfoArray) {
+        SCAppVaribleHandleInstance.userInfoArray = @[].mutableCopy;
+    }
+    [SCAppVaribleHandleInstance.userInfoArray addObject:[deviceInfo.userInfoModel yy_modelToJSONString]];
+    [SCAppVaribleHandleInstance saveUserInfoArray];
     
     SCAppVaribleHandleInstance.endSerialNumber++;
     [SCAppVaribleHandleInstance saveCurrentEndSerialNumber];

@@ -720,7 +720,7 @@
                                     <font key="font" metaFont="system"/>
                                     <segments>
                                         <segment label="快速普筛" width="80"/>
-                                        <segment label="报告列表" width="80" tag="1"/>
+                                        <segment label="记录列表" width="80" tag="1"/>
                                         <segment label="设备交互" width="80"/>
                                     </segments>
                                 </segmentedCell>

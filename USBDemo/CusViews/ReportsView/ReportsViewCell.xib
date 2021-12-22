@@ -13,18 +13,6 @@
             <rect key="frame" x="0.0" y="0.0" width="526" height="70"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6sa-k5-tCp">
-                    <rect key="frame" x="18" y="15" width="61" height="16"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="16" id="6zC-rQ-hA4"/>
-                        <constraint firstAttribute="width" constant="57" id="FnS-cG-anJ"/>
-                    </constraints>
-                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="检测时间:" id="Dyh-dB-fGL">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1k7-lm-jME">
                     <rect key="frame" x="424" y="39" width="84" height="16"/>
                     <constraints>
@@ -32,18 +20,6 @@
                         <constraint firstAttribute="height" constant="16" id="gwH-fT-uZS"/>
                     </constraints>
                     <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" alignment="right" title="生成中" id="Sms-40-kiZ">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Lvm-7r-e1J">
-                    <rect key="frame" x="80" y="15" width="164" height="16"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="160" id="JiA-tn-Mlt"/>
-                        <constraint firstAttribute="height" constant="16" id="TG3-pF-dXl"/>
-                    </constraints>
-                    <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" alignment="left" title="2021-12-07 19：03：53" id="TkS-pq-zA7">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -75,17 +51,27 @@
                         <action selector="downloadPDF:" target="Lrl-KV-4Pd" id="Yvz-my-gtd"/>
                     </connections>
                 </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Lvm-7r-e1J">
+                    <rect key="frame" x="18" y="15" width="164" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="OOe-y3-r8G"/>
+                        <constraint firstAttribute="width" constant="160" id="y9V-rf-ywi"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" alignment="left" title="2021-12-07 19：03：53" id="TkS-pq-zA7">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <constraints>
                 <constraint firstItem="o8P-cd-XXm" firstAttribute="leading" secondItem="Lrl-KV-4Pd" secondAttribute="leading" constant="20" id="2xi-4F-T1x"/>
-                <constraint firstAttribute="bottom" secondItem="6sa-k5-tCp" secondAttribute="bottom" constant="15" id="4jq-mM-s0Z"/>
                 <constraint firstAttribute="trailing" secondItem="1k7-lm-jME" secondAttribute="trailing" constant="20" id="8Tn-qY-ZrK"/>
+                <constraint firstItem="Lvm-7r-e1J" firstAttribute="leading" secondItem="Lrl-KV-4Pd" secondAttribute="leading" constant="20" id="A8w-Lk-tYu"/>
                 <constraint firstAttribute="bottom" secondItem="zeG-Br-MOP" secondAttribute="bottom" constant="10" id="HFb-sH-LbV"/>
-                <constraint firstItem="6sa-k5-tCp" firstAttribute="leading" secondItem="Lrl-KV-4Pd" secondAttribute="leading" constant="20" id="K2w-tu-veo"/>
                 <constraint firstAttribute="trailing" secondItem="zeG-Br-MOP" secondAttribute="trailing" constant="20" id="OCY-RV-peM"/>
-                <constraint firstItem="Lvm-7r-e1J" firstAttribute="leading" secondItem="6sa-k5-tCp" secondAttribute="trailing" constant="5" id="n9I-y1-yPS"/>
+                <constraint firstAttribute="bottom" secondItem="Lvm-7r-e1J" secondAttribute="bottom" constant="15" id="mGL-eJ-V0p"/>
                 <constraint firstItem="1k7-lm-jME" firstAttribute="top" secondItem="Lrl-KV-4Pd" secondAttribute="top" constant="15" id="q7w-Qy-VTX"/>
-                <constraint firstAttribute="bottom" secondItem="Lvm-7r-e1J" secondAttribute="bottom" constant="15" id="rP6-3J-zLc"/>
                 <constraint firstItem="o8P-cd-XXm" firstAttribute="top" secondItem="Lrl-KV-4Pd" secondAttribute="top" constant="15" id="t3N-mG-cwE"/>
             </constraints>
             <connections>

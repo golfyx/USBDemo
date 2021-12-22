@@ -88,6 +88,7 @@
             [self.screeningView removeFromSuperview];
             [self.deviceInteractionView removeFromSuperview];
             self.reportsView.frame = CGRectMake(0, 10, self.contentCustomView.frame.size.width, self.contentCustomView.frame.size.height - 10);
+            self.reportsView.viewController = self;
             [self.contentCustomView addSubview:self.reportsView];
         }
             break;

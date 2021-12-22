@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ReportsViewCellDelegate <NSObject>
 
 @optional
-- (void)downloadPDF:(int)index;
+- (void)downloadPDF:(NSInteger)index;
 
 @end
 

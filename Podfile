@@ -9,5 +9,6 @@ target 'USBDemo' do
 #  pod 'libxlsxwriter'
   pod 'Masonry'
   pod 'MJExtension'
+  pod 'YYModel'
 
 end

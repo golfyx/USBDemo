@@ -62,6 +62,9 @@
 		E8A9F7E52771B61F003EC614 /* ReportsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8A9F7E42771B61F003EC614 /* ReportsViewCell.xib */; };
 		E8A9F7E82771B6A0003EC614 /* ReportsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F7E72771B6A0003EC614 /* ReportsViewCell.m */; };
 		E8A9F7EE2771EE58003EC614 /* OnlyIntegerValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F7ED2771EE58003EC614 /* OnlyIntegerValueFormatter.m */; };
+		E8A9F7F42772B7B9003EC614 /* PersonnelViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F7F32772B7B9003EC614 /* PersonnelViewCell.m */; };
+		E8A9F7F62772B7CA003EC614 /* PersonnelViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8A9F7F52772B7CA003EC614 /* PersonnelViewCell.xib */; };
+		E8A9F7F92773178F003EC614 /* MyPreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F7F82773178F003EC614 /* MyPreviewItem.m */; };
 		E8BCE6E02741F3CC00EE5497 /* SCUploadDataInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E8BCE6DF2741F3CC00EE5497 /* SCUploadDataInfo.m */; };
 		E8BCE6E42743AB3000EE5497 /* HolterChartView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E8BCE6E32743AB3000EE5497 /* HolterChartView.mm */; };
 		E8BCE6EA2743CF9E00EE5497 /* HolterGriddingView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8BCE6E92743CF9E00EE5497 /* HolterGriddingView.m */; };
@@ -180,6 +183,11 @@
 		E8A9F7E72771B6A0003EC614 /* ReportsViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReportsViewCell.m; sourceTree = "<group>"; };
 		E8A9F7EC2771EE58003EC614 /* OnlyIntegerValueFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OnlyIntegerValueFormatter.h; sourceTree = "<group>"; };
 		E8A9F7ED2771EE58003EC614 /* OnlyIntegerValueFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OnlyIntegerValueFormatter.m; sourceTree = "<group>"; };
+		E8A9F7F22772B7B9003EC614 /* PersonnelViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonnelViewCell.h; sourceTree = "<group>"; };
+		E8A9F7F32772B7B9003EC614 /* PersonnelViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonnelViewCell.m; sourceTree = "<group>"; };
+		E8A9F7F52772B7CA003EC614 /* PersonnelViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonnelViewCell.xib; sourceTree = "<group>"; };
+		E8A9F7F72773178F003EC614 /* MyPreviewItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyPreviewItem.h; sourceTree = "<group>"; };
+		E8A9F7F82773178F003EC614 /* MyPreviewItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPreviewItem.m; sourceTree = "<group>"; };
 		E8BCE6DE2741F3CC00EE5497 /* SCUploadDataInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCUploadDataInfo.h; sourceTree = "<group>"; };
 		E8BCE6DF2741F3CC00EE5497 /* SCUploadDataInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCUploadDataInfo.m; sourceTree = "<group>"; };
 		E8BCE6E22743AB3000EE5497 /* HolterChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HolterChartView.h; sourceTree = "<group>"; };
@@ -433,6 +441,11 @@
 				E8A9F7E62771B6A0003EC614 /* ReportsViewCell.h */,
 				E8A9F7E72771B6A0003EC614 /* ReportsViewCell.m */,
 				E8A9F7E42771B61F003EC614 /* ReportsViewCell.xib */,
+				E8A9F7F22772B7B9003EC614 /* PersonnelViewCell.h */,
+				E8A9F7F32772B7B9003EC614 /* PersonnelViewCell.m */,
+				E8A9F7F52772B7CA003EC614 /* PersonnelViewCell.xib */,
+				E8A9F7F72773178F003EC614 /* MyPreviewItem.h */,
+				E8A9F7F82773178F003EC614 /* MyPreviewItem.m */,
 			);
 			path = ReportsView;
 			sourceTree = "<group>";
@@ -603,6 +616,7 @@
 				E8806A6627463D5E00CB628F /* ScreeningView.xib in Resources */,
 				E8A03E6627114265009E61EC /* Main.storyboard in Resources */,
 				E8A004D7275F35310023C4A6 /* SCProgressIndicator.xib in Resources */,
+				E8A9F7F62772B7CA003EC614 /* PersonnelViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -658,6 +672,7 @@
 				E8379A782711799600D501EB /* USBDeviceTool+robot.m in Sources */,
 				E8806A6E274644D000CB628F /* BaseViewController.m in Sources */,
 				E8A9F7D52771A326003EC614 /* ReportsView.m in Sources */,
+				E8A9F7F42772B7B9003EC614 /* PersonnelViewCell.m in Sources */,
 				E8691A97273E3E8D002944FD /* CommonUtil.m in Sources */,
 				E8A9F7EE2771EE58003EC614 /* OnlyIntegerValueFormatter.m in Sources */,
 				E8A9F7D1277172B6003EC614 /* EMRToastTextCell.m in Sources */,
@@ -667,6 +682,7 @@
 				E8A004D5275F35220023C4A6 /* SCProgressIndicator.m in Sources */,
 				E8806A6427463D2D00CB628F /* ScreeningView.m in Sources */,
 				E8691A74273E3B41002944FD /* UIWebView+AFNetworking.m in Sources */,
+				E8A9F7F92773178F003EC614 /* MyPreviewItem.m in Sources */,
 				E8A1B4B727702F5D0001B103 /* WDLog.m in Sources */,
 				E8A03E6127114263009E61EC /* ViewController.m in Sources */,
 				E8691A8E273E3B69002944FD /* NetworkHelper.m in Sources */,
@@ -838,6 +854,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4C3A9A039FC51934CC4787C4 /* Pods-USBDemo.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = USBDemo/USBDemo.entitlements;
@@ -869,6 +886,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1CA75E2F7183AF5541C97927 /* Pods-USBDemo.release.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = USBDemo/USBDemo.entitlements;

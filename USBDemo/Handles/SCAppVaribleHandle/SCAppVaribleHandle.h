@@ -38,7 +38,7 @@ typedef void (^BleDrawDataBlock)(NSData *data);
 @property (nonatomic, strong) NSString *endCheckInTime; // 登记时间
 
 
-
+@property (nonatomic, strong) NSMutableArray *userInfoArray; // 登记用户信息列表
 
 @property (nonatomic, strong) NSString *deviceSerialNumber; // 设备序列号
 
@@ -49,9 +49,13 @@ typedef void (^BleDrawDataBlock)(NSData *data);
 /// 清空token
 - (void)clearCurrentTokenInfo;
 
+/// 保存登记用户信息列表
+- (void)saveUserInfoArray;
+/// 清空登记用户信息列表
+- (void)clearUserInfoArray;
+
 /// 保存serialNumber
 - (void)saveCurrentStartSerialNumber;
-
 /// 清空serialNumber
 - (void)clearCurrentStartSerialNumber;
 

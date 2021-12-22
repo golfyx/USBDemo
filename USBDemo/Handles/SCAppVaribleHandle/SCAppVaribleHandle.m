@@ -7,10 +7,11 @@
 //
 
 #import "SCAppVaribleHandle.h"
-
+#import "YYModel.h"
 
 static NSString *const tokenStoreKey = @"tokenKey";
 static NSString *const startSerialNumberKey = @"startSerialNumberKey";
+static NSString *const userInfoArrayKey = @"userInfoArrayKey";
 static NSString *const startCheckInTimeKey = @"startCheckInTimeKey";
 static NSString *const endSerialNumberKey = @"endSerialNumberKey";
 static NSString *const endCheckInTimeKey = @"endCheckInTimeKey";
@@ -34,6 +35,8 @@ static NSString *const endCheckInTimeKey = @"endCheckInTimeKey";
         
         // 读取已经存储的值
         _token = [[NSUserDefaults standardUserDefaults] stringForKey:tokenStoreKey];
+        
+        _userInfoArray = [[NSUserDefaults standardUserDefaults] arrayForKey:userInfoArrayKey].mutableCopy;
         _startSerialNumber = [[NSUserDefaults standardUserDefaults] integerForKey:startSerialNumberKey];
         _startCheckInTime = [[NSUserDefaults standardUserDefaults] stringForKey:startCheckInTimeKey];
         _endSerialNumber = [[NSUserDefaults standardUserDefaults] integerForKey:endSerialNumberKey];
@@ -44,36 +47,49 @@ static NSString *const endCheckInTimeKey = @"endCheckInTimeKey";
         _isStartMeasure = NO;
         _isStopMeasure = NO;
         
+        if (!_userInfoArray) {
+            _userInfoArray = @[].mutableCopy;
+        }
+        
     }
     return self;
 }
 
 // 保存token
-- (void)saveCurrentTokenInfo
-{
+- (void)saveCurrentTokenInfo {
     [[NSUserDefaults standardUserDefaults] setObject:_token forKey:tokenStoreKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 // 清空token
-- (void)clearCurrentTokenInfo
-{
+- (void)clearCurrentTokenInfo {
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:tokenStoreKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _token = nil;
 }
 
 
+/// 保存登记用户信息列表
+- (void)saveUserInfoArray {
+    [[NSUserDefaults standardUserDefaults] setObject:_userInfoArray forKey:userInfoArrayKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+/// 清空登记用户信息列表
+- (void)clearUserInfoArray {
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:userInfoArrayKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    _userInfoArray = nil;
+}
+
+
 // 保存serialNumber
-- (void)saveCurrentStartSerialNumber
-{
+- (void)saveCurrentStartSerialNumber {
     [[NSUserDefaults standardUserDefaults] setObject:@(_startSerialNumber) forKey:startSerialNumberKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 // 清空serialNumber
-- (void)clearCurrentStartSerialNumber
-{
+- (void)clearCurrentStartSerialNumber {
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:startSerialNumberKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _startSerialNumber = 0;
@@ -81,29 +97,25 @@ static NSString *const endCheckInTimeKey = @"endCheckInTimeKey";
 
 
 // 保存登记时间
-- (void)saveCurrentStartCheckIn
-{
+- (void)saveCurrentStartCheckIn {
     [[NSUserDefaults standardUserDefaults] setObject:_startCheckInTime forKey:startCheckInTimeKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 // 清空登记时间
-- (void)clearCurrentStartCheckIn
-{
+- (void)clearCurrentStartCheckIn {
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:startCheckInTimeKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _startCheckInTime = nil;
 }
 
 // 保存serialNumber
-- (void)saveCurrentEndSerialNumber
-{
+- (void)saveCurrentEndSerialNumber {
     [[NSUserDefaults standardUserDefaults] setObject:@(_endSerialNumber) forKey:endSerialNumberKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 // 清空serialNumber
-- (void)clearCurrentEndSerialNumber
-{
+- (void)clearCurrentEndSerialNumber {
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:endSerialNumberKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _endSerialNumber = 0;
@@ -111,34 +123,28 @@ static NSString *const endCheckInTimeKey = @"endCheckInTimeKey";
 
 
 // 保存登记时间
-- (void)saveCurrentEndCheckIn
-{
+- (void)saveCurrentEndCheckIn {
     [[NSUserDefaults standardUserDefaults] setObject:_endCheckInTime forKey:endCheckInTimeKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 // 清空登记时间
-- (void)clearCurrentEndCheckIn
-{
+- (void)clearCurrentEndCheckIn {
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:endCheckInTimeKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     _endCheckInTime = nil;
 }
 
 // 清空cookie
-- (void)clearHttpCookieCache
-{
+- (void)clearHttpCookieCache {
     NSArray<NSHTTPCookie *> *cookies = NSHTTPCookieStorage.sharedHTTPCookieStorage.cookies;
     NSHTTPCookie *csrfcookie = nil;
-    for (NSHTTPCookie *cookie in cookies)
-    {
-        if ([cookie.name isEqualToString:@"csrftoken"])
-        {
+    for (NSHTTPCookie *cookie in cookies) {
+        if ([cookie.name isEqualToString:@"csrftoken"]) {
             csrfcookie = cookie;
         }
     }
     
-    if (csrfcookie)
-    {
+    if (csrfcookie) {
         [NSHTTPCookieStorage.sharedHTTPCookieStorage deleteCookie:csrfcookie];
     }
     // 清除所有缓存

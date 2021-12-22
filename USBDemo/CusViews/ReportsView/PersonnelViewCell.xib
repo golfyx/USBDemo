@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <tableCellView identifier="ReportsViewCellIdentifier" id="uPF-w3-F23" customClass="PersonnelViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="526" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fGJ-iF-OrX">
+                    <rect key="frame" x="414" y="12" width="104" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="npl-yh-6Sz"/>
+                        <constraint firstAttribute="width" constant="100" id="xRr-Gf-FjP"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" alignment="right" title="16666666666" id="ZUV-hn-F6S">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V0n-hi-4gB">
+                    <rect key="frame" x="8" y="12" width="74" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="VV2-Gg-Rpz"/>
+                        <constraint firstAttribute="width" constant="70" id="vcT-Me-ALw"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" alignment="left" title="姓名" id="CRo-Kw-NuM">
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gOA-8U-gFh">
+                    <rect key="frame" x="88" y="12" width="24" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="c3Z-CZ-tpw"/>
+                        <constraint firstAttribute="height" constant="16" id="nXw-27-pgv"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" alignment="left" title="男" id="4VT-Rl-IJA">
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gBi-EM-Ppk">
+                    <rect key="frame" x="113" y="12" width="39" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="6eO-Rl-hbK"/>
+                        <constraint firstAttribute="width" constant="35" id="bJN-6L-q6p"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" alignment="left" title="12岁" id="QvX-1L-6R3">
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="fGJ-iF-OrX" secondAttribute="trailing" constant="10" id="1bq-tM-ixo"/>
+                <constraint firstItem="gBi-EM-Ppk" firstAttribute="leading" secondItem="gOA-8U-gFh" secondAttribute="trailing" constant="5" id="6ho-jR-ub8"/>
+                <constraint firstItem="gOA-8U-gFh" firstAttribute="centerY" secondItem="uPF-w3-F23" secondAttribute="centerY" id="Yds-sU-BGZ"/>
+                <constraint firstItem="gOA-8U-gFh" firstAttribute="leading" secondItem="V0n-hi-4gB" secondAttribute="trailing" constant="10" id="fUb-fa-dMN"/>
+                <constraint firstItem="fGJ-iF-OrX" firstAttribute="centerY" secondItem="uPF-w3-F23" secondAttribute="centerY" id="jdo-dN-3US"/>
+                <constraint firstItem="gBi-EM-Ppk" firstAttribute="centerY" secondItem="uPF-w3-F23" secondAttribute="centerY" id="r3M-NT-5Ep"/>
+                <constraint firstItem="V0n-hi-4gB" firstAttribute="leading" secondItem="uPF-w3-F23" secondAttribute="leading" constant="10" id="ve1-GB-XJI"/>
+                <constraint firstItem="V0n-hi-4gB" firstAttribute="centerY" secondItem="uPF-w3-F23" secondAttribute="centerY" id="zXj-Lp-Boh"/>
+            </constraints>
+            <connections>
+                <outlet property="ageTextField" destination="gBi-EM-Ppk" id="VNi-ad-myJ"/>
+                <outlet property="genderTextField" destination="gOA-8U-gFh" id="5gP-QT-FEs"/>
+                <outlet property="nameTextField" destination="V0n-hi-4gB" id="A7q-ca-o1p"/>
+                <outlet property="phoneTextField" destination="fGJ-iF-OrX" id="QZa-xT-gLw"/>
+                <outlet property="stateTextField" destination="fGJ-iF-OrX" id="LyY-UP-0Rm"/>
+                <outlet property="timeTextField" destination="gBi-EM-Ppk" id="2m6-AU-WzA"/>
+                <outlet property="typeTextField" destination="V0n-hi-4gB" id="KeL-sX-Pai"/>
+            </connections>
+            <point key="canvasLocation" x="19" y="256"/>
+        </tableCellView>
+    </objects>
+</document>
