@@ -14,8 +14,6 @@
 static NSString *const CREATE_REG_FORM_SQL =
 @"create table if not exists regFormInfo ( \
 dbId integer primary key autoincrement, \
-operating_time text, \
-operating_type integer, \
 name text, \
 gender integer, \
 age integer, \
@@ -25,7 +23,9 @@ phone text, \
 serial_number text, \
 start_date text, \
 end_date text, \
-block_count integer) \
+block_count integer, \
+operating_time text, \
+operating_type integer) \
 ";
 /// 销毁表
 static NSString *const DROP_REG_FORM_SQL = @"drop table if exists regFormInfo";
@@ -35,9 +35,11 @@ static NSString *const DELETE_REG_FORM_SQL = @"delete from regFormInfo where 1";
 /// 获取所有的记录
 static NSString *const GET_REG_FORM_INFO_SQL = @"select * from regFormInfo order by dbId desc";
 /// 获取指定phone对应的记录
-static NSString *const SELECT_REG_FORM_ITEM_SQL = @"select * from regFormInfo where phone = ?";
+static NSString *const SELECT_REG_FORM_ITEM_WITH_PHONE_SQL = @"select * from regFormInfo where phone = ?";
+/// 获取指定日期对应的所有记录
+static NSString *const SELECT_REG_FORM_ITEM_WITH_TIME_TYPE_SQL = @"select * from regFormInfo where operating_time = ? and  operating_type = ?";
 /// 添加一条记录
-static NSString *const INSERT_REG_FORM_ITEM_SQL = @"insert into regFormInfo(operating_time,operating_type,name,gender,age,height,weight,phone,serial_number,start_date,end_date,block_count) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)";
+static NSString *const INSERT_REG_FORM_ITEM_SQL = @"insert into regFormInfo(name,gender,age,height,weight,phone,serial_number,start_date,end_date,block_count,operating_time,operating_type) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 #pragma mark - 表操作公共方法(子类重写实现)
 /**
@@ -87,7 +89,7 @@ static NSString *const INSERT_REG_FORM_ITEM_SQL = @"insert into regFormInfo(oper
 
 #pragma mark - public method
 /**
- 获取一条指定的记录
+ 获取一条指定手机号的记录
  @param phone 手机号
  @return 一条记录信息
  */
@@ -97,7 +99,7 @@ static NSString *const INSERT_REG_FORM_ITEM_SQL = @"insert into regFormInfo(oper
     
     [self.dateBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         
-        FMResultSet *rs = [db executeQuery:SELECT_REG_FORM_ITEM_SQL, phone];
+        FMResultSet *rs = [db executeQuery:SELECT_REG_FORM_ITEM_WITH_PHONE_SQL, phone];
         if ([rs next])
         {
             info = [self getRegFormInfoFromrs:rs];
@@ -106,6 +108,31 @@ static NSString *const INSERT_REG_FORM_ITEM_SQL = @"insert into regFormInfo(oper
     }];
     
     return info;
+}
+
+/**
+ 获取指定日期的所有记录
+ @param operating_time 操作时间
+ @param operating_type 操作类型
+ @return N条记录信息
+ */
+- (NSArray<SCRegFormSaveInfo *> *)acceptRegFormItemDataWithOperatingTime:(NSString *)operating_time operatingType:(int)operating_type
+{
+    __block NSMutableArray<SCRegFormSaveInfo *> *tmpInfoArray = @[].mutableCopy;
+    __block SCRegFormSaveInfo *info = nil;
+    
+    [self.dateBaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        
+        FMResultSet *rs = [db executeQuery:SELECT_REG_FORM_ITEM_WITH_TIME_TYPE_SQL, operating_time, @(operating_type)];
+        while ([rs next])
+        {
+            info = [self getRegFormInfoFromrs:rs];
+            [tmpInfoArray addObject:info];
+        }
+        [rs close];
+    }];
+    
+    return tmpInfoArray;
 }
 
 /**
@@ -121,7 +148,7 @@ static NSString *const INSERT_REG_FORM_ITEM_SQL = @"insert into regFormInfo(oper
     [self.dateBaseQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
         
         NSError *error = nil;
-        result = [db executeUpdate:INSERT_REG_FORM_ITEM_SQL withErrorAndBindings:&error, saveInfo.operating_time, saveInfo.operating_type, saveInfo.name, @(saveInfo.gender), @(saveInfo.age), @(saveInfo.height), @(saveInfo.weight), saveInfo.phone, saveInfo.serial_number, saveInfo.start_date, saveInfo.end_date, @(saveInfo.block_count)];
+        result = [db executeUpdate:INSERT_REG_FORM_ITEM_SQL withErrorAndBindings:&error, saveInfo.name, @(saveInfo.gender), @(saveInfo.age), @(saveInfo.height), @(saveInfo.weight), saveInfo.phone, saveInfo.serial_number, saveInfo.start_date, saveInfo.end_date, @(saveInfo.block_count), saveInfo.operating_time, @(saveInfo.operating_type)];
         if (result)
         {
             FMResultSet *rs = [db executeQuery:GET_REG_FORM_INFO_SQL];
@@ -149,8 +176,6 @@ static NSString *const INSERT_REG_FORM_ITEM_SQL = @"insert into regFormInfo(oper
     }
     SCRegFormSaveInfo *saveInfo = [[SCRegFormSaveInfo alloc] init];
     saveInfo.dbId = [rs intForColumn:@"dbId"];
-    saveInfo.operating_time = [rs stringForColumn:@"operating_time"];
-    saveInfo.operating_type = [rs intForColumn:@"operating_type"];
     saveInfo.name = [rs stringForColumn:@"name"];
     saveInfo.gender = [rs intForColumn:@"gender"];
     saveInfo.age = [rs intForColumn:@"age"];
@@ -161,6 +186,8 @@ static NSString *const INSERT_REG_FORM_ITEM_SQL = @"insert into regFormInfo(oper
     saveInfo.start_date = [rs stringForColumn:@"start_date"];
     saveInfo.end_date = [rs stringForColumn:@"end_date"];
     saveInfo.block_count = [rs intForColumn:@"block_count"];
+    saveInfo.operating_time = [rs stringForColumn:@"operating_time"];
+    saveInfo.operating_type = [rs intForColumn:@"operating_type"];
     
     return saveInfo;
 }

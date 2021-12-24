@@ -507,7 +507,6 @@
     }
     
     if (deviceInfo.bagCount - 1 == deviceInfo.bagIndex) { // 判断是否是最后一个包
-        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
         
         if (0x14100000 == deviceInfo.deviceObject.locationID) {
             deviceInfo.receiveMStr = [NSMutableString stringWithFormat:@"左接0：%@\n", deviceInfo.receiveMStr];
@@ -543,6 +542,7 @@
             [self.delegate didReceiveBleBattery:bulkBufferPacket.bulkBasePacket.dataBuffer[12] storage:100 - bulkBufferPacket.bulkBasePacket.dataBuffer[13]];
         }
     } else if (deviceInfo.bleCmdType == 0x70) {  //  获取Dongle版本
+        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
         //ASCII to NSStrings
         NSString *versionStr = @"";
         int bufLen = bulkBufferPacket.bulkBasePacket.dataBuffer[12];
@@ -557,6 +557,7 @@
         }
 
     } else if (deviceInfo.bleCmdType == 0x43) {  //  获取块的个数
+        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
         
         deviceInfo.blockCount = ((int)bulkBufferPacket.bulkBasePacket.dataBuffer[13] << 8) | (int)bulkBufferPacket.bulkBasePacket.dataBuffer[12];
 
@@ -588,6 +589,7 @@
         }
 
         if (deviceInfo.bagCount - 1 == deviceInfo.bagIndex) { // 判断是否是最后一个包
+            WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
 
             int tmpInternalIndex = (deviceInfo.readBlockInternalIndex & 0xF); // 判断是第几块
             int isReadUserInfo = (deviceInfo.readBlockInternalIndex & 0x10);  // 判断是读取还是写入
@@ -748,6 +750,7 @@
         }
 
         if (deviceInfo.bagCount - 1 == deviceInfo.bagIndex) { // 判断是否是最后一个包
+            WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
 
             int tmpPageIndex = deviceInfo.pageIndex - deviceInfo.curBlockInfo.startpageIndex;
             if (tmpPageIndex < 0) {
@@ -835,6 +838,8 @@
         }
 
     } else if (deviceInfo.bleCmdType == 0x60) {  //  设备停止指令
+        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
+        
         int tmpbleCmdType = readBuffer[16];
         if (tmpbleCmdType == 0x02) {
 
@@ -857,6 +862,7 @@
             [self getSaveEcgModelCmd:pDev]; // 获取当前保存模式
         }
     } else if (deviceInfo.bleCmdType == 0x51) { // 时间误差在1s之内，认为设置成功
+        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
         
         SCAppVaribleHandleInstance.isReadBlockUserInfo = NO;
         kern_return_t kr = [self setDeviceSaveUserInfo:pDev]; // 保存用户信息
@@ -875,10 +881,14 @@
             }
         }
     } else if (deviceInfo.bleCmdType == 0x61) {
+        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
+        
         if ([self.delegate respondsToSelector:@selector(didReceiveBleActiveType:deviceInfo:)]) {
             [self.delegate didReceiveBleActiveType:readBuffer[16] & 0x7 deviceInfo:deviceInfo];
         }
     } else if (deviceInfo.bleCmdType == 0x62) {
+        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
+        
         int tmpbleCmdType = readBuffer[16];
         if (tmpbleCmdType == 0x02) { // 自动保存模式
             if (SCAppVaribleHandleInstance.isStopMeasure) {
@@ -903,6 +913,8 @@
             }
         }
     } else if (deviceInfo.bleCmdType == 0x63) {
+        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
+        
         int tmpbleCmdType = readBuffer[16];
         if (tmpbleCmdType == 0x01) { // 正常保存模式
 
@@ -922,6 +934,8 @@
 
         }
     }  else if (deviceInfo.bleCmdType == 0x75) {
+        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
+        
         int tmpbleCmdType = readBuffer[16];
         if (tmpbleCmdType == 0x01) { // 正常保存模式
 

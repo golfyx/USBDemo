@@ -15,6 +15,7 @@
 #import "EMRToast.h"
 #import "OnlyIntegerValueFormatter.h"
 #import "YYModel.h"
+#import "SCDataBaseManagerHandle.h"
 
 @interface ScreeningView()<SCBleDataHandleDelegate>
 
@@ -342,6 +343,24 @@
     SCAppVaribleHandleInstance.startSerialNumber++;
     [SCAppVaribleHandleInstance saveCurrentStartSerialNumber];
     
+    
+    SCRegFormSaveInfo *saveInfo = [SCRegFormSaveInfo new];
+    saveInfo.name = SCAppVaribleHandleInstance.userInfoModel.name;
+    saveInfo.gender = (int)SCAppVaribleHandleInstance.userInfoModel.genderType;
+    saveInfo.age = [[CommonUtil calAgeByBirthday:SCAppVaribleHandleInstance.userInfoModel.birthday] intValue];
+    saveInfo.height = [SCAppVaribleHandleInstance.userInfoModel.height intValue];
+    saveInfo.weight = [SCAppVaribleHandleInstance.userInfoModel.weight intValue];
+    saveInfo.phone = SCAppVaribleHandleInstance.userInfoModel.phoneNum;
+    saveInfo.serial_number = self.serialNumPopUpBtn.titleOfSelectedItem;
+    saveInfo.start_date = [self.dateFormatter stringFromDate:startDate];
+    saveInfo.end_date = @"";
+    saveInfo.block_count = 0;
+    saveInfo.operating_time = startTime;
+    saveInfo.operating_type = 1;
+    [[SCDataBaseManagerHandle shareInstance].regFormDataBaseHandle saveRegFormDataWithInfo:saveInfo];
+    
+    NSArray *infoArray = [[SCDataBaseManagerHandle shareInstance].regFormDataBaseHandle acceptRegFormItemDataWithOperatingTime:saveInfo.operating_time operatingType:1];
+    
     [self hiddenProgressIndicator];
 }
 
@@ -618,6 +637,26 @@
     
     SCAppVaribleHandleInstance.endSerialNumber++;
     [SCAppVaribleHandleInstance saveCurrentEndSerialNumber];
+    
+    
+    SCRegFormSaveInfo *saveInfo = [SCRegFormSaveInfo new];
+    saveInfo.name = deviceInfo.userInfoModel.name;
+    saveInfo.gender = (int)deviceInfo.userInfoModel.genderType;
+    saveInfo.age = [[CommonUtil calAgeByBirthday:deviceInfo.userInfoModel.birthday] intValue];
+    saveInfo.height = [deviceInfo.userInfoModel.height intValue];
+    saveInfo.weight = [deviceInfo.userInfoModel.weight intValue];
+    saveInfo.phone = deviceInfo.userInfoModel.phoneNum;
+    saveInfo.serial_number = deviceInfo.curBlockInfo.deviceSerialNumber;
+    saveInfo.start_date = [self.dateFormatter stringFromDate:startDate];
+    saveInfo.end_date = [self.dateFormatter stringFromDate:endDate];
+    saveInfo.block_count = deviceInfo.blockCount;
+    saveInfo.operating_time = endTime;
+    saveInfo.operating_type = 2;
+    [[SCDataBaseManagerHandle shareInstance].regFormDataBaseHandle saveRegFormDataWithInfo:saveInfo];
+    
+    NSArray *infoArray = [[SCDataBaseManagerHandle shareInstance].regFormDataBaseHandle acceptRegFormItemDataWithOperatingTime:saveInfo.operating_time operatingType:2];
+    
+    NSLog(@"-------");
 }
 
 - (void)didStartUploadBlockData:(SCMultiDeviceInfo *)deviceInfo {

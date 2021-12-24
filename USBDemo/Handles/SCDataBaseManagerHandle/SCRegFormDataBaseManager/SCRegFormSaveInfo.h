@@ -21,15 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
  9.start_date
  10.end_date
  11.block_count
+ 12.operating_time
+ 13.operating_type
  */
 
 @interface SCRegFormSaveInfo : NSObject
 
 @property (nonatomic, assign) int dbId;
-/// 操作时间
-@property (nonatomic, copy) NSString *operating_time;
-/// 操作状态
-@property (nonatomic, assign) int operating_type;
 /// 姓名
 @property (nonatomic, copy) NSString *name;
 /// 性别
@@ -50,6 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *end_date;
 /// 数据块个数
 @property (nonatomic, assign) int block_count;
+/// 操作时间
+@property (nonatomic, copy) NSString *operating_time;
+/// 操作状态 1表示写入  2 表示读取
+@property (nonatomic, assign) int operating_type;
 
 @end
 
