@@ -77,7 +77,7 @@
         if ([fileManager createFileAtPath:_usersTableFilePath contents:nil attributes:nil]) {
             WDLog(LOG_MODUL_FILE ,@"登记文件创建成功");
             // 字符串插入"\t" (Tab键,制表键的简写）,达到换列的作用。 \n 换行符
-            [self writeCheckInDataToFile:@"序号\t设备号\t开始时间\t结束时间\t总块数\t姓名\t性别\t年龄\t身高\t体重\t手机号\n"];
+            [self writeCheckInDataToFile:@"序号\t设备号\t开始时间\t结束时间\t总块数\t姓名\t性别\t年龄\t身高\t体重\t手机号\r\n"];
         } else{
             WDLog(LOG_MODUL_FILE ,@"登记文件创建失败");
         }
@@ -110,6 +110,8 @@
     formatter3.maxLen = 6;
     self.captchaValue.formatter = formatter3;
 
+    
+    [self.serialNumPopUpBtn removeAllItems];
 }
 
 /// 激活蓝牙连接
@@ -182,6 +184,19 @@
     [[NSWorkspace sharedWorkspace] selectFile:nil inFileViewerRootedAtPath:self.documentPath];
     
 }
+- (IBAction)disconnectDeviceBle:(NSButton *)sender {
+    for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
+        [[SCBleDataHandle sharedManager] disconnectBleDevice:pDev];
+    }
+}
+- (IBAction)connectDeviceBle:(NSButton *)sender {
+    for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
+        if ([SCAppVaribleHandleInstance.deviceSerialDic.allKeys containsObject:self.serialNumPopUpBtn.titleOfSelectedItem]) {
+            NSString *index = SCAppVaribleHandleInstance.deviceSerialDic[self.serialNumPopUpBtn.titleOfSelectedItem];
+            [[SCBleDataHandle sharedManager] connectBleDeviceIndex:index.intValue deviceObject:pDev];
+        }
+    }
+}
 
 - (void)writeCheckInDataToFile:(NSString *)dataStr {
     
@@ -208,6 +223,41 @@
         self.batteryStatus.stringValue = [NSString stringWithFormat:@"电量:%d%% ， 内存:%d%%", battery, storage];
     });
 }
+
+- (void)didReceiveBleDisplayString:(NSString *)displayString {
+    
+    if ([displayString containsString:@".MetaCor:"]) {
+        NSArray *receiveArray = [displayString componentsSeparatedByString:@"."];
+        if (receiveArray.count >= 2) {
+            NSString *indexStr = receiveArray[0];
+            NSString *serialStr = [receiveArray[1] componentsSeparatedByString:@", "][1];
+            NSString *index = [indexStr substringFromIndex:indexStr.length - 2];
+            
+            if (![SCAppVaribleHandleInstance.deviceSerialDic.allKeys containsObject:serialStr]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:serialStr action:@selector(null) keyEquivalent:@""];
+                    [self.serialNumPopUpBtn.menu addItem:menuItem];
+                });
+            }
+            SCAppVaribleHandleInstance.deviceSerialDic[serialStr] = index;
+        }
+    }
+    
+    if ([displayString containsString:@"Already Connect ble device."]) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            for (DeviceObject *item in [[SCBleDataHandle sharedManager] getDeviceArray]) {
+                [[SCBleDataHandle sharedManager] getDongleSerialNumber:item]; // 获取序列号
+            }
+        });
+    } else if ([displayString containsString:@"Device disconnect."]) {
+        SCAppVaribleHandleInstance.deviceSerialDic = @{}.mutableCopy;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.serialNumPopUpBtn removeAllItems];
+        });
+    }
+}
+
 
 - (void)didReceiveBleVersion:(NSString *)version {
     
@@ -255,12 +305,21 @@
 }
 
 - (void)didReceiveBleSerialNumber:(NSString *)deviceSerialNumber {
-    
+    WDLog(LOG_MODUL_BLE, @"获取到的设备序列号-->%@", deviceSerialNumber);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self hiddenProgressIndicator];
         self.deviceSerialNumber.stringValue = deviceSerialNumber;
+        [SCAppVaribleHandleInstance.deviceSerialDic removeAllObjects];
+        [self.serialNumPopUpBtn removeAllItems];
+        SCAppVaribleHandleInstance.deviceSerialDic[deviceSerialNumber] = @"00";
+            
+        NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:deviceSerialNumber action:@selector(null) keyEquivalent:@""];
+        [self.serialNumPopUpBtn.menu addItem:menuItem];
+        
     });
-    
+}
+
+- (void)writeStartCheckInDataToFile {
     self.dateFormatter.dateFormat = @"yyyy-MM-dd";
     NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:SCAppVaribleHandleInstance.startRecordTimestamp/1000];
     NSString *startTime = [self.dateFormatter stringFromDate:startDate];
@@ -277,11 +336,13 @@
     
     self.dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     NSString *gender = SCAppVaribleHandleInstance.userInfoModel.genderType == GenderType_female ? @"女" : @"男";
-    NSString *dataStr = [NSString stringWithFormat:@"%ld\t%@\t%@\t%@\t%@\t%@\t%@\t%@\t%@cm\t%@kg\t%@\n", (long)SCAppVaribleHandleInstance.startSerialNumber, deviceSerialNumber, [self.dateFormatter stringFromDate:startDate], @"", @"", SCAppVaribleHandleInstance.userInfoModel.name, gender, [CommonUtil calAgeByBirthday:SCAppVaribleHandleInstance.userInfoModel.birthday], SCAppVaribleHandleInstance.userInfoModel.height, SCAppVaribleHandleInstance.userInfoModel.weight, SCAppVaribleHandleInstance.userInfoModel.phoneNum];
+    NSString *dataStr = [NSString stringWithFormat:@"%ld\t%@\t%@\t%@\t%@\t%@\t%@\t%@\t%@cm\t%@kg\t%@\r\n", (long)SCAppVaribleHandleInstance.startSerialNumber, self.serialNumPopUpBtn.titleOfSelectedItem, [self.dateFormatter stringFromDate:startDate], @"", @"", SCAppVaribleHandleInstance.userInfoModel.name, gender, [CommonUtil calAgeByBirthday:SCAppVaribleHandleInstance.userInfoModel.birthday], SCAppVaribleHandleInstance.userInfoModel.height, SCAppVaribleHandleInstance.userInfoModel.weight, SCAppVaribleHandleInstance.userInfoModel.phoneNum];
     [self writeCheckInDataToFile:dataStr];
     
     SCAppVaribleHandleInstance.startSerialNumber++;
     [SCAppVaribleHandleInstance saveCurrentStartSerialNumber];
+    
+    [self hiddenProgressIndicator];
 }
 
 - (void)didReceiveBleECGDataBlockCount:(int)count deviceInfo:(SCMultiDeviceInfo *)deviceInfo {
@@ -314,6 +375,16 @@
                                          secondBlock:^{[self hiddenProgressIndicator];}];
                 } else {
                     
+                    
+                    if ([SCAppVaribleHandleInstance.deviceSerialDic.allKeys containsObject:self.serialNumPopUpBtn.titleOfSelectedItem]) {
+                        NSString *index = SCAppVaribleHandleInstance.deviceSerialDic[self.serialNumPopUpBtn.titleOfSelectedItem];
+                        [[SCBleDataHandle sharedManager] connectBleDeviceIndex:index.intValue deviceObject:deviceInfo.deviceObject];
+                    }
+                    
+//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                        [[SCBleDataHandle sharedManager] getDongleSerialNumber:deviceInfo.deviceObject]; // 获取序列号
+//                    });
+                    
                     self.curEcgDataBlockDetail.stringValue = @"";
                     self.readingBlockProgress.doubleValue = 0;
                     self.readingBlockProgressValue.stringValue = @"0/10";
@@ -345,18 +416,11 @@
                                     [SCRequestHandle updateMemberUserInfoCompletion:^(BOOL success, id  _Nonnull responseObject) {
                                         if (success) {
                                             WDLog(LOG_MODUL_HTTPREQUEST, @"更新用户信息成功");
-                                            
-                                            for (DeviceObject *item in [[SCBleDataHandle sharedManager] getDeviceArray]) {
-                                                
-                                                WDLog(LOG_MODUL_BLE, @"设置设备时间");
-                                                [[SCBleDataHandle sharedManager] setDongleTime:item]; // 设置设备时间
-                                                
-                                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                    WDLog(LOG_MODUL_BLE, @"获取序列号");
-                                                    [[SCBleDataHandle sharedManager] getDongleSerialNumber:item]; // 获取序列号
-                                                });
-                                                
-                                            }
+                                            WDLog(LOG_MODUL_BLE, @"设置设备时间");
+                                            [[SCBleDataHandle sharedManager] setDongleTime:deviceInfo.deviceObject]; // 设置设备时间
+                                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                                [self writeStartCheckInDataToFile];
+                                            });
                                         } else {
                                             [EMRToast Show:[self handlingInvalidData:responseObject title:@"更新用户信息失败"]];
                                             [self hiddenProgressIndicator];
@@ -543,7 +607,7 @@
     NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:deviceInfo.start_timestamp];
     NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:deviceInfo.end_timestamp];
     NSString *gender = deviceInfo.userInfoModel.genderType == GenderType_female ? @"女" : @"男";
-    NSString *dataStr = [NSString stringWithFormat:@"%ld\t%@\t%@\t%@\t%d\t%@\t%@\t%@\t%@cm\t%@kg\t%@\n", (long)SCAppVaribleHandleInstance.endSerialNumber, deviceInfo.curBlockInfo.deviceSerialNumber, [self.dateFormatter stringFromDate:startDate], [self.dateFormatter stringFromDate:endDate], deviceInfo.blockCount, deviceInfo.userInfoModel.name, gender, [CommonUtil calAgeByBirthday:deviceInfo.userInfoModel.birthday], deviceInfo.userInfoModel.height, deviceInfo.userInfoModel.weight, deviceInfo.userInfoModel.phoneNum];
+    NSString *dataStr = [NSString stringWithFormat:@"%ld\t%@\t%@\t%@\t%d\t%@\t%@\t%@\t%@cm\t%@kg\t%@\r\n", (long)SCAppVaribleHandleInstance.endSerialNumber, deviceInfo.curBlockInfo.deviceSerialNumber, [self.dateFormatter stringFromDate:startDate], [self.dateFormatter stringFromDate:endDate], deviceInfo.blockCount, deviceInfo.userInfoModel.name, gender, [CommonUtil calAgeByBirthday:deviceInfo.userInfoModel.birthday], deviceInfo.userInfoModel.height, deviceInfo.userInfoModel.weight, deviceInfo.userInfoModel.phoneNum];
     [self writeCheckInDataToFile:dataStr];
     
     if (!SCAppVaribleHandleInstance.userInfoArray) {
@@ -631,8 +695,7 @@
 
 
 - (void)usbDidPlunIn:(DeviceObject *)usbObject {
-    
-    
+    [[SCBleDataHandle sharedManager] getDongleSerialNumber:usbObject]; // 获取序列号
 }
 
 - (void)usbDidRemove:(DeviceObject *)usbObject {

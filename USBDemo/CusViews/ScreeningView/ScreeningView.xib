@@ -212,44 +212,6 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vCr-Qi-Muw">
-                    <rect key="frame" x="330" y="400" width="80" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" id="Qnm-xA-HCF"/>
-                        <constraint firstAttribute="width" constant="80" id="eQR-zh-EUX"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="wNQ-3D-rIp">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ea9-vx-7VA">
-                    <rect key="frame" x="283" y="402" width="49" height="16"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="16" id="8eh-Wq-yaX"/>
-                        <constraint firstAttribute="width" constant="45" id="ui1-Sf-V5Y"/>
-                    </constraints>
-                    <textFieldCell key="cell" lineBreakMode="clipping" title="验证码:" id="SiS-WJ-Wyx">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cgC-2v-z1l">
-                    <rect key="frame" x="178" y="393" width="104" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="90" id="5Hp-Bl-KLE"/>
-                        <constraint firstAttribute="height" constant="20" id="ypG-fk-oaB"/>
-                    </constraints>
-                    <buttonCell key="cell" type="push" title="获取验证码" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bdR-Rk-Nw5">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="getCaptcha:" target="c22-O7-iKe" id="X2v-ah-sja"/>
-                    </connections>
-                </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="G4h-QX-d5l">
                     <rect key="frame" x="171" y="432" width="35" height="16"/>
                     <constraints>
@@ -344,12 +306,43 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XPG-uf-C9D">
+                    <rect key="frame" x="290" y="402" width="49" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="45" id="BVd-qh-T4r"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="序列号:" id="vE2-Xh-JBK">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KJO-ea-L7E">
+                    <rect key="frame" x="334" y="396" width="144" height="25"/>
+                    <popUpButtonCell key="cell" type="push" title="MD20210010001" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" selectedItem="8KN-fw-0cE" id="Q7d-GG-893">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" autoenablesItems="NO" id="PpM-zM-4fa">
+                            <items>
+                                <menuItem title="MD20210010001" state="on" id="8KN-fw-0cE"/>
+                                <menuItem title="MD20210010002" id="uxT-sd-L6p"/>
+                                <menuItem title="MD20210010003" id="DPh-Kl-bpG"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                </popUpButton>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GwO-1b-Jyr">
+                    <rect key="frame" x="474" y="393" width="88" height="32"/>
+                    <buttonCell key="cell" type="push" title="连接设备" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="a7Z-Ko-WtZ">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="connectDeviceBle:" target="c22-O7-iKe" id="Au2-vF-5NB"/>
+                    </connections>
+                </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AjA-5b-m7a">
                     <rect key="frame" x="273" y="313" width="134" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" id="1GE-kc-gm6"/>
-                        <constraint firstAttribute="width" constant="120" id="V8G-tU-TQh"/>
-                    </constraints>
                     <buttonCell key="cell" type="push" title="打开登记文本" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7on-PQ-FB4">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -358,48 +351,31 @@
                         <action selector="openUsersTable:" target="c22-O7-iKe" id="ssw-Tx-MlL"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XPG-uf-C9D">
-                    <rect key="frame" x="413" y="402" width="49" height="16"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="45" id="cuo-T5-kWw"/>
-                        <constraint firstAttribute="height" constant="16" id="gzq-NU-5NJ"/>
-                    </constraints>
-                    <textFieldCell key="cell" lineBreakMode="clipping" title="序列号:" id="vE2-Xh-JBK">
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dwL-X9-jQD">
+                    <rect key="frame" x="556" y="393" width="88" height="32"/>
+                    <buttonCell key="cell" type="push" title="断开连接" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ysw-rI-IXY">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jtq-93-rpG">
-                    <rect key="frame" x="460" y="400" width="160" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="160" id="7ii-8c-XOj"/>
-                        <constraint firstAttribute="height" constant="20" id="OY5-Ax-PZc"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="mgZ-n3-nu0">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
+                    </buttonCell>
+                    <connections>
+                        <action selector="disconnectDeviceBle:" target="c22-O7-iKe" id="L4z-W6-2hh"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="UPw-xo-RNc" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="12" id="1oa-8b-YOI"/>
                 <constraint firstItem="kwm-pE-Dbp" firstAttribute="top" secondItem="fyS-y2-aFk" secondAttribute="bottom" constant="10" id="5VE-ps-Ps6"/>
-                <constraint firstItem="xpL-7W-6u8" firstAttribute="top" secondItem="vCr-Qi-Muw" secondAttribute="bottom" constant="20" id="5nP-Ez-zsa"/>
-                <constraint firstItem="Ea9-vx-7VA" firstAttribute="top" secondItem="whL-IG-fla" secondAttribute="bottom" constant="12" id="6Bw-MW-dVB"/>
                 <constraint firstItem="vnp-nx-0kB" firstAttribute="top" secondItem="kwm-pE-Dbp" secondAttribute="bottom" constant="10" id="7Ai-3T-WmI"/>
-                <constraint firstItem="vCr-Qi-Muw" firstAttribute="leading" secondItem="Ea9-vx-7VA" secondAttribute="trailing" id="7RN-ru-aU0"/>
                 <constraint firstItem="whL-IG-fla" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="7ht-CB-0ga"/>
-                <constraint firstItem="jtq-93-rpG" firstAttribute="top" secondItem="3cc-bB-8fE" secondAttribute="bottom" constant="10" id="7uE-Ry-AYN"/>
+                <constraint firstItem="GwO-1b-Jyr" firstAttribute="leading" secondItem="KJO-ea-L7E" secondAttribute="trailing" constant="7" id="7uv-YD-Jsp"/>
                 <constraint firstItem="fyS-y2-aFk" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="7xH-Vl-qFt"/>
                 <constraint firstItem="uIH-OT-edh" firstAttribute="top" secondItem="kwm-pE-Dbp" secondAttribute="bottom" constant="10" id="8aw-eJ-jya"/>
                 <constraint firstItem="cgu-jW-UV5" firstAttribute="leading" secondItem="whL-IG-fla" secondAttribute="trailing" id="8nd-v7-6bQ"/>
+                <constraint firstItem="KJO-ea-L7E" firstAttribute="baseline" secondItem="6Bt-dU-qNg" secondAttribute="baseline" id="9io-ju-zix"/>
                 <constraint firstItem="BtW-FE-Ohy" firstAttribute="top" secondItem="xpL-7W-6u8" secondAttribute="bottom" constant="21" id="9sM-o2-j5I"/>
                 <constraint firstItem="eCE-z2-4Dt" firstAttribute="leading" secondItem="S83-i4-I7x" secondAttribute="trailing" id="9yI-HH-Tbo"/>
                 <constraint firstItem="6Bt-dU-qNg" firstAttribute="top" secondItem="fWW-9n-Xmm" secondAttribute="bottom" constant="10" id="Bvd-Wj-JcM"/>
                 <constraint firstItem="HBj-lg-57s" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="12" id="DAp-Q7-K0I"/>
-                <constraint firstItem="XPG-uf-C9D" firstAttribute="leading" secondItem="vCr-Qi-Muw" secondAttribute="trailing" constant="5" id="Fei-Ek-z1r"/>
                 <constraint firstItem="DCC-bL-aDW" firstAttribute="leading" secondItem="eCE-z2-4Dt" secondAttribute="trailing" constant="10" id="Fni-k6-Egs"/>
                 <constraint firstItem="S83-i4-I7x" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="GA1-rT-rcb"/>
                 <constraint firstItem="UPw-xo-RNc" firstAttribute="leading" secondItem="3cc-bB-8fE" secondAttribute="trailing" id="IA3-mq-rbf"/>
@@ -407,40 +383,42 @@
                 <constraint firstItem="fWW-9n-Xmm" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="Jda-Aa-5An"/>
                 <constraint firstItem="whL-IG-fla" firstAttribute="leading" secondItem="HBj-lg-57s" secondAttribute="trailing" id="KaF-Yg-RUA"/>
                 <constraint firstItem="Gv6-l1-jN7" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="110" id="KqJ-HP-XKg"/>
-                <constraint firstItem="AjA-5b-m7a" firstAttribute="top" secondItem="vCr-Qi-Muw" secondAttribute="bottom" constant="60" id="L5y-wW-0YD"/>
                 <constraint firstItem="YTH-Sj-kFU" firstAttribute="top" secondItem="kwm-pE-Dbp" secondAttribute="bottom" constant="10" id="LHN-Oa-YuF"/>
                 <constraint firstItem="3cc-bB-8fE" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="Lcj-0o-SsH"/>
                 <constraint firstItem="YTH-Sj-kFU" firstAttribute="leading" secondItem="vnp-nx-0kB" secondAttribute="trailing" constant="5" id="MOV-DA-xIe"/>
                 <constraint firstItem="5T4-iC-D1F" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="RkN-fO-c82"/>
+                <constraint firstItem="AjA-5b-m7a" firstAttribute="centerX" secondItem="fyS-y2-aFk" secondAttribute="centerX" id="S4L-H3-IrS"/>
+                <constraint firstItem="GwO-1b-Jyr" firstAttribute="baseline" secondItem="dwL-X9-jQD" secondAttribute="baseline" id="SDf-hn-X9o"/>
                 <constraint firstItem="gaS-5m-uYA" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="Shb-cN-JWN"/>
                 <constraint firstItem="DCC-bL-aDW" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="12" id="UHH-mH-KQ2"/>
                 <constraint firstItem="xpL-7W-6u8" firstAttribute="leading" secondItem="Gv6-l1-jN7" secondAttribute="trailing" constant="170" id="UNE-LI-p3h"/>
                 <constraint firstItem="G4h-QX-d5l" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="12" id="UfM-nZ-akF"/>
-                <constraint firstItem="cgC-2v-z1l" firstAttribute="top" secondItem="gaS-5m-uYA" secondAttribute="bottom" constant="10" id="UgQ-Yi-yA1"/>
                 <constraint firstItem="6Bt-dU-qNg" firstAttribute="leading" secondItem="5T4-iC-D1F" secondAttribute="trailing" id="Wj2-oE-X3G"/>
                 <constraint firstItem="S83-i4-I7x" firstAttribute="leading" secondItem="S8f-Hs-XKs" secondAttribute="trailing" id="XXN-MJ-Vxw"/>
+                <constraint firstItem="xpL-7W-6u8" firstAttribute="top" secondItem="KJO-ea-L7E" secondAttribute="bottom" constant="20" id="Yb5-Uk-UX8"/>
                 <constraint firstItem="QTB-fI-ZU5" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="ZIw-NX-0KC"/>
                 <constraint firstItem="3cc-bB-8fE" firstAttribute="leading" secondItem="DCC-bL-aDW" secondAttribute="trailing" id="ZP7-mI-fqB"/>
                 <constraint firstItem="fyS-y2-aFk" firstAttribute="top" secondItem="QTB-fI-ZU5" secondAttribute="bottom" constant="10" id="ZoK-CA-Blf"/>
                 <constraint firstItem="Jxx-i2-cmN" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="aMA-Mn-nUT"/>
-                <constraint firstItem="vCr-Qi-Muw" firstAttribute="top" secondItem="whL-IG-fla" secondAttribute="bottom" constant="10" id="adS-wS-ORr"/>
                 <constraint firstItem="Jxx-i2-cmN" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="12" id="asG-oy-YPo"/>
                 <constraint firstItem="HBj-lg-57s" firstAttribute="leading" secondItem="gaS-5m-uYA" secondAttribute="trailing" constant="10" id="cv7-3v-Qlv"/>
                 <constraint firstItem="S8f-Hs-XKs" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="12" id="dBu-5W-X7N"/>
+                <constraint firstItem="BtW-FE-Ohy" firstAttribute="leading" secondItem="AjA-5b-m7a" secondAttribute="trailing" constant="90" id="dXu-W3-gjw"/>
                 <constraint firstItem="BtW-FE-Ohy" firstAttribute="leading" secondItem="QTB-fI-ZU5" secondAttribute="trailing" constant="320" id="do0-f6-YV7"/>
+                <constraint firstItem="AjA-5b-m7a" firstAttribute="baseline" secondItem="QTB-fI-ZU5" secondAttribute="baseline" id="eJT-W9-Ld3"/>
                 <constraint firstItem="eCE-z2-4Dt" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="12" id="fNC-T7-bTa"/>
                 <constraint firstItem="S8f-Hs-XKs" firstAttribute="leading" secondItem="cgu-jW-UV5" secondAttribute="trailing" constant="10" id="fWZ-sa-JDu"/>
                 <constraint firstItem="vnp-nx-0kB" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="gKd-KG-zGq"/>
                 <constraint firstItem="G4h-QX-d5l" firstAttribute="leading" secondItem="fWW-9n-Xmm" secondAttribute="trailing" constant="10" id="gUm-jY-zyO"/>
+                <constraint firstItem="KJO-ea-L7E" firstAttribute="baseline" secondItem="GwO-1b-Jyr" secondAttribute="baseline" id="gfJ-Ky-oHD"/>
                 <constraint firstItem="gaS-5m-uYA" firstAttribute="leading" secondItem="G4h-QX-d5l" secondAttribute="trailing" id="h33-ag-llC"/>
                 <constraint firstItem="5T4-iC-D1F" firstAttribute="top" secondItem="fWW-9n-Xmm" secondAttribute="bottom" constant="12" id="heB-RI-Tb1"/>
-                <constraint firstItem="XPG-uf-C9D" firstAttribute="top" secondItem="S83-i4-I7x" secondAttribute="bottom" constant="12" id="jdM-9L-0wh"/>
-                <constraint firstItem="cgC-2v-z1l" firstAttribute="leading" secondItem="6Bt-dU-qNg" secondAttribute="trailing" constant="10" id="kfh-75-LKb"/>
-                <constraint firstItem="Ea9-vx-7VA" firstAttribute="leading" secondItem="cgC-2v-z1l" secondAttribute="trailing" constant="10" id="lEC-o3-gLh"/>
+                <constraint firstItem="dwL-X9-jQD" firstAttribute="leading" secondItem="GwO-1b-Jyr" secondAttribute="trailing" constant="8" id="lei-OX-z1I"/>
+                <constraint firstItem="KJO-ea-L7E" firstAttribute="leading" secondItem="XPG-uf-C9D" secondAttribute="trailing" id="mQ1-Lq-7Iu"/>
                 <constraint firstItem="fWW-9n-Xmm" firstAttribute="leading" secondItem="Jxx-i2-cmN" secondAttribute="trailing" id="oLX-lq-fTQ"/>
-                <constraint firstItem="jtq-93-rpG" firstAttribute="leading" secondItem="XPG-uf-C9D" secondAttribute="trailing" id="qVk-1P-Z6l"/>
+                <constraint firstItem="XPG-uf-C9D" firstAttribute="baseline" secondItem="5T4-iC-D1F" secondAttribute="baseline" id="ooe-fx-28L"/>
+                <constraint firstAttribute="trailing" secondItem="dwL-X9-jQD" secondAttribute="trailing" constant="43" id="rvt-hk-aku"/>
                 <constraint firstItem="QTB-fI-ZU5" firstAttribute="top" secondItem="Gv6-l1-jN7" secondAttribute="bottom" constant="20" id="sfc-76-2M1"/>
-                <constraint firstItem="AjA-5b-m7a" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="t9R-Pc-Joo"/>
                 <constraint firstItem="kwm-pE-Dbp" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="wO5-Ha-Tz0"/>
                 <constraint firstItem="Gv6-l1-jN7" firstAttribute="top" secondItem="6Bt-dU-qNg" secondAttribute="bottom" constant="20" id="xDy-mv-8az"/>
                 <constraint firstItem="uIH-OT-edh" firstAttribute="leading" secondItem="YTH-Sj-kFU" secondAttribute="trailing" constant="5" id="xvX-zw-s0u"/>
@@ -448,9 +426,7 @@
             <connections>
                 <outlet property="ageValue" destination="whL-IG-fla" id="SbM-c6-bni"/>
                 <outlet property="batteryStatus" destination="QTB-fI-ZU5" id="Vqj-tZ-FgN"/>
-                <outlet property="captchaValue" destination="vCr-Qi-Muw" id="mAk-tc-i6a"/>
                 <outlet property="curEcgDataBlockDetail" destination="kwm-pE-Dbp" id="ZQO-Pb-l7s"/>
-                <outlet property="deviceSerialNumber" destination="jtq-93-rpG" id="sdl-NB-OXC"/>
                 <outlet property="genderValue" destination="gaS-5m-uYA" id="jKo-MC-BcA"/>
                 <outlet property="heightValue" destination="S83-i4-I7x" id="TIB-zw-rI8"/>
                 <outlet property="holterChartView" destination="JGq-zl-5Lk" id="rRV-jG-A1d"/>
@@ -459,6 +435,7 @@
                 <outlet property="nameValue" destination="fWW-9n-Xmm" id="glO-YO-Bdd"/>
                 <outlet property="readingBlockProgress" destination="YTH-Sj-kFU" id="byj-H9-MgO"/>
                 <outlet property="readingBlockProgressValue" destination="uIH-OT-edh" id="6hI-Xd-YfJ"/>
+                <outlet property="serialNumPopUpBtn" destination="KJO-ea-L7E" id="kcy-qv-OF8"/>
                 <outlet property="userPhoneValue" destination="6Bt-dU-qNg" id="hA1-y6-dgn"/>
                 <outlet property="weightValue" destination="3cc-bB-8fE" id="pSF-o0-s0a"/>
             </connections>

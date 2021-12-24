@@ -65,6 +65,21 @@
 		E8A9F7F42772B7B9003EC614 /* PersonnelViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F7F32772B7B9003EC614 /* PersonnelViewCell.m */; };
 		E8A9F7F62772B7CA003EC614 /* PersonnelViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8A9F7F52772B7CA003EC614 /* PersonnelViewCell.xib */; };
 		E8A9F7F92773178F003EC614 /* MyPreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F7F82773178F003EC614 /* MyPreviewItem.m */; };
+		E8A9F825277410E2003EC614 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F81B277410E2003EC614 /* FMDatabaseQueue.m */; };
+		E8A9F826277410E2003EC614 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F81E277410E2003EC614 /* FMDatabaseAdditions.m */; };
+		E8A9F827277410E2003EC614 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F81F277410E2003EC614 /* FMDatabase.m */; };
+		E8A9F828277410E2003EC614 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F823277410E2003EC614 /* FMDatabasePool.m */; };
+		E8A9F829277410E2003EC614 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F824277410E2003EC614 /* FMResultSet.m */; };
+		E8A9F85E27741143003EC614 /* SCDataBaseAbstractOptHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F84527741143003EC614 /* SCDataBaseAbstractOptHandle.m */; };
+		E8A9F86127741143003EC614 /* KHLocalFileDirectWriteHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F85227741143003EC614 /* KHLocalFileDirectWriteHandle.m */; };
+		E8A9F86227741143003EC614 /* KHLocalFileDirectReadHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F85327741143003EC614 /* KHLocalFileDirectReadHandle.m */; };
+		E8A9F86327741143003EC614 /* SCEcgFrameDataExportHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F85427741143003EC614 /* SCEcgFrameDataExportHandle.m */; };
+		E8A9F86427741143003EC614 /* SCDataBaseManagerHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F85527741143003EC614 /* SCDataBaseManagerHandle.m */; };
+		E8A9F86927741835003EC614 /* SCRegFormSaveInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F86827741835003EC614 /* SCRegFormSaveInfo.m */; };
+		E8A9F86C27741A48003EC614 /* SCRegFormDataBaseOptHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F86B27741A48003EC614 /* SCRegFormDataBaseOptHandle.m */; };
+		E8A9F8722774247A003EC614 /* SCCacheCapicityHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F86E2774247A003EC614 /* SCCacheCapicityHandle.m */; };
+		E8A9F8732774247A003EC614 /* SCCacheDirectoryHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F86F2774247A003EC614 /* SCCacheDirectoryHandle.m */; };
+		E8A9F876277424BC003EC614 /* NSString+AddMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A9F875277424BC003EC614 /* NSString+AddMethod.m */; };
 		E8BCE6E02741F3CC00EE5497 /* SCUploadDataInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E8BCE6DF2741F3CC00EE5497 /* SCUploadDataInfo.m */; };
 		E8BCE6E42743AB3000EE5497 /* HolterChartView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E8BCE6E32743AB3000EE5497 /* HolterChartView.mm */; };
 		E8BCE6EA2743CF9E00EE5497 /* HolterGriddingView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8BCE6E92743CF9E00EE5497 /* HolterGriddingView.m */; };
@@ -188,6 +203,37 @@
 		E8A9F7F52772B7CA003EC614 /* PersonnelViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonnelViewCell.xib; sourceTree = "<group>"; };
 		E8A9F7F72773178F003EC614 /* MyPreviewItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyPreviewItem.h; sourceTree = "<group>"; };
 		E8A9F7F82773178F003EC614 /* MyPreviewItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPreviewItem.m; sourceTree = "<group>"; };
+		E8A9F81A277410E2003EC614 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		E8A9F81B277410E2003EC614 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		E8A9F81C277410E2003EC614 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		E8A9F81D277410E2003EC614 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		E8A9F81E277410E2003EC614 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		E8A9F81F277410E2003EC614 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		E8A9F820277410E2003EC614 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		E8A9F821277410E2003EC614 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		E8A9F822277410E2003EC614 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		E8A9F823277410E2003EC614 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		E8A9F824277410E2003EC614 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		E8A9F83A27741143003EC614 /* SCDataBaseManagerHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDataBaseManagerHandle.h; sourceTree = "<group>"; };
+		E8A9F84527741143003EC614 /* SCDataBaseAbstractOptHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDataBaseAbstractOptHandle.m; sourceTree = "<group>"; };
+		E8A9F84E27741143003EC614 /* SCEcgFrameDataExportHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEcgFrameDataExportHandle.h; sourceTree = "<group>"; };
+		E8A9F85027741143003EC614 /* KHLocalFileDirectReadHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHLocalFileDirectReadHandle.h; sourceTree = "<group>"; };
+		E8A9F85127741143003EC614 /* KHLocalFileDirectWriteHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHLocalFileDirectWriteHandle.h; sourceTree = "<group>"; };
+		E8A9F85227741143003EC614 /* KHLocalFileDirectWriteHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KHLocalFileDirectWriteHandle.m; sourceTree = "<group>"; };
+		E8A9F85327741143003EC614 /* KHLocalFileDirectReadHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KHLocalFileDirectReadHandle.m; sourceTree = "<group>"; };
+		E8A9F85427741143003EC614 /* SCEcgFrameDataExportHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCEcgFrameDataExportHandle.m; sourceTree = "<group>"; };
+		E8A9F85527741143003EC614 /* SCDataBaseManagerHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDataBaseManagerHandle.m; sourceTree = "<group>"; };
+		E8A9F85627741143003EC614 /* SCDataBaseAbstractOptHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDataBaseAbstractOptHandle.h; sourceTree = "<group>"; };
+		E8A9F86727741835003EC614 /* SCRegFormSaveInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCRegFormSaveInfo.h; sourceTree = "<group>"; };
+		E8A9F86827741835003EC614 /* SCRegFormSaveInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCRegFormSaveInfo.m; sourceTree = "<group>"; };
+		E8A9F86A27741A48003EC614 /* SCRegFormDataBaseOptHandle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCRegFormDataBaseOptHandle.h; sourceTree = "<group>"; };
+		E8A9F86B27741A48003EC614 /* SCRegFormDataBaseOptHandle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCRegFormDataBaseOptHandle.m; sourceTree = "<group>"; };
+		E8A9F86E2774247A003EC614 /* SCCacheCapicityHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCacheCapicityHandle.m; sourceTree = "<group>"; };
+		E8A9F86F2774247A003EC614 /* SCCacheDirectoryHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCacheDirectoryHandle.m; sourceTree = "<group>"; };
+		E8A9F8702774247A003EC614 /* SCCacheCapicityHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCacheCapicityHandle.h; sourceTree = "<group>"; };
+		E8A9F8712774247A003EC614 /* SCCacheDirectoryHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCacheDirectoryHandle.h; sourceTree = "<group>"; };
+		E8A9F874277424BC003EC614 /* NSString+AddMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AddMethod.h"; sourceTree = "<group>"; };
+		E8A9F875277424BC003EC614 /* NSString+AddMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AddMethod.m"; sourceTree = "<group>"; };
 		E8BCE6DE2741F3CC00EE5497 /* SCUploadDataInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCUploadDataInfo.h; sourceTree = "<group>"; };
 		E8BCE6DF2741F3CC00EE5497 /* SCUploadDataInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCUploadDataInfo.m; sourceTree = "<group>"; };
 		E8BCE6E22743AB3000EE5497 /* HolterChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HolterChartView.h; sourceTree = "<group>"; };
@@ -376,12 +422,12 @@
 		E8A03E5B27114263009E61EC /* USBDemo */ = {
 			isa = PBXGroup;
 			children = (
+				E8A9F82A277410EB003EC614 /* Vendors */,
 				E8A9F7E02771AE8A003EC614 /* CusViews */,
 				E8A9F7DF2771AE57003EC614 /* Handles */,
 				E8A9F7DD2771AE11003EC614 /* Models */,
 				E8D1BD0A273E5558009FD379 /* Info.plist */,
 				E8691A7D273E3B69002944FD /* Network */,
-				E8691A43273E3B41002944FD /* AFNetworking */,
 				E8660142273B787C00D36A91 /* Utils */,
 				E8A03E5C27114263009E61EC /* AppDelegate.h */,
 				E8A03E5D27114263009E61EC /* AppDelegate.m */,
@@ -517,6 +563,8 @@
 		E8A9F7DF2771AE57003EC614 /* Handles */ = {
 			isa = PBXGroup;
 			children = (
+				E8A9F86D2774247A003EC614 /* SCCacheDirectoryHandle */,
+				E8A9F82B27741143003EC614 /* SCDataBaseManagerHandle */,
 				E8691AA9273E438B002944FD /* SCAppVaribleHandle */,
 				E8A1B4B227702F5D0001B103 /* LogHandleManageModule */,
 				E8A9F7DB2771ADBD003EC614 /* USBHandle */,
@@ -537,6 +585,91 @@
 				E8A9F7D2277172BE003EC614 /* EMRToast */,
 			);
 			path = CusViews;
+			sourceTree = "<group>";
+		};
+		E8A9F819277410E2003EC614 /* fmdb */ = {
+			isa = PBXGroup;
+			children = (
+				E8A9F81A277410E2003EC614 /* FMDatabase.h */,
+				E8A9F81B277410E2003EC614 /* FMDatabaseQueue.m */,
+				E8A9F81C277410E2003EC614 /* FMResultSet.h */,
+				E8A9F81D277410E2003EC614 /* FMDatabasePool.h */,
+				E8A9F81E277410E2003EC614 /* FMDatabaseAdditions.m */,
+				E8A9F81F277410E2003EC614 /* FMDatabase.m */,
+				E8A9F820277410E2003EC614 /* FMDatabaseQueue.h */,
+				E8A9F821277410E2003EC614 /* FMDB.h */,
+				E8A9F822277410E2003EC614 /* FMDatabaseAdditions.h */,
+				E8A9F823277410E2003EC614 /* FMDatabasePool.m */,
+				E8A9F824277410E2003EC614 /* FMResultSet.m */,
+			);
+			path = fmdb;
+			sourceTree = "<group>";
+		};
+		E8A9F82A277410EB003EC614 /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				E8691A43273E3B41002944FD /* AFNetworking */,
+				E8A9F819277410E2003EC614 /* fmdb */,
+			);
+			path = Vendors;
+			sourceTree = "<group>";
+		};
+		E8A9F82B27741143003EC614 /* SCDataBaseManagerHandle */ = {
+			isa = PBXGroup;
+			children = (
+				E8A9F85627741143003EC614 /* SCDataBaseAbstractOptHandle.h */,
+				E8A9F84527741143003EC614 /* SCDataBaseAbstractOptHandle.m */,
+				E8A9F83A27741143003EC614 /* SCDataBaseManagerHandle.h */,
+				E8A9F85527741143003EC614 /* SCDataBaseManagerHandle.m */,
+				E8A9F865277415AE003EC614 /* SCRegFormDataBaseManager */,
+				E8A9F84D27741143003EC614 /* SCEcgFrameDataExportHandle */,
+			);
+			path = SCDataBaseManagerHandle;
+			sourceTree = "<group>";
+		};
+		E8A9F84D27741143003EC614 /* SCEcgFrameDataExportHandle */ = {
+			isa = PBXGroup;
+			children = (
+				E8A9F84E27741143003EC614 /* SCEcgFrameDataExportHandle.h */,
+				E8A9F85427741143003EC614 /* SCEcgFrameDataExportHandle.m */,
+				E8A9F84F27741143003EC614 /* KHLocalFileDirectWriteHandle */,
+			);
+			path = SCEcgFrameDataExportHandle;
+			sourceTree = "<group>";
+		};
+		E8A9F84F27741143003EC614 /* KHLocalFileDirectWriteHandle */ = {
+			isa = PBXGroup;
+			children = (
+				E8A9F85027741143003EC614 /* KHLocalFileDirectReadHandle.h */,
+				E8A9F85327741143003EC614 /* KHLocalFileDirectReadHandle.m */,
+				E8A9F85127741143003EC614 /* KHLocalFileDirectWriteHandle.h */,
+				E8A9F85227741143003EC614 /* KHLocalFileDirectWriteHandle.m */,
+			);
+			path = KHLocalFileDirectWriteHandle;
+			sourceTree = "<group>";
+		};
+		E8A9F865277415AE003EC614 /* SCRegFormDataBaseManager */ = {
+			isa = PBXGroup;
+			children = (
+				E8A9F86A27741A48003EC614 /* SCRegFormDataBaseOptHandle.h */,
+				E8A9F86B27741A48003EC614 /* SCRegFormDataBaseOptHandle.m */,
+				E8A9F86727741835003EC614 /* SCRegFormSaveInfo.h */,
+				E8A9F86827741835003EC614 /* SCRegFormSaveInfo.m */,
+			);
+			path = SCRegFormDataBaseManager;
+			sourceTree = "<group>";
+		};
+		E8A9F86D2774247A003EC614 /* SCCacheDirectoryHandle */ = {
+			isa = PBXGroup;
+			children = (
+				E8A9F874277424BC003EC614 /* NSString+AddMethod.h */,
+				E8A9F875277424BC003EC614 /* NSString+AddMethod.m */,
+				E8A9F8702774247A003EC614 /* SCCacheCapicityHandle.h */,
+				E8A9F86E2774247A003EC614 /* SCCacheCapicityHandle.m */,
+				E8A9F8712774247A003EC614 /* SCCacheDirectoryHandle.h */,
+				E8A9F86F2774247A003EC614 /* SCCacheDirectoryHandle.m */,
+			);
+			path = SCCacheDirectoryHandle;
 			sourceTree = "<group>";
 		};
 		E8BCE6E12743AB3000EE5497 /* HolterChartView */ = {
@@ -669,9 +802,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8A9F8722774247A003EC614 /* SCCacheCapicityHandle.m in Sources */,
 				E8379A782711799600D501EB /* USBDeviceTool+robot.m in Sources */,
 				E8806A6E274644D000CB628F /* BaseViewController.m in Sources */,
 				E8A9F7D52771A326003EC614 /* ReportsView.m in Sources */,
+				E8A9F86327741143003EC614 /* SCEcgFrameDataExportHandle.m in Sources */,
 				E8A9F7F42772B7B9003EC614 /* PersonnelViewCell.m in Sources */,
 				E8691A97273E3E8D002944FD /* CommonUtil.m in Sources */,
 				E8A9F7EE2771EE58003EC614 /* OnlyIntegerValueFormatter.m in Sources */,
@@ -687,6 +822,7 @@
 				E8A03E6127114263009E61EC /* ViewController.m in Sources */,
 				E8691A8E273E3B69002944FD /* NetworkHelper.m in Sources */,
 				E8A9F7E82771B6A0003EC614 /* ReportsViewCell.m in Sources */,
+				E8A9F829277410E2003EC614 /* FMResultSet.m in Sources */,
 				E8A03E6827114265009E61EC /* main.m in Sources */,
 				E8CA462A271D7DD4007ED787 /* UsbMonitor.m in Sources */,
 				E8691A6E273E3B41002944FD /* UIProgressView+AFNetworking.m in Sources */,
@@ -694,34 +830,46 @@
 				E8691AB2273E443A002944FD /* SCUserInfoModel.m in Sources */,
 				E8806A692746410300CB628F /* DeviceInteractionView.m in Sources */,
 				E8A004DA27605D6C0023C4A6 /* SCDetectionInfo.m in Sources */,
+				E8A9F86227741143003EC614 /* KHLocalFileDirectReadHandle.m in Sources */,
 				E8691A78273E3B41002944FD /* AFURLRequestSerialization.m in Sources */,
 				E8691A76273E3B41002944FD /* AFImageDownloader.m in Sources */,
+				E8A9F86927741835003EC614 /* SCRegFormSaveInfo.m in Sources */,
 				E8BCE6EA2743CF9E00EE5497 /* HolterGriddingView.m in Sources */,
 				E8691A72273E3B41002944FD /* UIButton+AFNetworking.m in Sources */,
+				E8A9F826277410E2003EC614 /* FMDatabaseAdditions.m in Sources */,
 				E8A9F7E32771AEEC003EC614 /* SCReportInfo.m in Sources */,
+				E8A9F86427741143003EC614 /* SCDataBaseManagerHandle.m in Sources */,
+				E8A9F86C27741A48003EC614 /* SCRegFormDataBaseOptHandle.m in Sources */,
+				E8A9F827277410E2003EC614 /* FMDatabase.m in Sources */,
 				E8806A742747384300CB628F /* SCBleDataHandle.m in Sources */,
 				E891DA40273929DB00B6FDF4 /* SCDeviceAllBlockInfo.m in Sources */,
 				E8A1B4B827702F5D0001B103 /* WDLogManager.m in Sources */,
 				E8BCE6E02741F3CC00EE5497 /* SCUploadDataInfo.m in Sources */,
 				E8691A7C273E3B41002944FD /* AFURLSessionManager.m in Sources */,
+				E8A9F876277424BC003EC614 /* NSString+AddMethod.m in Sources */,
 				E8691A75273E3B41002944FD /* AFAutoPurgingImageCache.m in Sources */,
 				E8691A7B273E3B41002944FD /* AFHTTPSessionManager.m in Sources */,
 				E8691AAF273E438B002944FD /* SCAppVaribleHandle.m in Sources */,
+				E8A9F828277410E2003EC614 /* FMDatabasePool.m in Sources */,
 				E8691A6F273E3B41002944FD /* UIRefreshControl+AFNetworking.m in Sources */,
 				E8379A752711781200D501EB /* USBDeviceTool.m in Sources */,
 				E8BCE6E42743AB3000EE5497 /* HolterChartView.mm in Sources */,
 				E8A03E5E27114263009E61EC /* AppDelegate.m in Sources */,
 				E8691A73273E3B41002944FD /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				E8691A92273E3B69002944FD /* SCRequestHandle.m in Sources */,
+				E8A9F86127741143003EC614 /* KHLocalFileDirectWriteHandle.m in Sources */,
 				E8660145273B787C00D36A91 /* SCGCDTimerUtil.m in Sources */,
 				E8691A6D273E3B41002944FD /* AFSecurityPolicy.m in Sources */,
 				E83894FC274E35FD000E5624 /* UserInfoCrcCheck.m in Sources */,
 				E8A9F7D0277172B6003EC614 /* EMRToast.m in Sources */,
+				E8A9F8732774247A003EC614 /* SCCacheDirectoryHandle.m in Sources */,
 				E8691A79273E3B41002944FD /* AFNetworkingUtil.m in Sources */,
+				E8A9F85E27741143003EC614 /* SCDataBaseAbstractOptHandle.m in Sources */,
 				E8691A70273E3B41002944FD /* AFNetworkActivityIndicatorManager.m in Sources */,
 				E8691A77273E3B41002944FD /* AFURLResponseSerialization.m in Sources */,
 				E8691A7A273E3B41002944FD /* AFNetworkReachabilityManager.m in Sources */,
 				E891DA3C2738F51300B6FDF4 /* DeviceObject.m in Sources */,
+				E8A9F825277410E2003EC614 /* FMDatabaseQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,7 +1023,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 1.00.02;
+				MARKETING_VERSION = 1.00.03;
 				PRODUCT_BUNDLE_IDENTIFIER = com.semacare.USBDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -907,7 +1055,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MARKETING_VERSION = 1.00.02;
+				MARKETING_VERSION = 1.00.03;
 				PRODUCT_BUNDLE_IDENTIFIER = com.semacare.USBDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

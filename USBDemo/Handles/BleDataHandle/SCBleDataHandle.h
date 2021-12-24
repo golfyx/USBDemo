@@ -54,6 +54,7 @@ typedef union __SAVE_BULK_USER_INFO__
 - (void)didReceiveBleAutoSave:(SCMultiDeviceInfo *)deviceInfo;
 - (void)didReceiveBleSerialNumber:(NSString *)deviceSerialNumber;
 - (void)didReceiveBleDeleteData:(SCMultiDeviceInfo *)deviceInfo;
+- (void)didReceiveBleDidConnectedDevice:(SCMultiDeviceInfo *)deviceInfo;
 - (void)didReceiveBleActiveType:(int)type deviceInfo:(SCMultiDeviceInfo *)deviceInfo;
 
 - (void)didStartUploadFirstBlockData:(SCMultiDeviceInfo *)deviceInfo;
@@ -125,7 +126,8 @@ typedef union __SAVE_BULK_USER_INFO__
 
 /// 断开蓝牙连接
 - (IOReturn)disconnectBleDevice:(DeviceObject *)pDev;
-
+/// 连接设备
+- (IOReturn)connectBleDeviceIndex:(int)index deviceObject:(DeviceObject *)pDev;
 
 @end
 

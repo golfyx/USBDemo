@@ -41,6 +41,7 @@ typedef void (^BleDrawDataBlock)(NSData *data);
 @property (nonatomic, strong) NSMutableArray *userInfoArray; // 登记用户信息列表
 
 @property (nonatomic, strong) NSString *deviceSerialNumber; // 设备序列号
+@property (nonatomic, strong) NSMutableDictionary *deviceSerialDic; // 设备序列号字典
 
 + (instancetype)shareInstance;
 

@@ -356,6 +356,60 @@
     return [numStr dataUsingEncoding:NSUTF8StringEncoding];
 }
 
+/// 连接设备
+- (IOReturn)connectBleDeviceIndex:(int)index deviceObject:(DeviceObject *)pDev {
+    WDLog(LOG_MODUL_BLE, @"连接设备");
+    
+    NSMutableData *userInfoData = [NSMutableData data];
+    [userInfoData appendData:[CommonUtil hexToBytes:@"A55A6F66"]];
+    // 一个十六进制(0x02)拆分为两个ACSII 字节(0和2)(0x30对应十六进制的高位 0，0x32对应十六位低位 2)
+    [userInfoData appendBytes:[@"0" cStringUsingEncoding:NSUTF8StringEncoding] length:1]; // CmdIndex
+    [userInfoData appendBytes:[@"2" cStringUsingEncoding:NSUTF8StringEncoding] length:1];
+    [userInfoData appendBytes:[@"0" cStringUsingEncoding:NSUTF8StringEncoding] length:1]; // 连接或断开BLE设备 type
+    [userInfoData appendBytes:[@"1" cStringUsingEncoding:NSUTF8StringEncoding] length:1];
+    [userInfoData appendBytes:[@"0" cStringUsingEncoding:NSUTF8StringEncoding] length:1]; // BLE设备索引:0~15(连接命令是有效)
+    [userInfoData appendBytes:[[NSString stringWithFormat:@"%1x",index] cStringUsingEncoding:NSUTF8StringEncoding] length:1];
+    
+    
+    for (int i = 0; i < 96; i++) {
+        [userInfoData appendData:[CommonUtil hexToBytes:@"00"]];
+    }
+    
+    [userInfoData appendData:[CommonUtil hexToBytes:@"00"]]; // 校验码位
+    
+    Byte *userInfoBytes = (Byte *)[userInfoData bytes];
+    [CommonUtil calXortmpForSendBuffer:userInfoBytes len:userInfoData.length];
+    
+    userInfoData = [NSData dataWithBytes:userInfoBytes length:userInfoData.length].mutableCopy;
+    
+    uint loc = 0;
+    uint len = 52;
+    
+    userInfoBytes = (Byte *)[[userInfoData subdataWithRange:NSMakeRange(loc, len)] bytes];
+    kern_return_t kr = [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:userInfoBytes
+                                         bufLen:len
+                                       bagIndex:0
+                                  totalBagCount:2
+                    packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
+                         objectOfOperationState:ObjectOfOperationStateUSBBulk].dataBuffer device:pDev];
+    
+    if (kr == kIOReturnSuccess) {
+        loc += len;
+        len = (uint)userInfoData.length - loc;
+        userInfoBytes = (Byte *)[[userInfoData subdataWithRange:NSMakeRange(loc, len)] bytes];
+        [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:userInfoBytes
+                                             bufLen:len
+                                           bagIndex:1
+                                      totalBagCount:2
+                        packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
+                             objectOfOperationState:ObjectOfOperationStateUSBBulk].dataBuffer device:pDev];
+    } else {
+        WDLog(LOG_MODUL_BLE, @"disconnectBleDevice 发送失败！");
+    }
+    
+    return kr;
+}
+
 /// 断开蓝牙连接
 - (IOReturn)disconnectBleDevice:(DeviceObject *)pDev {
     WDLog(LOG_MODUL_BLE, @"设置断开蓝牙连接");
@@ -453,6 +507,8 @@
     }
     
     if (deviceInfo.bagCount - 1 == deviceInfo.bagIndex) { // 判断是否是最后一个包
+        WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
+        
         if (0x14100000 == deviceInfo.deviceObject.locationID) {
             deviceInfo.receiveMStr = [NSMutableString stringWithFormat:@"左接0：%@\n", deviceInfo.receiveMStr];
         } else if (0x14110000 == deviceInfo.deviceObject.locationID) {

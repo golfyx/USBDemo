@@ -43,6 +43,7 @@ static NSString *const endCheckInTimeKey = @"endCheckInTimeKey";
         _endCheckInTime = [[NSUserDefaults standardUserDefaults] stringForKey:endCheckInTimeKey];
         _userInfoModel = [SCUserInfoModel new];
         _multiDeviceInfo = @[].mutableCopy;
+        _deviceSerialDic = @{}.mutableCopy;
         _isReadBlockUserInfo = NO;
         _isStartMeasure = NO;
         _isStopMeasure = NO;
