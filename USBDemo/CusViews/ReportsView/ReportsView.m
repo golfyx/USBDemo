@@ -21,6 +21,7 @@
 #import "MyPreviewItem.h"
 
 #import "YYModel.h"
+#import "SCDataBaseManagerHandle.h"
 
 @interface ReportsView ()<NSTableViewDelegate, NSTableViewDataSource, ReportsViewCellDelegate, PersonnelViewCellDelegate, QLPreviewPanelDataSource, QLPreviewPanelDelegate>
 
@@ -76,10 +77,11 @@
     _personnelDataArray = [NSMutableArray array];
     _recordDataArray = [NSMutableArray array];
     
-    for (int i = 0; i < SCAppVaribleHandleInstance.userInfoArray.count; i++) {
-        SCUserInfoModel *userInfo = [SCUserInfoModel yy_modelWithJSON:SCAppVaribleHandleInstance.userInfoArray[i]];
-        [_personnelDataArray addObject:userInfo];
-    }
+//    for (int i = 0; i < SCAppVaribleHandleInstance.userInfoArray.count; i++) {
+//        SCUserInfoModel *userInfo = [SCUserInfoModel yy_modelWithJSON:SCAppVaribleHandleInstance.userInfoArray[i]];
+//        [_personnelDataArray addObject:userInfo];
+//    }
+    [self personnelQueryButton:nil];
     
     self.personnelTableView.wantsLayer = YES;
     self.recordTableView.wantsLayer = YES;
@@ -303,6 +305,34 @@
     }
     
     return _documentPath;
+}
+- (IBAction)personnelQueryButton:(NSButton *)sender {
+    
+    NSDate *date = self.datePicker.dateValue;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd";
+    NSString *time = [dateFormatter stringFromDate:date];
+    
+    if (time) {
+        [_personnelDataArray removeAllObjects];
+        NSArray *infoArray = [[SCDataBaseManagerHandle shareInstance].regFormDataBaseHandle acceptRegFormItemDataWithOperatingTime:time operatingType:2];
+        
+        for (int i = 0; i < infoArray.count; i++) {
+            SCRegFormSaveInfo *saveInfo = infoArray[i];
+            SCUserInfoModel *userInfo = [SCUserInfoModel new];
+            userInfo.name = saveInfo.name;
+            userInfo.genderType = saveInfo.gender;
+            userInfo.birthday = [CommonUtil calBirthdayByAge:[NSString stringWithFormat:@"%d", saveInfo.age]];
+            userInfo.phoneNum = saveInfo.phone;
+            [_personnelDataArray addObject:userInfo];
+        }
+        
+        [_personnelTableView reloadData];
+    } else {
+        WDLog(LOG_MODUL_FILE ,@"请选择时间");
+        [EMRToast Show:@"请选择时间"];
+    }
+    
 }
 
 - (IBAction)openReportsPath:(NSButton *)sender {

@@ -359,8 +359,6 @@
     saveInfo.operating_type = 1;
     [[SCDataBaseManagerHandle shareInstance].regFormDataBaseHandle saveRegFormDataWithInfo:saveInfo];
     
-    NSArray *infoArray = [[SCDataBaseManagerHandle shareInstance].regFormDataBaseHandle acceptRegFormItemDataWithOperatingTime:saveInfo.operating_time operatingType:1];
-    
     [self hiddenProgressIndicator];
 }
 
@@ -654,9 +652,6 @@
     saveInfo.operating_type = 2;
     [[SCDataBaseManagerHandle shareInstance].regFormDataBaseHandle saveRegFormDataWithInfo:saveInfo];
     
-    NSArray *infoArray = [[SCDataBaseManagerHandle shareInstance].regFormDataBaseHandle acceptRegFormItemDataWithOperatingTime:saveInfo.operating_time operatingType:2];
-    
-    NSLog(@"-------");
 }
 
 - (void)didStartUploadBlockData:(SCMultiDeviceInfo *)deviceInfo {

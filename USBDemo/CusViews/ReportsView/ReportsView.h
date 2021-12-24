@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak) IBOutlet NSScrollView *recordScrollView;
 //@property (weak) IBOutlet NSTableView *personnelTableView;
 //@property (weak) IBOutlet NSTableView *recordTableView;
+@property (weak) IBOutlet NSDatePicker *datePicker;
 
 @end
 
