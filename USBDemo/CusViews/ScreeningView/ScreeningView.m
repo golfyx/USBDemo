@@ -25,6 +25,8 @@
 @property (nonatomic, strong) NSString *usersTableFilePath;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
+/// 开始读取块的时间，方便统计读取块花费了多长时间
+@property (nonatomic, strong) NSDate *startBlockDate;
 
 @end
 
@@ -158,6 +160,7 @@
     [SCBleDataHandle sharedManager].isReadingAllBlock = YES;
     SCAppVaribleHandleInstance.isStopMeasure = YES;
     [SCAppVaribleHandleInstance.multiDeviceInfo removeAllObjects];
+    self.startBlockDate = [NSDate date];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.holterChartView clearCanvas];
@@ -189,6 +192,18 @@
     for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
         [[SCBleDataHandle sharedManager] disconnectBleDevice:pDev];
     }
+    
+    self.nameValue.stringValue = @"";
+    self.ageValue.stringValue = @"";
+    self.weightValue.stringValue = @"";
+    self.heightValue.stringValue = @"";
+    self.userPhoneValue.stringValue = @"";
+    self.batteryStatus.stringValue = @"";
+    [self.holterChartView clearCanvas];
+    
+    self.curEcgDataBlockDetail.stringValue = @"";
+    self.readingBlockProgress.doubleValue = 0;
+    self.readingBlockProgressValue.stringValue = @"0/10";
 }
 - (IBAction)connectDeviceBle:(NSButton *)sender {
     for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
@@ -585,6 +600,15 @@
     });
 }
 
+- (void)didReceiveBleLessPageData:(SCMultiDeviceInfo *)deviceInfo {
+    WDLog(LOG_MODUL_BLE, @"最后块的页数少于3页，不需要读取！");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [CommonUtil showMessageWithTitle:@"最后块的页数少于3页，不需要读取！"];
+    });
+    
+    [self didFinishUploadBlockData:deviceInfo];
+}
+
 - (void)didStartUploadFirstBlockData:(SCMultiDeviceInfo *)deviceInfo {
     
     if (!deviceInfo.userInfoModel) {
@@ -689,6 +713,14 @@
             [SCRequestHandle clearCacheDataDeviceInfo:deviceInfo completion:^(BOOL success, id  _Nonnull responseObject) {
                 if (success) {
                     WDLog(LOG_MODUL_HTTPREQUEST, @"clearCacheDataCompletion");
+
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSString *timeIntervalStr = [NSString stringWithFormat:@"读取并上传数据共花费的时长为:%0.2fs", -[self.startBlockDate timeIntervalSinceNow]];
+                        WDLog(LOG_MODUL_BLE, @"%@", timeIntervalStr);
+                        self.curEcgDataBlockDetail.stringValue = timeIntervalStr;
+                        self.readingBlockProgress.doubleValue = 0;
+                        self.readingBlockProgressValue.stringValue = @"0/10";
+                    });
                 } else {
                     [EMRToast Show:[self handlingInvalidData:responseObject title:@"清除缓存失败"]];
                 }

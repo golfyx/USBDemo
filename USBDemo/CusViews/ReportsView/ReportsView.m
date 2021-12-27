@@ -195,6 +195,9 @@
         NSDictionary *doctorInfoVOS = doctorInfoVOSArray[0];
         NSString *reportUrl = doctorInfoVOS[@"reportUrl"];
         if (reportUrl && ![reportUrl isKindOfClass:NSNull.class]) {
+            if ([self.delegate respondsToSelector:@selector(didStartDownloadPDF)]) {
+                [self.delegate didStartDownloadPDF];
+            }
             NSString *documentPath = [self createFilePath:_recordDataArray[index].detectionTime];
             [SCRequestHandle downloadPDFReportUrl:reportUrl fileDir:documentPath completion:^(BOOL success, id  _Nonnull responseObject) {
                 if (success) {
@@ -208,6 +211,10 @@
                     self.previewItem.previewItemURL = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@",toFilePath]];
                     self.previewItem.previewItemTitle = self.nameValue.stringValue;
                     [self togglePreviewPanel];
+                    
+                    if ([self.delegate respondsToSelector:@selector(didCompleteHandleData)]) {
+                        [self.delegate didCompleteHandleData];
+                    }
                     
                 } else {
                     [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取用户信息失败"]];

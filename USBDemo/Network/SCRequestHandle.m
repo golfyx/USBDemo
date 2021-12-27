@@ -250,7 +250,20 @@
         @"samplingRate" : @(uploadDataInfo.samplingRate),
 //        @"toBin" : @(uploadDataInfo.isToBin)
     };
-//    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, dict = %@", url, dict);
+    
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, dict = %@", url, @{
+        @"data" : uploadDataInfo.rawData.length > 10 ? [uploadDataInfo.rawData substringToIndex:10] : uploadDataInfo.rawData,
+        @"dataIndex" : @(uploadDataInfo.dataBlockIndex),
+        @"dataLength" : @(uploadDataInfo.dataLen),
+        @"dataPageIndex" : @(uploadDataInfo.dataPageIndex),
+//        @"detectionTime" : @(uploadDataInfo.detectionTime),
+        @"detectionType" : @(uploadDataInfo.detectionType),
+        @"deviceType" : @(uploadDataInfo.deviceType),
+        @"mac" : uploadDataInfo.macAddress,
+        @"memberId" : @(uploadDataInfo.memberId),
+        @"samplingRate" : @(uploadDataInfo.samplingRate),
+//        @"toBin" : @(uploadDataInfo.isToBin)
+    });
 
     [NetworkHelper POST:url parameters:dict success:^(id  _Nonnull responseObject, NSInteger successCode) {
         //

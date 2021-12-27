@@ -56,6 +56,7 @@ typedef union __SAVE_BULK_USER_INFO__
 - (void)didReceiveBleDeleteData:(SCMultiDeviceInfo *)deviceInfo;
 - (void)didReceiveBleDidConnectedDevice:(SCMultiDeviceInfo *)deviceInfo;
 - (void)didReceiveBleActiveType:(int)type deviceInfo:(SCMultiDeviceInfo *)deviceInfo;
+- (void)didReceiveBleLessPageData:(SCMultiDeviceInfo *)deviceInfo;
 
 - (void)didStartUploadFirstBlockData:(SCMultiDeviceInfo *)deviceInfo;
 - (void)didStartUploadBlockData:(SCMultiDeviceInfo *)deviceInfo;

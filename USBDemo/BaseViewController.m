@@ -20,7 +20,7 @@
 
 #import "SCProgressIndicator.h"
 
-@interface BaseViewController () <ScreeningViewDelegate>
+@interface BaseViewController () <ScreeningViewDelegate, ReportsViewDelegate>
 @property (weak) IBOutlet NSView *contentCustomView;
 @property (weak) IBOutlet NSSegmentedControl *topSegmentedControl;
 
@@ -55,6 +55,7 @@
 - (ReportsView *)reportsView {
     if (!_reportsView) {
         _reportsView = (ReportsView *)[CommonUtil getViewFromNibName:@"ReportsView"];
+        _reportsView.delegate = self;
     }
     return _reportsView;
 }
@@ -128,6 +129,26 @@
 }
 
 - (void)didCompleteUploadData {
+    if (self.progressIndicator) {
+        [self.progressIndicator stopAnimation];
+        [self.progressIndicator removeFromSuperview];
+        self.progressIndicator = nil;
+    }
+}
+
+
+- (void)didStartDownloadPDF {
+    if (!self.presentingViewController) {
+        self.progressIndicator = (SCProgressIndicator *)[CommonUtil getViewFromNibName:@"SCProgressIndicator"];
+    }
+    self.progressIndicator.progressTitle.stringValue = @"正在下载PDF文件，请稍后...";
+    [self.progressIndicator layoutSubviews:self.view.frame];
+    [self.view addSubview:self.progressIndicator];
+    [self.progressIndicator startAnimation];
+    
+}
+
+- (void)didCompleteHandleData {
     if (self.progressIndicator) {
         [self.progressIndicator stopAnimation];
         [self.progressIndicator removeFromSuperview];

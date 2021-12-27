@@ -257,55 +257,62 @@
                          objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
 }
 
+
+- (void)appendBytesToData:(NSMutableData *)data string:(NSString *)string len:(int)len {
+    
+    NSData *tmpData = [NSData data];
+    if (string.length > 0) {
+        tmpData = [string dataUsingEncoding:NSUTF8StringEncoding];
+        [data appendData:tmpData];
+    }
+    for (NSUInteger i = tmpData.length; i < len; i++) {
+        [data appendData:[CommonUtil hexToBytes:@"00"]];
+    }
+}
+
 /// 设置当前测量的用户信息(姓名手机号等)
 - (IOReturn)setDeviceSaveUserInfo:(DeviceObject *)pDev {
     WDLog(LOG_MODUL_BLE, @"设置当前测量的用户信息");
     
-    NSMutableData *userInfoData = [NSMutableData data];
-    [userInfoData appendData:[CommonUtil hexToBytes:@"A55A44830000"]];
-    [userInfoData appendData:[CommonUtil hexToBytes:@"11"]];  // bit4 = 0 表示读取信息   bit4 = 1 表示写入信息
+    NSMutableData *sendData = [NSMutableData data];
+    [sendData appendData:[CommonUtil hexToBytes:@"A55A44830000"]];
+    [sendData appendData:[CommonUtil hexToBytes:@"11"]];  // bit4 = 0 表示读取信息   bit4 = 1 表示写入信息
     
     SAVE_BLK_DETAILED_INFOR saveBulkDetailedInfor;
-    NSMutableData *phoneData = [NSMutableData data];
-    [phoneData appendBytes:[SCAppVaribleHandleInstance.userInfoModel.name cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_NAME_LEN];
-    [phoneData appendBytes:[SCAppVaribleHandleInstance.userInfoModel.phoneNum cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_PHONE_LEN];
-    [phoneData appendBytes:[[NSString stringWithFormat:@"%lu",(unsigned long)SCAppVaribleHandleInstance.userInfoModel.genderType] cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_GENDER_LEN];
+    NSMutableData *userInfoData = [NSMutableData data];
+    [self appendBytesToData:userInfoData string:SCAppVaribleHandleInstance.userInfoModel.name len:SAVE_DATA_NAME_LEN];
+    [self appendBytesToData:userInfoData string:SCAppVaribleHandleInstance.userInfoModel.phoneNum len:SAVE_DATA_PHONE_LEN];
+    [self appendBytesToData:userInfoData string:[NSString stringWithFormat:@"%lu",(unsigned long)SCAppVaribleHandleInstance.userInfoModel.genderType] len:SAVE_DATA_GENDER_LEN];
     NSString *ageStr = [CommonUtil calAgeByBirthday:SCAppVaribleHandleInstance.userInfoModel.birthday];
     ageStr = [ageStr substringToIndex:ageStr.length - 1];
-    [phoneData appendBytes:[ageStr cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_AGE_LEN];
-    [phoneData appendBytes:[SCAppVaribleHandleInstance.userInfoModel.height cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_HEIGHT_LEN];
-    [phoneData appendBytes:[SCAppVaribleHandleInstance.userInfoModel.weight cStringUsingEncoding:NSUTF8StringEncoding] length:SAVE_DATA_WEIGHT_LEN];
+    [self appendBytesToData:userInfoData string:ageStr len:SAVE_DATA_AGE_LEN];
+    [self appendBytesToData:userInfoData string:SCAppVaribleHandleInstance.userInfoModel.height len:SAVE_DATA_HEIGHT_LEN];
+    [self appendBytesToData:userInfoData string:SCAppVaribleHandleInstance.userInfoModel.weight len:SAVE_DATA_WEIGHT_LEN];
     
-    NSUInteger phoneLen = phoneData.length; // 这样设置是为了防止动态变化长度
-    
-    if (phoneLen <= VALID_SAVE_DATA_PROPERTY_LENGTH) {
-        for (int i = 0; i < VALID_SAVE_DATA_PROPERTY_LENGTH - phoneLen; i++) {
-            [phoneData appendData:[CommonUtil hexToBytes:@"00"]];
-        }
-    } else {
-        phoneData = [phoneData subdataWithRange:NSMakeRange(0, VALID_SAVE_DATA_PROPERTY_LENGTH)].mutableCopy;
+    for (NSUInteger i = userInfoData.length; i < VALID_SAVE_DATA_PROPERTY_LENGTH; i++) {
+        [userInfoData appendData:[CommonUtil hexToBytes:@"00"]];
     }
     
-    memcpy(saveBulkDetailedInfor.Buffer, [phoneData bytes], VALID_SAVE_DATA_PROPERTY_LENGTH);
+    memcpy(saveBulkDetailedInfor.Buffer, [userInfoData bytes], VALID_SAVE_DATA_PROPERTY_LENGTH);
     
     // 将用户信息进行(网络版CRC)校验
     MakeCrc32Table();
-    saveBulkDetailedInfor.DetailedContent.BagCrc = CalcCrc32((Byte *)phoneData.bytes, VALID_SAVE_DATA_PROPERTY_LENGTH);
+    saveBulkDetailedInfor.DetailedContent.BagCrc = CalcCrc32((Byte *)userInfoData.bytes, VALID_SAVE_DATA_PROPERTY_LENGTH);
     
-    phoneData = [NSData dataWithBytes:saveBulkDetailedInfor.Buffer length:SAVE_DATA_PROPERTY_LEN].mutableCopy;
-    [userInfoData appendData:phoneData];
-    [userInfoData appendData:[CommonUtil hexToBytes:@"00"]];
+    userInfoData = [NSData dataWithBytes:saveBulkDetailedInfor.Buffer length:SAVE_DATA_PROPERTY_LEN].mutableCopy;
+    [sendData appendData:userInfoData];
+    [sendData appendData:[CommonUtil hexToBytes:@"00"]];
     
-    Byte *userInfoBytes = (Byte *)[userInfoData bytes];
-    [CommonUtil calXortmpForSendBuffer:userInfoBytes len:userInfoData.length];
+    Byte *sendBytes = (Byte *)[sendData bytes];
+    [CommonUtil calXortmpForSendBuffer:sendBytes len:sendData.length];
     
-    userInfoData = [NSData dataWithBytes:userInfoBytes length:userInfoData.length].mutableCopy;
+    sendData = [NSData dataWithBytes:sendBytes length:sendData.length].mutableCopy;
     
     uint loc = 0;
     uint len = 52;
     
-    userInfoBytes = (Byte *)[[userInfoData subdataWithRange:NSMakeRange(loc, len)] bytes];
-    kern_return_t kr = [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:userInfoBytes
+    sendBytes = (Byte *)[[sendData subdataWithRange:NSMakeRange(loc, len)] bytes];
+    kern_return_t kr = [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:sendBytes
                                          bufLen:len
                                        bagIndex:0
                                   totalBagCount:3
@@ -315,8 +322,8 @@
     if (kr == kIOReturnSuccess) {
         loc += len;
         len = 60;
-        userInfoBytes = (Byte *)[[userInfoData subdataWithRange:NSMakeRange(loc, len)] bytes];
-        kr = [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:userInfoBytes
+        sendBytes = (Byte *)[[sendData subdataWithRange:NSMakeRange(loc, len)] bytes];
+        kr = [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:sendBytes
                                              bufLen:len
                                            bagIndex:1
                                       totalBagCount:3
@@ -324,9 +331,9 @@
                              objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
         if (kr == kIOReturnSuccess) {
             loc += len;
-            len = (uint)userInfoData.length - loc;
-            userInfoBytes = (Byte *)[[userInfoData subdataWithRange:NSMakeRange(loc, len)] bytes];
-            [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:userInfoBytes
+            len = (uint)sendData.length - loc;
+            sendBytes = (Byte *)[[sendData subdataWithRange:NSMakeRange(loc, len)] bytes];
+            [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:sendBytes
                                                  bufLen:len
                                                bagIndex:2
                                           totalBagCount:3
@@ -572,7 +579,7 @@
         if (deviceInfo.blockCount > 0) {
             [deviceInfo.allBlockInfo.allBlockInfoArray removeAllObjects];
             deviceInfo.curBlockIndex = 0;
-
+            
             [self getEcgDataBlockDetailWithPageIndex:0 internalIndex:0 device:pDev];
         } else {
             WDLog(LOG_MODUL_BLE, @"当前没有可读取的包");
@@ -601,23 +608,17 @@
                         SAVE_BULK_USER_INFO saveBulkUserInfo;
                         memcpy(saveBulkUserInfo.dataBuffer, (Byte *)[[deviceInfo.perBagData subdataWithRange:NSMakeRange(15, SAVE_BULK_USER_INFO_LEN)] bytes], SAVE_BULK_USER_INFO_LEN);
                         
-                        NSString *name = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataName encoding:NSUTF8StringEncoding];
-                        NSString *phone = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataPhone encoding:NSUTF8StringEncoding];
-                        NSString *gender = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataGender encoding:NSUTF8StringEncoding];
-                        NSString *age = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataAge encoding:NSUTF8StringEncoding];
-                        NSString *height = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataHeight encoding:NSUTF8StringEncoding];
-                        NSString *weight = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataWeight encoding:NSUTF8StringEncoding];
-                        
                         SCUserInfoModel *userInfoModel = SCAppVaribleHandleInstance.userInfoModel;
-                        userInfoModel.phoneNum = phone;
-                        userInfoModel.name = name;
-                        userInfoModel.genderType = [gender intValue];
-                        userInfoModel.birthday = [CommonUtil calBirthdayByAge:age];
-                        userInfoModel.height = height;
-                        userInfoModel.weight = weight;
+                        userInfoModel.name = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataName encoding:NSUTF8StringEncoding];
+                        userInfoModel.phoneNum = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataPhone encoding:NSUTF8StringEncoding];
+                        userInfoModel.genderType = [[NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataGender encoding:NSUTF8StringEncoding] intValue];
+                        userInfoModel.birthday = [CommonUtil calBirthdayByAge: [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataAge encoding:NSUTF8StringEncoding]];
+                        userInfoModel.height = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataHeight encoding:NSUTF8StringEncoding];
+                        userInfoModel.weight = [NSString stringWithCString:(char *)saveBulkUserInfo.bulkBaseUserInfo.DataWeight encoding:NSUTF8StringEncoding];
+                        
                         SCAppVaribleHandleInstance.userInfoModel = userInfoModel;
                         deviceInfo.userInfoModel = userInfoModel;
-                        WDLog(LOG_MODUL_BLE, @"读取到的用户信息: 手机号 %@，姓名 %@",phone, name);
+                        WDLog(LOG_MODUL_BLE, @"读取到的用户信息: 手机号 %@，姓名 %@",userInfoModel.phoneNum, userInfoModel.name);
                         
                         if ([self.delegate respondsToSelector:@selector(didReceiveBleEcgDataBlockUserInfo:)]) {
                             [self.delegate didReceiveBleEcgDataBlockUserInfo:deviceInfo];
@@ -820,7 +821,7 @@
                 [self startAcceptNextIntervalPageData:deviceInfo device:pDev];
                 
             } else {
-
+                
                 if (self.isDeleteECGData) {  // 是否需要删除数据
                     WDLog(LOG_MODUL_BLE, @"设置删除数据");
                     [self setDeviceSaveEcgModelTypeCmd:0x04 device:pDev];
@@ -993,6 +994,28 @@
         [self.delegate didReceiveBleEcgDataBlockDetail:[NSString stringWithFormat:@"当前块信息:\n当前是第几块 = %d, 开始测量时间 = %@  \n设备序列号 = %@, 设备Mac地址 = %@ \n当前块的数据长度 = %d, \n开始页的序号 = %d, 结束页的序号 = %d", deviceInfo.curBlockIndex + 1, [dateFormatter stringFromDate:tmpStartDate], deviceInfo.curBlockInfo.deviceSerialNumber, deviceInfo.curBlockInfo.deviceMacAddress, deviceInfo.curBlockInfo.saved_datalen, deviceInfo.curBlockInfo.startpageIndex, deviceInfo.curBlockInfo.endpageIndex]];
     }
 
+    if (deviceInfo.curBlockInfo.endpageIndex - deviceInfo.curBlockInfo.startpageIndex < 3) {
+        if ([self.delegate respondsToSelector:@selector(didReceiveBleLessPageData:)]) {
+            [self.delegate didReceiveBleLessPageData:deviceInfo];
+        }
+        
+        if (self.isDeleteECGData) {  // 是否需要删除数据
+            WDLog(LOG_MODUL_BLE, @"设置删除数据");
+            [self setDeviceSaveEcgModelTypeCmd:0x04 device:pDev];
+        }
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self exitReadMode:pDev];
+        });
+
+        @synchronized (_fileLock) {
+            [SCSaveDataToFileHandle sharedManager].deviceInfo = deviceInfo;
+            [[SCSaveDataToFileHandle sharedManager] saveMergedBleDataFilePath];
+        }
+        
+        return;
+    }
+    
     [self getEcgDataBlockContentWithStartPageIndex:deviceInfo.curBlockInfo.startpageIndex endPageIndex:deviceInfo.curBlockInfo.endpageIndex internalIndex:0 device:pDev];
 
 }

@@ -164,7 +164,7 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cgu-jW-UV5">
+                <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cgu-jW-UV5">
                     <rect key="frame" x="345" y="432" width="20" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="16" id="YhP-73-9by"/>
@@ -335,7 +335,7 @@
                     <rect key="frame" x="474" y="393" width="88" height="32"/>
                     <buttonCell key="cell" type="push" title="连接设备" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="a7Z-Ko-WtZ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
                         <action selector="connectDeviceBle:" target="c22-O7-iKe" id="Au2-vF-5NB"/>

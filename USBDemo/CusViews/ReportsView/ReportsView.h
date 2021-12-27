@@ -9,8 +9,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol ReportsViewDelegate <NSObject>
+@optional
+- (void)didStartDownloadPDF;
+- (void)didCompleteHandleData;
+
+@end
+
 @interface ReportsView : NSView
 
+@property(nonatomic,strong)id<ReportsViewDelegate> delegate;
 @property (nonatomic, strong) NSViewController *viewController;
 
 @property (weak) IBOutlet NSTextField *userPhoneValue;

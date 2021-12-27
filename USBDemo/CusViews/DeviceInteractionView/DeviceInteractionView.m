@@ -9,6 +9,8 @@
 #import "SCBleDataHandle.h"
 #import "ShortcutHeader.h"
 #import "SCAppVaribleHandle.h"
+#import "CommonUtil.h"
+#import "WDLog.h"
 
 @interface DeviceInteractionView ()<SCBleDataHandleDelegate>
 
@@ -192,6 +194,13 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         self.readingStatus.stringValue = (readingStatus == ReadingStatusRead) ? @"进入读取模式" : @"退出读取模式";
+    });
+}
+
+- (void)didReceiveBleLessPageData:(SCMultiDeviceInfo *)deviceInfo {
+    WDLog(LOG_MODUL_BLE, @"当前块的页数少于3页，停止读取！");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [CommonUtil showMessageWithTitle:@"当前块的页数少于3页，停止读取！"];
     });
 }
 
