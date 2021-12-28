@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		58E5F53035CA988A27752AD5 /* Pods_USBDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59B6F9655F1E13EB2DC2F577 /* Pods_USBDemo.framework */; };
+		E80D5CB12779C1D1000608D3 /* NSArray+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = E80D5CB02779C1D1000608D3 /* NSArray+Log.m */; };
 		E8379A752711781200D501EB /* USBDeviceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E8379A742711781200D501EB /* USBDeviceTool.m */; };
 		E8379A782711799600D501EB /* USBDeviceTool+robot.m in Sources */ = {isa = PBXBuildFile; fileRef = E8379A772711799600D501EB /* USBDeviceTool+robot.m */; };
 		E83894EA274B8CF3000E5624 /* SCMultiDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E83894E9274B8CF3000E5624 /* SCMultiDeviceInfo.m */; };
@@ -90,6 +91,8 @@
 		1CA75E2F7183AF5541C97927 /* Pods-USBDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-USBDemo.release.xcconfig"; path = "Target Support Files/Pods-USBDemo/Pods-USBDemo.release.xcconfig"; sourceTree = "<group>"; };
 		4C3A9A039FC51934CC4787C4 /* Pods-USBDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-USBDemo.debug.xcconfig"; path = "Target Support Files/Pods-USBDemo/Pods-USBDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		59B6F9655F1E13EB2DC2F577 /* Pods_USBDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_USBDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E80D5CAF2779C1D1000608D3 /* NSArray+Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+Log.h"; sourceTree = "<group>"; };
+		E80D5CB02779C1D1000608D3 /* NSArray+Log.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Log.m"; sourceTree = "<group>"; };
 		E8379A732711781200D501EB /* USBDeviceTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = USBDeviceTool.h; sourceTree = "<group>"; };
 		E8379A742711781200D501EB /* USBDeviceTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = USBDeviceTool.m; sourceTree = "<group>"; };
 		E8379A762711799600D501EB /* USBDeviceTool+robot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "USBDeviceTool+robot.h"; sourceTree = "<group>"; };
@@ -451,6 +454,8 @@
 				E8A1B4B327702F5D0001B103 /* WDLog.m */,
 				E8A1B4B627702F5D0001B103 /* WDLogManager.h */,
 				E8A1B4B427702F5D0001B103 /* WDLogManager.m */,
+				E80D5CAF2779C1D1000608D3 /* NSArray+Log.h */,
+				E80D5CB02779C1D1000608D3 /* NSArray+Log.m */,
 			);
 			path = LogHandleManageModule;
 			sourceTree = "<group>";
@@ -808,6 +813,7 @@
 				E8A9F7D52771A326003EC614 /* ReportsView.m in Sources */,
 				E8A9F86327741143003EC614 /* SCEcgFrameDataExportHandle.m in Sources */,
 				E8A9F7F42772B7B9003EC614 /* PersonnelViewCell.m in Sources */,
+				E80D5CB12779C1D1000608D3 /* NSArray+Log.m in Sources */,
 				E8691A97273E3E8D002944FD /* CommonUtil.m in Sources */,
 				E8A9F7EE2771EE58003EC614 /* OnlyIntegerValueFormatter.m in Sources */,
 				E8A9F7D1277172B6003EC614 /* EMRToastTextCell.m in Sources */,
