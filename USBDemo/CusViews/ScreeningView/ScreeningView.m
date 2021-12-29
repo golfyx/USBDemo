@@ -177,6 +177,105 @@
         [self hiddenProgressIndicator];
     }
 }
+
+- (IBAction)directCompletionButton:(NSButton *)sender {
+    [self didFinishUploadAllData];
+}
+
+- (void)didFinishUploadAllData {
+    NSString *phone = self.userPhoneValue.stringValue;
+    if (![CommonUtil validateMobile:phone]) {
+        [self hiddenProgressIndicator];
+        [EMRToast Show:@"请输入手机号！"];
+        WDLog(LOG_MODUL_BLE,@"请输入手机号！");
+        return;
+    }
+    NSString *captcha = @"998080"; /// 为了筛查写的固定验证码
+    if (self.captchaNum.length == 6) {
+        captcha = self.captchaNum; // 如果用户自己输入了验证码，使用用户输入的验证码
+    }
+
+    [SCRequestHandle userLoginWithPhone:phone captcha:captcha completion:^(BOOL success, id  _Nonnull responseObject) {
+        if (success) {
+            WDLog(LOG_MODUL_HTTPREQUEST,@"登录成功");
+            
+            [SCRequestHandle getCurUserInfoCompletion:^(BOOL success, id  _Nonnull responseObject) {
+                if (success) {
+                    WDLog(LOG_MODUL_HTTPREQUEST,@"获取当前用户信息成功");
+                    
+                    // 记录id用于更新
+                    SCUserInfoModel *userInfoModel = [[SCUserInfoModel alloc] init];
+                    userInfoModel.userID = [[CommonUtil dataProcessing:responseObject title:@"userId" isInt:YES] intValue];
+                    userInfoModel.memberID = [[CommonUtil dataProcessing:responseObject title:@"memberId" isInt:YES] intValue];
+                    userInfoModel.name = [CommonUtil dataProcessing:responseObject title:@"name" isInt:NO];
+                    userInfoModel.genderType = [[CommonUtil dataProcessing:responseObject title:@"gender" isInt:YES] intValue];
+                    userInfoModel.iconUrl = [CommonUtil dataProcessing:responseObject title:@"avatarUrl" isInt:NO];
+                    userInfoModel.birthday = [CommonUtil dataProcessing:responseObject title:@"birthdate" isInt:NO];
+                    userInfoModel.height = [CommonUtil dataProcessing:responseObject title:@"height" isInt:NO];
+                    userInfoModel.weight = [CommonUtil dataProcessing:responseObject title:@"weight" isInt:NO];
+                    userInfoModel.phoneNum = phone;
+                    SCAppVaribleHandleInstance.userInfoModel = userInfoModel;
+                    
+                    if ([@"" isEqualToString:userInfoModel.birthday] || !userInfoModel.birthday) {
+                        WDLog(LOG_MODUL_HTTPREQUEST,@"当前账户没有注册,请重新输入手机号！");
+                        [EMRToast Show:@"当前账户没有注册,请重新输入手机号！"];
+                        [self hiddenProgressIndicator];
+                        return;
+                    }
+                    
+                    self.nameValue.stringValue = userInfoModel.name;
+                    [self.genderValue selectItemAtIndex:(GenderType_male == userInfoModel.genderType ? 0 : GenderType_female == userInfoModel.genderType ? 1 : 2)];
+                    self.ageValue.stringValue = [CommonUtil calAgeByBirthday:userInfoModel.birthday];
+                    self.heightValue.stringValue = userInfoModel.height;
+                    self.weightValue.stringValue = userInfoModel.weight;
+                    self.userPhoneValue.stringValue = phone;
+                    
+                    [SCRequestHandle getCurrentDetectionDeviceInfo:nil completion:^(BOOL success, id  _Nonnull responseObject) {
+                        if (success) {
+                            WDLog(LOG_MODUL_HTTPREQUEST,@"获取当前检测信息成功");
+                            SCDetectionInfo *detectionInfo = [SCDetectionInfo new];
+                            detectionInfo.dataIndex = [[CommonUtil dataProcessing:responseObject title:@"dataIndex" isInt:YES] intValue];
+                            detectionInfo.dataPageIndex = [[CommonUtil dataProcessing:responseObject title:@"dataPageIndex" isInt:YES] intValue];
+                            detectionInfo.detectionId = [[CommonUtil dataProcessing:responseObject title:@"detectionId" isInt:YES] intValue];
+                            detectionInfo.detectionId2Minutes = [[CommonUtil dataProcessing:responseObject title:@"detectionId2Minutes" isInt:YES] intValue];
+                            detectionInfo.endPageIndex = [[CommonUtil dataProcessing:responseObject title:@"endPageIndex" isInt:YES] intValue];
+                            
+                            SCUploadDataInfo *uploadDataInfo = [SCUploadDataInfo new];
+                            uploadDataInfo.dataBlockIndex = detectionInfo.dataIndex;
+                            uploadDataInfo.dataLen = detectionInfo.dataPageIndex;
+                            uploadDataInfo.dataPageIndex = detectionInfo.dataPageIndex;
+                            uploadDataInfo.detectionType = 27;
+                            uploadDataInfo.deviceType = 23;
+                            uploadDataInfo.macAddress = @"";
+                            uploadDataInfo.memberId = userInfoModel.memberID;
+                            uploadDataInfo.samplingRate = 500;
+                            
+                            [SCRequestHandle finishFor24HoursWithUploadDataInfo:uploadDataInfo Completion:^(BOOL success, id  _Nonnull responseObject) {
+                                if (success) {
+                                    WDLog(LOG_MODUL_HTTPREQUEST, @"全部数据上传完成！");
+                                    
+                                } else {
+                                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"数据上传失败"]];
+                                    [self hiddenProgressIndicator];
+                                }
+                            }];
+                        } else {
+                            [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取当前检测信息失败"]];
+                            [self hiddenProgressIndicator];
+                        }
+                    }];
+                } else {
+                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取用户信息失败"]];
+                    [self hiddenProgressIndicator];
+                }
+            }];
+        } else {
+            [EMRToast Show:[self handlingInvalidData:responseObject title:@"登录失败"]];
+            [self hiddenProgressIndicator];
+        }
+    }];
+}
+
 - (IBAction)openUsersTable:(NSButton *)sender {
     
 //    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
