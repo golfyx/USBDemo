@@ -43,14 +43,14 @@
 /// 24小时完成
 #define FinishFor24Hours @"api/detection/finish-for-24Hours"
 /// 获取记录列表
-#define ECGRecordList @"/api/detection/list"
+#define ECGRecordList @"api/detection/list"
 /// 获取记录详情
-#define GetECGRecordDetail @"/api/detection/get-detail"
+#define GetECGRecordDetail @"api/detection/get-detail"
 
 /// 清楚缓存
-#define ClearCacheData @"/api/detection/clear-cache-data"
+#define ClearCacheData @"api/detection/clear-cache-data"
 
 /// 获取当前用户检测 进行判断当前上传的页数
-#define GetCurrentDetection @"/api/detection/get-current-detection"
+#define GetCurrentDetection @"api/detection/get-current-detection"
 
 #endif /* ConstServerHeader_h */

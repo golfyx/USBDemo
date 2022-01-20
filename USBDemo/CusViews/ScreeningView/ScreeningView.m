@@ -17,6 +17,8 @@
 #import "YYModel.h"
 #import "SCDataBaseManagerHandle.h"
 
+#import <AudioToolbox/AudioToolbox.h>
+
 @interface ScreeningView()<SCBleDataHandleDelegate>
 
 @property (nonatomic, strong) NSString *phoneNum;
@@ -823,6 +825,7 @@
                 } else {
                     [EMRToast Show:[self handlingInvalidData:responseObject title:@"清除缓存失败"]];
                 }
+                [self playVoiceHandler];
                 [self hiddenProgressIndicator];
             }];
             
@@ -858,6 +861,22 @@
     return uploadDataInfo;
 }
 
+/// 上传完后播放声音进行提示
+- (void)playVoiceHandler {
+    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"dingdong" ofType:@"wav"];
+    NSURL *url = [NSURL URLWithString:bundlePath];
+    SystemSoundID soundId = 0;
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef _Nonnull)(url), &soundId);
+    AudioServicesPlayAlertSound(soundId);
+    AudioServicesAddSystemSoundCompletion(soundId, nil, nil, AudioPlaybackComplete, nil);
+    
+}
+
+static void AudioPlaybackComplete(SystemSoundID ssID, void *clientData) {
+    WDLog(LOG_MODUL_HTTPREQUEST, @"AudioServicesRemoveSystemSoundCompletion");
+    AudioServicesRemoveSystemSoundCompletion(ssID);
+    AudioServicesDisposeSystemSoundID(ssID);
+}
 
 - (void)usbDidPlunIn:(DeviceObject *)usbObject {
     [[SCBleDataHandle sharedManager] getDongleSerialNumber:usbObject]; // 获取序列号

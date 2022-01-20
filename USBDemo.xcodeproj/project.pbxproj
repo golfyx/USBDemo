@@ -13,6 +13,7 @@
 		E8379A782711799600D501EB /* USBDeviceTool+robot.m in Sources */ = {isa = PBXBuildFile; fileRef = E8379A772711799600D501EB /* USBDeviceTool+robot.m */; };
 		E83894EA274B8CF3000E5624 /* SCMultiDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E83894E9274B8CF3000E5624 /* SCMultiDeviceInfo.m */; };
 		E83894FC274E35FD000E5624 /* UserInfoCrcCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = E83894FB274E35FD000E5624 /* UserInfoCrcCheck.m */; };
+		E84C8CDD279964430041C7E8 /* dingdong.wav in Resources */ = {isa = PBXBuildFile; fileRef = E84C8CDC279964430041C7E8 /* dingdong.wav */; };
 		E8660145273B787C00D36A91 /* SCGCDTimerUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E8660143273B787C00D36A91 /* SCGCDTimerUtil.m */; };
 		E8691A6D273E3B41002944FD /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = E8691A47273E3B41002944FD /* AFSecurityPolicy.m */; };
 		E8691A6E273E3B41002944FD /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = E8691A49273E3B41002944FD /* UIProgressView+AFNetworking.m */; };
@@ -101,6 +102,7 @@
 		E83894E9274B8CF3000E5624 /* SCMultiDeviceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCMultiDeviceInfo.m; sourceTree = "<group>"; };
 		E83894FA274E35FD000E5624 /* UserInfoCrcCheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserInfoCrcCheck.h; sourceTree = "<group>"; };
 		E83894FB274E35FD000E5624 /* UserInfoCrcCheck.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserInfoCrcCheck.m; sourceTree = "<group>"; };
+		E84C8CDC279964430041C7E8 /* dingdong.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dingdong.wav; sourceTree = "<group>"; };
 		E8660143273B787C00D36A91 /* SCGCDTimerUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCGCDTimerUtil.m; sourceTree = "<group>"; };
 		E8660144273B787C00D36A91 /* SCGCDTimerUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCGCDTimerUtil.h; sourceTree = "<group>"; };
 		E8691A44273E3B41002944FD /* AFNetworkingUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkingUtil.h; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 				E8A03E6227114265009E61EC /* Assets.xcassets */,
 				E8A03E6427114265009E61EC /* Main.storyboard */,
 				E8A03E6727114265009E61EC /* main.m */,
+				E84C8CDC279964430041C7E8 /* dingdong.wav */,
 				E8A03E6927114265009E61EC /* USBDemo.entitlements */,
 			);
 			path = USBDemo;
@@ -751,6 +754,7 @@
 				E8A03E6327114265009E61EC /* Assets.xcassets in Resources */,
 				E8806A6B2746410D00CB628F /* DeviceInteractionView.xib in Resources */,
 				E8A9F7E52771B61F003EC614 /* ReportsViewCell.xib in Resources */,
+				E84C8CDD279964430041C7E8 /* dingdong.wav in Resources */,
 				E8806A6627463D5E00CB628F /* ScreeningView.xib in Resources */,
 				E8A03E6627114265009E61EC /* Main.storyboard in Resources */,
 				E8A004D7275F35310023C4A6 /* SCProgressIndicator.xib in Resources */,

@@ -751,7 +751,7 @@
         }
 
         if (deviceInfo.bagCount - 1 == deviceInfo.bagIndex) { // 判断是否是最后一个包
-            WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
+//            WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
 
             int tmpPageIndex = deviceInfo.pageIndex - deviceInfo.curBlockInfo.startpageIndex;
             if (tmpPageIndex < 0) {

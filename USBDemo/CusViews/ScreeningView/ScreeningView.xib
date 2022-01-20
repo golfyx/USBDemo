@@ -320,7 +320,7 @@
                     <rect key="frame" x="569" y="423" width="108" height="32"/>
                     <buttonCell key="cell" type="push" title="完成(Demo)" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bee-he-qzC">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
                         <action selector="directCompletionButton:" target="c22-O7-iKe" id="ML4-Aq-ois"/>
