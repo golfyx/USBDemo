@@ -30,6 +30,8 @@
 /// 开始读取块的时间，方便统计读取块花费了多长时间
 @property (nonatomic, strong) NSDate *startBlockDate;
 
+@property (nonatomic, assign) int curBattery; // 当前电量
+
 @end
 
 @implementation ScreeningView {
@@ -94,6 +96,8 @@
 {
     [super awakeFromNib];
     
+    self.curBattery = 0;
+    
     self.wantsLayer = YES;
     self.holterGriddingView.layer.shadowOffset = CGSizeMake(0, 5);
     self.holterGriddingView.layer.shadowRadius = 5;
@@ -154,6 +158,15 @@
 }
 
 - (IBAction)stopAndUploadData:(NSButton *)sender {
+    
+    if (!self.curBattery || self.curBattery == 0) {
+        [CommonUtil showMessageWithTitle:@"设备还没有返回电量！！！"];
+        return;
+    }
+    if (self.curBattery <= 45) {
+        [CommonUtil showMessageWithTitle:@"设备电量少于45%，请充电后再上传！！！"];
+        return;
+    }
     
     if ([self.delegate respondsToSelector:@selector(didStopAndUploadData)]) {
         [self.delegate didStopAndUploadData];
@@ -294,6 +307,8 @@
         [[SCBleDataHandle sharedManager] disconnectBleDevice:pDev];
     }
     
+    self.curBattery = 0;
+    
     self.nameValue.stringValue = @"";
     self.ageValue.stringValue = @"";
     self.weightValue.stringValue = @"";
@@ -336,6 +351,8 @@
 // MARK: SCBleDataHandleDelegate
 - (void)didReceiveBleBattery:(int)battery storage:(int)storage {
 
+    self.curBattery = battery;
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         self.batteryStatus.stringValue = [NSString stringWithFormat:@"电量:%d%% ， 内存:%d%%", battery, storage];
     });
@@ -884,10 +901,12 @@ static void AudioPlaybackComplete(SystemSoundID ssID, void *clientData) {
 
 - (void)usbDidRemove:(DeviceObject *)usbObject {
     [self hiddenProgressIndicator];
+    self.curBattery = 0;
 }
 
 - (void)usbOpenFail {
     [self hiddenProgressIndicator];
+    self.curBattery = 0;
 }
 
 @end
