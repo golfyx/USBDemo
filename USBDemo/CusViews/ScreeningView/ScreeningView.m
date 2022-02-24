@@ -37,6 +37,9 @@
 
 @property (nonatomic, assign) int curBattery; // 当前电量
 
+/// 当前选中的设备序列号
+@property (nonatomic, strong) NSString *selectedDeviceSeri;
+
 @end
 
 @implementation ScreeningView {
@@ -132,6 +135,7 @@
     cell.deviceRssiTField.stringValue = [NSString stringWithFormat:@"信号：%d", bulkDeviceInfo.deviceRssi];
     cell.deviceNameTField.stringValue = bulkDeviceInfo.devicename;
     cell.deviceSeriTField.stringValue = bulkDeviceInfo.deviceSeri;
+    cell.connectDeviceButton.title = bulkDeviceInfo.connectState ? @"断开" : @"连接";
     cell.index = bulkDeviceInfo.deviceIndex;
     
     return cell;
@@ -139,7 +143,11 @@
 
 - (void)connectDevice:(DeviceListCell *)cell index:(int)index {
     if ([@"连接" isEqualToString:cell.connectDeviceButton.title]) {
+        self.selectedDeviceSeri = cell.deviceSeriTField.stringValue;
         cell.connectDeviceButton.title = @"断开";
+        SCBulkDeviceInfo *bulkDeviceInfo = [SCBleDataHandle sharedManager].scanDeviceListDict[self.selectedDeviceSeri];
+        bulkDeviceInfo.connectState = YES;
+        [SCBleDataHandle sharedManager].scanDeviceListDict[self.selectedDeviceSeri] = bulkDeviceInfo;
         for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
             [[SCBulkDataHandle sharedManager] connectBleDeviceIndex:index deviceObject:pDev];
         }
@@ -147,12 +155,6 @@
         [self disconnectDeviceBle:nil];
     }
     
-}
-
-- (void)connectDevice:(int)index {
-    for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
-        [[SCBulkDataHandle sharedManager] connectBleDeviceIndex:index deviceObject:pDev];
-    }
 }
 
 - (void)awakeFromNib
@@ -371,6 +373,8 @@
         [[SCBulkDataHandle sharedManager] disconnectBleDevice:pDev];
     }
     
+    self.selectedDeviceSeri = @"";
+    
     self.curBattery = 0;
     
     self.nameValue.stringValue = @"";
@@ -387,8 +391,9 @@
 }
 - (IBAction)connectDeviceBle:(NSButton *)sender {
     for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
-        if ([[SCBleDataHandle sharedManager].scanDeviceListDict.allKeys containsObject:self.serialNumPopUpBtn.titleOfSelectedItem]) {
-            SCBulkDeviceInfo *bulkDeviceInfo = [SCBleDataHandle sharedManager].scanDeviceListDict[self.serialNumPopUpBtn.titleOfSelectedItem];
+        self.selectedDeviceSeri = self.serialNumPopUpBtn.titleOfSelectedItem;
+        if ([[SCBleDataHandle sharedManager].scanDeviceListDict.allKeys containsObject:self.selectedDeviceSeri]) {
+            SCBulkDeviceInfo *bulkDeviceInfo = [SCBleDataHandle sharedManager].scanDeviceListDict[self.selectedDeviceSeri];
             [[SCBulkDataHandle sharedManager] connectBleDeviceIndex:bulkDeviceInfo.deviceIndex deviceObject:pDev];
         }
     }
@@ -462,16 +467,25 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [SCBleDataHandle sharedManager].scanDeviceListDict = @{}.mutableCopy;
             [self.serialNumPopUpBtn removeAllItems];
+            [self.deviceListTableView reloadData];
+            self.selectedDeviceSeri = @"";
         });
     } else { // 蓝牙设备已连接
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *popUpTitle = self.serialNumPopUpBtn.titleOfSelectedItem;
-            if (popUpTitle.length > 0) {
-                [self.serialNumPopUpBtn removeAllItems];
-                [[SCBleDataHandle sharedManager].scanDeviceListDict removeAllObjects];
+            if (self.selectedDeviceSeri.length > 0) {
                 
-                NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:popUpTitle action:@selector(null) keyEquivalent:@""];
+                NSArray *tmpKeys = [SCBleDataHandle sharedManager].scanDeviceListDict.allKeys;
+                for (int i = 0; i < tmpKeys.count; i++) {
+                    if (![self.selectedDeviceSeri isEqualToString:tmpKeys[i]]) {
+                        [[SCBleDataHandle sharedManager].scanDeviceListDict removeObjectForKey:tmpKeys[i]];
+                    }
+                }
+                [self.deviceListTableView reloadData];
+                
+                [self.serialNumPopUpBtn removeAllItems];
+                NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:self.selectedDeviceSeri action:@selector(null) keyEquivalent:@""];
                 [self.serialNumPopUpBtn.menu addItem:menuItem];
+                
             } else {
                 [[SCBleDataHandle sharedManager] getDongleSerialNumber:pDev];
             }

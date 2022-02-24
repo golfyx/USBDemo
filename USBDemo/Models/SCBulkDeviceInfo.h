@@ -30,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 上次更新信息的时间戳
 @property (nonatomic, assign) NSTimeInterval lastUpdateRssiTime;
 
+/// 设备连接状态
+@property (nonatomic, assign) bool connectState;
+
 @end
 
 NS_ASSUME_NONNULL_END
