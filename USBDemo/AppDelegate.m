@@ -6,6 +6,7 @@
 //
 
 #import "AppDelegate.h"
+#import "SCBulkDataHandle.h"
 
 @interface AppDelegate ()
 
@@ -21,6 +22,9 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
+    for (DeviceObject *deviceObject in [[SCBulkDataHandle sharedManager] getDeviceArray]) {
+        [[SCBulkDataHandle sharedManager] sendReadUSBBulkAndClearCacheCmd:deviceObject readUSBBulk:2];
+    }
 }
 
 

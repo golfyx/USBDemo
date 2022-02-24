@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SCMultiDeviceInfo.h"
+#import "SCBulkDeviceInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,6 +41,34 @@ typedef union __SAVE_BULK_USER_INFO__
     BULK_BASE_USER_INFO bulkBaseUserInfo;
 } SAVE_BULK_USER_INFO;
 
+
+#define  DEVICE_LIST_DEVICE_NUMBER       2
+#define  DEVICE_LIST_DEVICE_INDEX        2
+#define  DEVICE_LIST_NAME_LEN            2
+#define  DEVICE_LIST_DEVICE_NAME         16
+#define  DEVICE_LIST_MAC_ADDRESS         12
+#define  DEVICE_LIST_SERI_LEN            2
+#define  DEVICE_LIST_DEVICE_SERI         32
+#define  DEVICE_LIST_DEVICE_RSSI          2
+#define  SAVE_BULK_DEVICE_LIST_LEN       70
+typedef struct _BULK_BASE_DEVICE_LIST_
+{
+    uint8_t DeviceNumber[DEVICE_LIST_DEVICE_NUMBER];
+    uint8_t DeviceIndex[DEVICE_LIST_DEVICE_INDEX];
+    uint8_t NameLen[DEVICE_LIST_NAME_LEN];
+    uint8_t DeviceName[DEVICE_LIST_DEVICE_NAME];
+    uint8_t MacAddress[DEVICE_LIST_MAC_ADDRESS];
+    uint8_t SeriLen[DEVICE_LIST_SERI_LEN];
+    uint8_t DeviceSeri[DEVICE_LIST_DEVICE_SERI];
+    uint8_t DeviceRSSI[DEVICE_LIST_DEVICE_RSSI];
+} BULK_BASE_DEVICE_LIST;
+
+typedef union __SAVE_BULK_DEVICE_LIST__
+{
+    uint8_t dataBuffer[SAVE_BULK_DEVICE_LIST_LEN];
+    BULK_BASE_DEVICE_LIST bulkBaseDeviceList;
+} SAVE_BULK_DEVICE_LIST;
+
 @protocol SCBleDataHandleDelegate <NSObject>
 @optional
 - (void)didReceiveBleDataReadBuffer:(unsigned char *)readBuffer;
@@ -66,6 +95,9 @@ typedef union __SAVE_BULK_USER_INFO__
 - (void)usbDidRemove:(DeviceObject*)usbObject;
 - (void)usbOpenFail;
 
+- (void)didReceiveBulkScanDeviceList:(SCBulkDeviceInfo *)bulkDeviceInfo;
+- (void)didReceiveBulkDevice:(DeviceObject*)pDev connectState:(int)connectState;
+
 @end
 
 @interface SCBleDataHandle : NSObject
@@ -77,6 +109,8 @@ typedef union __SAVE_BULK_USER_INFO__
 /// 是否需要上传数据
 @property (nonatomic, assign) BOOL isNeedUploadData;
 @property (nonatomic, assign) BOOL isExitReadMode; // 是否是退出读取模式
+
+@property (nonatomic, strong) NSMutableDictionary *scanDeviceListDict; // USB Bulk扫描到的设备列表
 
 @property(nonatomic,strong)id<SCBleDataHandleDelegate> delegate;
 
@@ -122,13 +156,6 @@ typedef union __SAVE_BULK_USER_INFO__
 - (IOReturn)setDeviceSaveUserInfo:(DeviceObject *)pDev;
 
 
-
-//MARK: USB BULK 模块指令
-
-/// 断开蓝牙连接
-- (IOReturn)disconnectBleDevice:(DeviceObject *)pDev;
-/// 连接设备
-- (IOReturn)connectBleDeviceIndex:(int)index deviceObject:(DeviceObject *)pDev;
 
 @end
 

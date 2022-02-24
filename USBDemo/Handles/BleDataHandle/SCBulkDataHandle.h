@@ -21,7 +21,13 @@ typedef enum : NSUInteger {
     ReadWriteStateWrite,
 } ReadWriteState;
 
-/// 操作的对象
+/// 操作的设备    注：当DeviceOfOperationState =DeviceOfOperationStateUSBBulk, ObjectOfOperationState的值没有意义。
+typedef enum : NSUInteger {
+    DeviceOfOperationStateBle = 0,   /// 针对蓝牙设备（包括蓝牙主模块和从模块）
+    DeviceOfOperationStateUSBBulk,   /// 针对USB BULK device
+} DeviceOfOperationState;
+
+/// 操作的蓝牙对象
 typedef enum : NSUInteger {
     ObjectOfOperationStatePassthrough = 0,   /// 针对蓝牙透传(直接对Dongle发送指令)
     ObjectOfOperationStateUSBBulk,           /// 针对(USB Bulk)设备本身
@@ -70,6 +76,7 @@ typedef union __BULK_BUFFER_PACKET__
 - (void)usbDidRemove:(DeviceObject*)usbObject;
 - (void)usbOpenFail;
 - (void)didReceiveBulkDataDevice:(DeviceObject*)pDev readBuffer:(unsigned char *)readBuffer;
+- (void)didReceiveBulkDevice:(DeviceObject*)pDev connectState:(int)connectState;
 @end
 
 @interface SCBulkDataHandle : NSObject
@@ -93,14 +100,28 @@ typedef union __BULK_BUFFER_PACKET__
 /// bufLen Dongle蓝牙发送指令的长度
 /// bagIndex 所有的传输包都是基于64个字节，分为3种包：首包，中间包，尾包。当前是第几个协议包
 /// totalBagCount 总的有几个协议包
-/// packetSendingReceivingState 操作的对象 0:针对蓝牙透传  1:针对(USB Bulk)设备本身
-/// objectOfOperationState 包的收发属性  0:device -> Master 1:Master -> device  (master相当于电脑，device相当于Dongle或者USB Bulk)
+/// packetSendingReceivingState 包的收发属性  0:device -> Master 1:Master -> device  (master相当于电脑，device相当于Dongle或者USB Bulk)
+/// objectOfOperationState 操作的蓝牙对象 0:针对蓝牙透传  1:针对(USB Bulk)设备本身
+/// deviceOfOperationState 操作的设备    注：当DeviceOfOperationState =DeviceOfOperationStateUSBBulk, ObjectOfOperationState的值没有意义。 0:针对蓝牙设备（包括蓝牙主模块和从模块） 1:针对USB BULK device
 - (BULK_BUFFER_PACKET)getSendDataByBuffer:(uint8_t *)buffer
                                    bufLen:(uint)bufLen
                                  bagIndex:(uint)bagIndex
                             totalBagCount:(uint)totalBagCount
               packetSendingReceivingState:(PacketSendingReceivingState)packetSendingReceivingState
-                   objectOfOperationState:(ObjectOfOperationState)objectOfOperationState;
+                   objectOfOperationState:(ObjectOfOperationState)objectOfOperationState
+                   deviceOfOperationState:(DeviceOfOperationState)deviceOfOperationState;
+
+//MARK: USB BULK 模块指令
+
+/// 断开蓝牙连接
+- (IOReturn)disconnectBleDevice:(DeviceObject *)pDev;
+/// 连接设备
+- (IOReturn)connectBleDeviceIndex:(int)index deviceObject:(DeviceObject *)pDev;
+
+- (void)sendGetEncipherSerialNumAddrCmd:(DeviceObject *)usbObject writeBufferData:(uint8_t *)writeBufferData;
+- (void)sendCheckBulkSerialNumValidtyCmd:(DeviceObject *)usbObject writeBufferData:(uint8_t *)writeBufferData;
+- (void)sendReadUSBBulkAndClearCacheCmd:(DeviceObject *)usbObject readUSBBulk:(int)enable;
+- (void)sendReadUSBBleConnectStateCmd:(DeviceObject *)usbObject;
 
 @end
 

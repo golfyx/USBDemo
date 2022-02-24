@@ -125,6 +125,7 @@
 
 /// 激活蓝牙连接
 - (void)activeBleHandle {
+    [SCBleDataHandle sharedManager].scanDeviceListDict = @{}.mutableCopy;
     [SCBleDataHandle sharedManager].delegate = self;
 }
 
@@ -304,7 +305,7 @@
 }
 - (IBAction)disconnectDeviceBle:(NSButton *)sender {
     for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
-        [[SCBleDataHandle sharedManager] disconnectBleDevice:pDev];
+        [[SCBulkDataHandle sharedManager] disconnectBleDevice:pDev];
     }
     
     self.curBattery = 0;
@@ -323,9 +324,9 @@
 }
 - (IBAction)connectDeviceBle:(NSButton *)sender {
     for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
-        if ([SCAppVaribleHandleInstance.deviceSerialDic.allKeys containsObject:self.serialNumPopUpBtn.titleOfSelectedItem]) {
-            NSString *index = SCAppVaribleHandleInstance.deviceSerialDic[self.serialNumPopUpBtn.titleOfSelectedItem];
-            [[SCBleDataHandle sharedManager] connectBleDeviceIndex:index.intValue deviceObject:pDev];
+        if ([[SCBleDataHandle sharedManager].scanDeviceListDict.allKeys containsObject:self.serialNumPopUpBtn.titleOfSelectedItem]) {
+            SCBulkDeviceInfo *bulkDeviceInfo = [SCBleDataHandle sharedManager].scanDeviceListDict[self.serialNumPopUpBtn.titleOfSelectedItem];
+            [[SCBulkDataHandle sharedManager] connectBleDeviceIndex:bulkDeviceInfo.deviceIndex deviceObject:pDev];
         }
     }
 }
@@ -360,38 +361,70 @@
 
 - (void)didReceiveBleDisplayString:(NSString *)displayString {
     
-    if ([displayString containsString:@".MetaCor:"]) {
-        NSArray *receiveArray = [displayString componentsSeparatedByString:@"."];
-        if (receiveArray.count >= 2) {
-            NSString *indexStr = receiveArray[0];
-            NSString *serialStr = [receiveArray[1] componentsSeparatedByString:@", "][1];
-            NSString *index = [indexStr substringFromIndex:indexStr.length - 2];
-            
-            if (![SCAppVaribleHandleInstance.deviceSerialDic.allKeys containsObject:serialStr]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:serialStr action:@selector(null) keyEquivalent:@""];
-                    [self.serialNumPopUpBtn.menu addItem:menuItem];
-                });
-            }
-            SCAppVaribleHandleInstance.deviceSerialDic[serialStr] = index;
-        }
-    }
+//    if ([displayString containsString:@".MetaCor:"]) {
+//        NSArray *receiveArray = [displayString componentsSeparatedByString:@"."];
+//        if (receiveArray.count >= 2) {
+//            NSString *indexStr = receiveArray[0];
+//            NSString *serialStr = [receiveArray[1] componentsSeparatedByString:@", "][1];
+//            NSString *index = [indexStr substringFromIndex:indexStr.length - 2];
+//
+//            if (![SCAppVaribleHandleInstance.deviceSerialDic.allKeys containsObject:serialStr]) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:serialStr action:@selector(null) keyEquivalent:@""];
+//                    [self.serialNumPopUpBtn.menu addItem:menuItem];
+//                });
+//            }
+//            SCAppVaribleHandleInstance.deviceSerialDic[serialStr] = index;
+//        }
+//    }
+//
+//    if ([displayString containsString:@"Already Connect ble device."]) {
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            for (DeviceObject *item in [[SCBleDataHandle sharedManager] getDeviceArray]) {
+//                [[SCBleDataHandle sharedManager] getDongleSerialNumber:item]; // 获取序列号
+//            }
+//        });
+//    } else if ([displayString containsString:@"Device disconnect."]) {
+//        SCAppVaribleHandleInstance.deviceSerialDic = @{}.mutableCopy;
+//
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.serialNumPopUpBtn removeAllItems];
+//        });
+//    }
+}
+
+- (void)didReceiveBulkDevice:(DeviceObject *)pDev connectState:(int)connectState {
     
-    if ([displayString containsString:@"Already Connect ble device."]) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            for (DeviceObject *item in [[SCBleDataHandle sharedManager] getDeviceArray]) {
-                [[SCBleDataHandle sharedManager] getDongleSerialNumber:item]; // 获取序列号
-            }
-        });
-    } else if ([displayString containsString:@"Device disconnect."]) {
-        SCAppVaribleHandleInstance.deviceSerialDic = @{}.mutableCopy;
-        
+    if (connectState == 1) { // 蓝牙设备未连接
         dispatch_async(dispatch_get_main_queue(), ^{
+            [SCBleDataHandle sharedManager].scanDeviceListDict = @{}.mutableCopy;
             [self.serialNumPopUpBtn removeAllItems];
+        });
+    } else { // 蓝牙设备已连接
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *popUpTitle = self.serialNumPopUpBtn.titleOfSelectedItem;
+            if (popUpTitle.length > 0) {
+                [self.serialNumPopUpBtn removeAllItems];
+                [[SCBleDataHandle sharedManager].scanDeviceListDict removeAllObjects];
+                
+                NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:popUpTitle action:@selector(null) keyEquivalent:@""];
+                [self.serialNumPopUpBtn.menu addItem:menuItem];
+            } else {
+                [[SCBleDataHandle sharedManager] getDongleSerialNumber:pDev];
+            }
         });
     }
 }
 
+- (void)didReceiveBulkScanDeviceList:(SCBulkDeviceInfo *)bulkDeviceInfo {
+    NSArray *deviceSeriArray = [SCBleDataHandle sharedManager].scanDeviceListDict.allKeys;
+    if (![deviceSeriArray containsObject:bulkDeviceInfo.deviceSeri]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:bulkDeviceInfo.deviceSeri action:@selector(null) keyEquivalent:@""];
+            [self.serialNumPopUpBtn.menu addItem:menuItem];
+        });
+    }
+}
 
 - (void)didReceiveBleVersion:(NSString *)version {
     
@@ -446,6 +479,7 @@
         [SCAppVaribleHandleInstance.deviceSerialDic removeAllObjects];
         [self.serialNumPopUpBtn removeAllItems];
         SCAppVaribleHandleInstance.deviceSerialDic[deviceSerialNumber] = @"00";
+        [[SCBleDataHandle sharedManager].scanDeviceListDict removeAllObjects];
             
         NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:deviceSerialNumber action:@selector(null) keyEquivalent:@""];
         [self.serialNumPopUpBtn.menu addItem:menuItem];
@@ -528,7 +562,7 @@
                     
                     if ([SCAppVaribleHandleInstance.deviceSerialDic.allKeys containsObject:self.serialNumPopUpBtn.titleOfSelectedItem]) {
                         NSString *index = SCAppVaribleHandleInstance.deviceSerialDic[self.serialNumPopUpBtn.titleOfSelectedItem];
-                        [[SCBleDataHandle sharedManager] connectBleDeviceIndex:index.intValue deviceObject:deviceInfo.deviceObject];
+                        [[SCBulkDataHandle sharedManager] connectBleDeviceIndex:index.intValue deviceObject:deviceInfo.deviceObject];
                     }
                     
 //                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -896,7 +930,7 @@ static void AudioPlaybackComplete(SystemSoundID ssID, void *clientData) {
 }
 
 - (void)usbDidPlunIn:(DeviceObject *)usbObject {
-    [[SCBleDataHandle sharedManager] getDongleSerialNumber:usbObject]; // 获取序列号
+//    [[SCBleDataHandle sharedManager] getDongleSerialNumber:usbObject]; // 获取序列号
 }
 
 - (void)usbDidRemove:(DeviceObject *)usbObject {

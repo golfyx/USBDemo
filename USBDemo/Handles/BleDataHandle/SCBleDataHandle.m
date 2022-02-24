@@ -12,8 +12,10 @@
 #import "SCRequestHandle.h"
 #import "SCUploadDataInfo.h"
 #import "CommonUtil.h"
-#import "UserInfoCrcCheck.h"
+#import "Crc32Check.h"
 #import "WDLog.h"
+
+#import "EncipherHandler.h"
 
 
 @interface SCBleDataHandle ()<SCBulkDataHandleDelegate>
@@ -57,6 +59,7 @@
         _isExitReadMode = NO;
         
         _fileLock = [[NSLock alloc] init];
+        _scanDeviceListDict = @{}.mutableCopy;
         
         [SCBulkDataHandle sharedManager].delegate = self;
     }
@@ -76,7 +79,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 /// 获取序列号
@@ -92,7 +96,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 /// 进入读取模式
@@ -108,7 +113,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 /// 退出读取模式
 - (void)exitReadMode:(DeviceObject *)pDev {
@@ -131,7 +137,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 - (void)getEcgDataBlockDetailWithPageIndex:(int)pageIndex internalIndex:(int)internalIndex device:(DeviceObject *)pDev {
@@ -148,7 +155,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 - (void)getEcgDataBlockContentWithStartPageIndex:(int)startPageIndex endPageIndex:(int)endPageIndex internalIndex:(int)internalIndex device:(DeviceObject *)pDev {
@@ -174,7 +182,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 /// 读取Dongle当前状态
@@ -190,7 +199,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 /// 设置Dongle时间
@@ -210,7 +220,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 /// 激活Dongle
@@ -224,7 +235,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 /// 获取当前保存状态
@@ -240,7 +252,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 /// 设置当前状态(保存模式和擦除模式)
@@ -254,7 +267,8 @@
                                        bagIndex:0
                                   totalBagCount:1
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
 }
 
 
@@ -317,7 +331,8 @@
                                        bagIndex:0
                                   totalBagCount:3
                     packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                         objectOfOperationState:ObjectOfOperationStatePassthrough
+                         deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
     
     if (kr == kIOReturnSuccess) {
         loc += len;
@@ -328,7 +343,8 @@
                                            bagIndex:1
                                       totalBagCount:3
                         packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                             objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                             objectOfOperationState:ObjectOfOperationStatePassthrough
+                             deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
         if (kr == kIOReturnSuccess) {
             loc += len;
             len = (uint)sendData.length - loc;
@@ -338,7 +354,8 @@
                                                bagIndex:2
                                           totalBagCount:3
                             packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                                 objectOfOperationState:ObjectOfOperationStatePassthrough].dataBuffer device:pDev];
+                                 objectOfOperationState:ObjectOfOperationStatePassthrough
+                                 deviceOfOperationState:DeviceOfOperationStateBle].dataBuffer device:pDev];
         } else {
             WDLog(LOG_MODUL_BLE, @"setDeviceSaveUserInfo 发送失败！");
         }
@@ -349,124 +366,6 @@
     return kr;
 }
 
-
-//MARK: USB BULK 模块指令
-
-- (NSData *)getASCIIValueByString:(NSString *)str {
-    //1.转换成const char*类型.这里得出的是char*指针
-    const char* charNum = [str cStringUsingEncoding:NSASCIIStringEncoding];
-    //2.计算ASCII的值('0'和'A').
-    char result = charNum[0] + 0x11;
-    //3.转成NSString
-    NSString *numStr = [NSString stringWithFormat:@"%c",result];
-    //4.转成NSData
-    return [numStr dataUsingEncoding:NSUTF8StringEncoding];
-}
-
-/// 连接设备
-- (IOReturn)connectBleDeviceIndex:(int)index deviceObject:(DeviceObject *)pDev {
-    WDLog(LOG_MODUL_BLE, @"连接设备");
-    
-    NSMutableData *userInfoData = [NSMutableData data];
-    [userInfoData appendData:[CommonUtil hexToBytes:@"A55A6F66"]];
-    // 一个十六进制(0x02)拆分为两个ACSII 字节(0和2)(0x30对应十六进制的高位 0，0x32对应十六位低位 2)
-    [userInfoData appendBytes:[@"0" cStringUsingEncoding:NSUTF8StringEncoding] length:1]; // CmdIndex
-    [userInfoData appendBytes:[@"2" cStringUsingEncoding:NSUTF8StringEncoding] length:1];
-    [userInfoData appendBytes:[@"0" cStringUsingEncoding:NSUTF8StringEncoding] length:1]; // 连接或断开BLE设备 type
-    [userInfoData appendBytes:[@"1" cStringUsingEncoding:NSUTF8StringEncoding] length:1];
-    [userInfoData appendBytes:[@"0" cStringUsingEncoding:NSUTF8StringEncoding] length:1]; // BLE设备索引:0~15(连接命令是有效)
-    [userInfoData appendBytes:[[NSString stringWithFormat:@"%1x",index] cStringUsingEncoding:NSUTF8StringEncoding] length:1];
-    
-    
-    for (int i = 0; i < 96; i++) {
-        [userInfoData appendData:[CommonUtil hexToBytes:@"00"]];
-    }
-    
-    [userInfoData appendData:[CommonUtil hexToBytes:@"00"]]; // 校验码位
-    
-    Byte *userInfoBytes = (Byte *)[userInfoData bytes];
-    [CommonUtil calXortmpForSendBuffer:userInfoBytes len:userInfoData.length];
-    
-    userInfoData = [NSData dataWithBytes:userInfoBytes length:userInfoData.length].mutableCopy;
-    
-    uint loc = 0;
-    uint len = 52;
-    
-    userInfoBytes = (Byte *)[[userInfoData subdataWithRange:NSMakeRange(loc, len)] bytes];
-    kern_return_t kr = [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:userInfoBytes
-                                         bufLen:len
-                                       bagIndex:0
-                                  totalBagCount:2
-                    packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStateUSBBulk].dataBuffer device:pDev];
-    
-    if (kr == kIOReturnSuccess) {
-        loc += len;
-        len = (uint)userInfoData.length - loc;
-        userInfoBytes = (Byte *)[[userInfoData subdataWithRange:NSMakeRange(loc, len)] bytes];
-        [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:userInfoBytes
-                                             bufLen:len
-                                           bagIndex:1
-                                      totalBagCount:2
-                        packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                             objectOfOperationState:ObjectOfOperationStateUSBBulk].dataBuffer device:pDev];
-    } else {
-        WDLog(LOG_MODUL_BLE, @"disconnectBleDevice 发送失败！");
-    }
-    
-    return kr;
-}
-
-/// 断开蓝牙连接
-- (IOReturn)disconnectBleDevice:(DeviceObject *)pDev {
-    WDLog(LOG_MODUL_BLE, @"设置断开蓝牙连接");
-    
-    NSMutableData *userInfoData = [NSMutableData data];
-    [userInfoData appendData:[CommonUtil hexToBytes:@"A55A6F66"]];
-    // 一个十六进制(0x02)拆分为两个ACSII 字节(0和2)(0x30对应十六进制的高位 0，0x32对应十六位低位 2)
-    [userInfoData appendBytes:[@"0" cStringUsingEncoding:NSUTF8StringEncoding] length:1]; // CmdIndex
-    [userInfoData appendBytes:[@"2" cStringUsingEncoding:NSUTF8StringEncoding] length:1];
-    [userInfoData appendBytes:[@"0" cStringUsingEncoding:NSUTF8StringEncoding] length:1]; // 连接或断开BLE设备 type
-    [userInfoData appendBytes:[@"2" cStringUsingEncoding:NSUTF8StringEncoding] length:1];
-    
-    for (int i = 0; i < 98; i++) {
-        [userInfoData appendData:[CommonUtil hexToBytes:@"00"]];
-    }
-    
-    [userInfoData appendData:[CommonUtil hexToBytes:@"00"]]; // 校验码位
-    
-    Byte *userInfoBytes = (Byte *)[userInfoData bytes];
-    [CommonUtil calXortmpForSendBuffer:userInfoBytes len:userInfoData.length];
-    
-    userInfoData = [NSData dataWithBytes:userInfoBytes length:userInfoData.length].mutableCopy;
-    
-    uint loc = 0;
-    uint len = 52;
-    
-    userInfoBytes = (Byte *)[[userInfoData subdataWithRange:NSMakeRange(loc, len)] bytes];
-    kern_return_t kr = [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:userInfoBytes
-                                         bufLen:len
-                                       bagIndex:0
-                                  totalBagCount:2
-                    packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                         objectOfOperationState:ObjectOfOperationStateUSBBulk].dataBuffer device:pDev];
-    
-    if (kr == kIOReturnSuccess) {
-        loc += len;
-        len = (uint)userInfoData.length - loc;
-        userInfoBytes = (Byte *)[[userInfoData subdataWithRange:NSMakeRange(loc, len)] bytes];
-        [[SCBulkDataHandle sharedManager] writeBuffer:[[SCBulkDataHandle sharedManager] getSendDataByBuffer:userInfoBytes
-                                             bufLen:len
-                                           bagIndex:1
-                                      totalBagCount:2
-                        packetSendingReceivingState:PacketSendingReceivingStateMasterToDevice
-                             objectOfOperationState:ObjectOfOperationStateUSBBulk].dataBuffer device:pDev];
-    } else {
-        WDLog(LOG_MODUL_BLE, @"disconnectBleDevice 发送失败！");
-    }
-    
-    return kr;
-}
 
 
 // MARK: SCBulkDataHandleDelegate
@@ -500,7 +399,12 @@
     Byte *pageBytes;
     if (deviceInfo.bagIndex == 0) {
         deviceInfo.receiveMStr = [[NSMutableString alloc] init];
-        deviceInfo.bleCmdType = readBuffer[14];
+        if (ObjectOfOperationStateUSBBulk == deviceInfo.oooState) {
+            deviceInfo.bleCmdType = bulkBufferPacket.bulkBasePacket.dataBuffer[5];
+        } else {
+            deviceInfo.bleCmdType = readBuffer[14];
+        }
+        
     }
     
     if ((self.isHexadecimalDisplay) && (ObjectOfOperationStatePassthrough == deviceInfo.oooState)) {
@@ -540,6 +444,60 @@
     
     
     if (ObjectOfOperationStateUSBBulk == deviceInfo.oooState) {
+        
+        if (deviceInfo.bleCmdType == 0x31) {
+            if (deviceInfo.bagIndex == 0) {
+                deviceInfo.perBagData = [NSData dataWithBytes:bulkBufferPacket.bulkBasePacket.dataBuffer length:TG_CMD_DATA_BUFFER_LEN].mutableCopy;
+            } else {
+                [deviceInfo.perBagData appendData:[NSData dataWithBytes:bulkBufferPacket.bulkBasePacket.dataBuffer length:TG_CMD_DATA_BUFFER_LEN]];
+            }
+            if (deviceInfo.bagCount - 1 == deviceInfo.bagIndex) { // 判断是否是最后一个包
+                
+                SCBulkDeviceInfo *bulkDeviceInfo = [SCBulkDeviceInfo new];
+                unsigned char tmpCh;
+                NSData *tmpData = [deviceInfo.perBagData subdataWithRange:NSMakeRange(6, 70)];
+                Byte *buffer = (Byte *)[tmpData bytes];
+                tmpCh = AsciiToByte(buffer[0]) * 16 + AsciiToByte(buffer[1]);
+                bulkDeviceInfo.deviceNum = tmpCh;
+                tmpCh = AsciiToByte(buffer[2]) * 16 + AsciiToByte(buffer[3]);
+                bulkDeviceInfo.deviceIndex = tmpCh;
+                tmpCh = AsciiToByte(buffer[4]) * 16 + AsciiToByte(buffer[5]);
+                bulkDeviceInfo.deviceNameLen = tmpCh;
+                NSString *tmpStr = @"";
+                for (int i = 0; i < tmpCh; i++) {
+                    tmpStr = [NSString stringWithFormat:@"%@%C", tmpStr, buffer[6+i]];
+                }
+                bulkDeviceInfo.devicename = tmpStr;
+                tmpStr = [NSString stringWithFormat:@"%C", buffer[22]];
+                for (int i = 1; i < 12; i++) {
+                    if (i%2 == 0) {
+                        tmpStr = [NSString stringWithFormat:@"%@:%C", tmpStr, buffer[22+i]];
+                    } else {
+                        tmpStr = [NSString stringWithFormat:@"%@%C", tmpStr, buffer[22+i]];
+                    }
+                    
+                }
+                bulkDeviceInfo.macAddr = tmpStr;
+                tmpCh = AsciiToByte(buffer[34]) * 16 + AsciiToByte(buffer[35]);
+                bulkDeviceInfo.seriLen = tmpCh;
+                tmpStr = @"";
+                for (int i = 0; i < tmpCh; i++) {
+                    tmpStr = [NSString stringWithFormat:@"%@%C", tmpStr, buffer[36+i]];
+                }
+                bulkDeviceInfo.deviceSeri = tmpStr;
+                tmpCh = AsciiToByte(buffer[68]) * 16 + AsciiToByte(buffer[69]);
+                bulkDeviceInfo.deviceRssi = tmpCh;
+                
+                if (bulkDeviceInfo.deviceSeri.length > 0) {
+                    if ([self.delegate respondsToSelector:@selector(didReceiveBulkScanDeviceList:)]) {
+                        [self.delegate didReceiveBulkScanDeviceList:bulkDeviceInfo];
+                    }
+                    
+                    _scanDeviceListDict[bulkDeviceInfo.deviceSeri] = bulkDeviceInfo;
+                }
+            }
+        }
+        
         return;
     }
 
@@ -1045,6 +1003,12 @@
     
     if ([self.delegate respondsToSelector:@selector(usbOpenFail)]) {
         [self.delegate usbOpenFail];
+    }
+}
+
+- (void)didReceiveBulkDevice:(DeviceObject *)pDev connectState:(int)connectState {
+    if ([self.delegate respondsToSelector:@selector(didReceiveBulkDevice:connectState:)]) {
+        [self.delegate didReceiveBulkDevice:pDev connectState:connectState];
     }
 }
 

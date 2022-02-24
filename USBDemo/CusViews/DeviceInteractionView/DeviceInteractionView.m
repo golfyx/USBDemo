@@ -68,7 +68,7 @@
 /// 断开Dongle设备
 - (IBAction)disconnectBleDevice:(NSButton *)sender {
     for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
-        [[SCBleDataHandle sharedManager] disconnectBleDevice:pDev];
+        [[SCBulkDataHandle sharedManager] disconnectBleDevice:pDev];
     }
 }
 /// 清空屏幕
