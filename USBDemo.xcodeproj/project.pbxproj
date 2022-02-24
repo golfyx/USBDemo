@@ -89,6 +89,8 @@
 		E8D772F127C38A2700CFE06D /* EncipherHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D772F027C38A2700CFE06D /* EncipherHandler.m */; };
 		E8D772F427C38B7C00CFE06D /* AES_Encipher.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D772F327C38B7C00CFE06D /* AES_Encipher.m */; };
 		E8D7730327C63E6700CFE06D /* SCBulkDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D7730227C63E6700CFE06D /* SCBulkDeviceInfo.m */; };
+		E8D7730627C7630E00CFE06D /* DeviceListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D7730527C7630E00CFE06D /* DeviceListCell.m */; };
+		E8D7730827C7633A00CFE06D /* DeviceListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8D7730727C7633A00CFE06D /* DeviceListCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -257,6 +259,9 @@
 		E8D772F327C38B7C00CFE06D /* AES_Encipher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AES_Encipher.m; sourceTree = "<group>"; };
 		E8D7730127C63E6700CFE06D /* SCBulkDeviceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBulkDeviceInfo.h; sourceTree = "<group>"; };
 		E8D7730227C63E6700CFE06D /* SCBulkDeviceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBulkDeviceInfo.m; sourceTree = "<group>"; };
+		E8D7730427C7630E00CFE06D /* DeviceListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceListCell.h; sourceTree = "<group>"; };
+		E8D7730527C7630E00CFE06D /* DeviceListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceListCell.m; sourceTree = "<group>"; };
+		E8D7730727C7633A00CFE06D /* DeviceListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceListCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -490,6 +495,9 @@
 				E8806A6527463D5E00CB628F /* ScreeningView.xib */,
 				E8A9F7EC2771EE58003EC614 /* OnlyIntegerValueFormatter.h */,
 				E8A9F7ED2771EE58003EC614 /* OnlyIntegerValueFormatter.m */,
+				E8D7730427C7630E00CFE06D /* DeviceListCell.h */,
+				E8D7730527C7630E00CFE06D /* DeviceListCell.m */,
+				E8D7730727C7633A00CFE06D /* DeviceListCell.xib */,
 			);
 			path = ScreeningView;
 			sourceTree = "<group>";
@@ -783,6 +791,7 @@
 				E8A03E6627114265009E61EC /* Main.storyboard in Resources */,
 				E8A004D7275F35310023C4A6 /* SCProgressIndicator.xib in Resources */,
 				E8A9F7F62772B7CA003EC614 /* PersonnelViewCell.xib in Resources */,
+				E8D7730827C7633A00CFE06D /* DeviceListCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -882,6 +891,7 @@
 				E891DA40273929DB00B6FDF4 /* SCDeviceAllBlockInfo.m in Sources */,
 				E8A1B4B827702F5D0001B103 /* WDLogManager.m in Sources */,
 				E8BCE6E02741F3CC00EE5497 /* SCUploadDataInfo.m in Sources */,
+				E8D7730627C7630E00CFE06D /* DeviceListCell.m in Sources */,
 				E8691A7C273E3B41002944FD /* AFURLSessionManager.m in Sources */,
 				E8A9F876277424BC003EC614 /* NSString+AddMethod.m in Sources */,
 				E8691A75273E3B41002944FD /* AFAutoPurgingImageCache.m in Sources */,

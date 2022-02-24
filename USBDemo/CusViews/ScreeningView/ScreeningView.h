@@ -40,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak) IBOutlet NSTextField *weightValue;
 @property (weak) IBOutlet NSTextField *deviceSerialNumber;
 @property (weak) IBOutlet NSPopUpButton *serialNumPopUpBtn;
+@property (weak) IBOutlet NSScrollView *deviceScrollView;
 
 
 @property (weak) IBOutlet HolterGriddingView *holterGriddingView;

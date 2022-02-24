@@ -19,7 +19,12 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
-@interface ScreeningView()<SCBleDataHandleDelegate>
+#import "DeviceListCell.h"
+#import "SCBulkDeviceInfo.h"
+
+@interface ScreeningView()<SCBleDataHandleDelegate, NSTableViewDelegate, NSTableViewDataSource, DeviceListCellDelegate>
+
+@property (nonatomic, strong) NSTableView *deviceListTableView;
 
 @property (nonatomic, strong) NSString *phoneNum;
 @property (nonatomic, strong) NSString *captchaNum;
@@ -37,6 +42,20 @@
 @implementation ScreeningView {
 }
 
+- (NSTableView *)deviceListTableView {
+    if (!_deviceListTableView) {
+        _deviceListTableView = [[NSTableView alloc]initWithFrame:_deviceScrollView.bounds];
+        NSTableColumn *column = [[NSTableColumn alloc]initWithIdentifier:@"DeviceTableColumn"];
+        column.title = @"设备列表";
+        column.width = 280;
+        [_deviceListTableView addTableColumn:column];
+        _deviceListTableView.delegate = self;
+        _deviceListTableView.dataSource = self;
+        _deviceScrollView.contentView.documentView = _deviceListTableView;
+    }
+    
+    return _deviceListTableView;
+}
 
 - (NSDateFormatter *)dateFormatter {
     if (!_dateFormatter) {
@@ -90,6 +109,50 @@
         }
     }
     
+}
+
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
+    return 70;
+}
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView{
+    return [SCBleDataHandle sharedManager].scanDeviceListDict.allValues.count;
+}
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row  {
+    
+    DeviceListCell *cell = (DeviceListCell *)[CommonUtil getViewFromNibName:@"DeviceListCell"];
+    cell.delegate = self;
+    
+    if ([SCBleDataHandle sharedManager].scanDeviceListDict.allValues.count <= row) {
+        return nil;
+    }
+    
+    SCBulkDeviceInfo *bulkDeviceInfo = [SCBleDataHandle sharedManager].scanDeviceListDict.allValues[row];
+    cell.deviceRssiTField.stringValue = [NSString stringWithFormat:@"信号：%d", bulkDeviceInfo.deviceRssi];
+    cell.deviceNameTField.stringValue = bulkDeviceInfo.devicename;
+    cell.deviceSeriTField.stringValue = bulkDeviceInfo.deviceSeri;
+    cell.index = bulkDeviceInfo.deviceIndex;
+    
+    return cell;
+}
+
+- (void)connectDevice:(DeviceListCell *)cell index:(int)index {
+    if ([@"连接" isEqualToString:cell.connectDeviceButton.title]) {
+        cell.connectDeviceButton.title = @"断开";
+        for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
+            [[SCBulkDataHandle sharedManager] connectBleDeviceIndex:index deviceObject:pDev];
+        }
+    } else {
+        [self disconnectDeviceBle:nil];
+    }
+    
+}
+
+- (void)connectDevice:(int)index {
+    for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
+        [[SCBulkDataHandle sharedManager] connectBleDeviceIndex:index deviceObject:pDev];
+    }
 }
 
 - (void)awakeFromNib
@@ -418,12 +481,13 @@
 
 - (void)didReceiveBulkScanDeviceList:(SCBulkDeviceInfo *)bulkDeviceInfo {
     NSArray *deviceSeriArray = [SCBleDataHandle sharedManager].scanDeviceListDict.allKeys;
-    if (![deviceSeriArray containsObject:bulkDeviceInfo.deviceSeri]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (![deviceSeriArray containsObject:bulkDeviceInfo.deviceSeri]) {
             NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:bulkDeviceInfo.deviceSeri action:@selector(null) keyEquivalent:@""];
             [self.serialNumPopUpBtn.menu addItem:menuItem];
-        });
-    }
+        }
+        [self.deviceListTableView reloadData];
+    });
 }
 
 - (void)didReceiveBleVersion:(NSString *)version {
