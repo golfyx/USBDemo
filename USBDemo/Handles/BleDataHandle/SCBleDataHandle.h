@@ -42,32 +42,12 @@ typedef union __SAVE_BULK_USER_INFO__
 } SAVE_BULK_USER_INFO;
 
 
-#define  DEVICE_LIST_DEVICE_NUMBER       2
-#define  DEVICE_LIST_DEVICE_INDEX        2
-#define  DEVICE_LIST_NAME_LEN            2
-#define  DEVICE_LIST_DEVICE_NAME         16
-#define  DEVICE_LIST_MAC_ADDRESS         12
-#define  DEVICE_LIST_SERI_LEN            2
-#define  DEVICE_LIST_DEVICE_SERI         32
-#define  DEVICE_LIST_DEVICE_RSSI          2
-#define  SAVE_BULK_DEVICE_LIST_LEN       70
-typedef struct _BULK_BASE_DEVICE_LIST_
+typedef union __SAVE_BULK_DEVICE_RSSI__
 {
-    uint8_t DeviceNumber[DEVICE_LIST_DEVICE_NUMBER];
-    uint8_t DeviceIndex[DEVICE_LIST_DEVICE_INDEX];
-    uint8_t NameLen[DEVICE_LIST_NAME_LEN];
-    uint8_t DeviceName[DEVICE_LIST_DEVICE_NAME];
-    uint8_t MacAddress[DEVICE_LIST_MAC_ADDRESS];
-    uint8_t SeriLen[DEVICE_LIST_SERI_LEN];
-    uint8_t DeviceSeri[DEVICE_LIST_DEVICE_SERI];
-    uint8_t DeviceRSSI[DEVICE_LIST_DEVICE_RSSI];
-} BULK_BASE_DEVICE_LIST;
-
-typedef union __SAVE_BULK_DEVICE_LIST__
-{
-    uint8_t dataBuffer[SAVE_BULK_DEVICE_LIST_LEN];
-    BULK_BASE_DEVICE_LIST bulkBaseDeviceList;
-} SAVE_BULK_DEVICE_LIST;
+    uint8_t uCharValues[2];
+    unsigned char uCharValue;
+    char charValue;
+} SAVE_BULK_DEVICE_RSSI;
 
 @protocol SCBleDataHandleDelegate <NSObject>
 @optional

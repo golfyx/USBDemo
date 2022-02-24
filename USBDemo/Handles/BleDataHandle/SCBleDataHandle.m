@@ -485,8 +485,11 @@
                     tmpStr = [NSString stringWithFormat:@"%@%C", tmpStr, buffer[36+i]];
                 }
                 bulkDeviceInfo.deviceSeri = tmpStr;
+                
                 tmpCh = AsciiToByte(buffer[68]) * 16 + AsciiToByte(buffer[69]);
-                bulkDeviceInfo.deviceRssi = tmpCh;
+                SAVE_BULK_DEVICE_RSSI saveBulkDeviceRssi;
+                saveBulkDeviceRssi.uCharValue = tmpCh;
+                bulkDeviceInfo.deviceRssi = saveBulkDeviceRssi.charValue;
                 
                 if (bulkDeviceInfo.deviceSeri.length > 0) {
                     if ([self.delegate respondsToSelector:@selector(didReceiveBulkScanDeviceList:)]) {
