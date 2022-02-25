@@ -318,15 +318,24 @@
                     self.weightValue.stringValue = userInfoModel.weight;
                     self.userPhoneValue.stringValue = phone;
 
-                    [SCRequestHandle saveUserProcessingTimeCompletion:^(BOOL success, id  _Nonnull responseObject) {
+                    [SCRequestHandle clearCacheDataDeviceInfo:deviceInfo completion:^(BOOL success, id  _Nonnull responseObject) {
                         if (success) {
-                            [EMRToast Show:@"设置服务器开始测量时间成功"];
-                            WDLog(LOG_MODUL_HTTPREQUEST, @"设置服务器开始测量时间成功");
+                            WDLog(LOG_MODUL_HTTPREQUEST, @"清除服务器缓存成功");
+                            [SCRequestHandle saveUserProcessingTimeCompletion:^(BOOL success, id  _Nonnull responseObject) {
+                                if (success) {
+                                    [EMRToast Show:@"设置服务器开始测量时间成功"];
+                                    WDLog(LOG_MODUL_HTTPREQUEST, @"设置服务器开始测量时间成功");
+                                } else {
+                                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"设置服务器开始测量时间失败"]];
+                                    WDLog(LOG_MODUL_HTTPREQUEST, @"设置服务器开始测量时间失败");
+                                }
+                                [self hiddenProgressIndicator];
+                            }];
                         } else {
-                            [EMRToast Show:[self handlingInvalidData:responseObject title:@"设置服务器开始测量时间失败"]];
-                            WDLog(LOG_MODUL_HTTPREQUEST, @"设置服务器开始测量时间失败");
+                            [EMRToast Show:[self handlingInvalidData:responseObject title:@"清除服务器缓存失败"]];
+                            [self hiddenProgressIndicator];
+                            WDLog(LOG_MODUL_HTTPREQUEST, @"清除服务器缓存失败");
                         }
-                        [self hiddenProgressIndicator];
                     }];
                 } else {
                     [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取用户信息失败"]];
@@ -775,14 +784,18 @@
             WDLog(LOG_MODUL_HTTPREQUEST, @"清除服务器缓存成功");
             [SCRequestHandle saveUserProcessingTimeCompletion:^(BOOL success, id  _Nonnull responseObject) {
                 if (success) {
-                    WDLog(LOG_MODUL_HTTPREQUEST, @"服务器设置开始测量时间成功");
+                    WDLog(LOG_MODUL_HTTPREQUEST, @"设置服务器开始测量时间成功");
                 } else {
-                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"服务器设置开始测量时间失败"]];
-                    WDLog(LOG_MODUL_HTTPREQUEST, @"服务器设置开始测量时间失败");
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [EMRToast Show:[self handlingInvalidData:responseObject title:@"设置服务器开始测量时间失败"]];
+                    });
+                    WDLog(LOG_MODUL_HTTPREQUEST, @"设置服务器开始测量时间失败");
                 }
             }];
         } else {
-            [EMRToast Show:[self handlingInvalidData:responseObject title:@"清除服务器缓存失败"]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [EMRToast Show:[self handlingInvalidData:responseObject title:@"清除服务器缓存失败"]];
+            });
             WDLog(LOG_MODUL_HTTPREQUEST, @"清除服务器缓存失败");
         }
     }];
