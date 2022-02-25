@@ -14,8 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ScreeningViewDelegate <NSObject>
 @optional
-- (void)didStartAndSaveData;
-- (void)didStopAndUploadData;
+- (void)didShowProgressIndicatorWithTitle:(NSString *)title;
 - (void)didCompleteUploadData;
 
 @end

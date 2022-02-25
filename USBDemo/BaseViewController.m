@@ -108,21 +108,12 @@
     }
 }
 
-- (void)didStartAndSaveData {
+- (void)didShowProgressIndicatorWithTitle:(NSString *)title {
+    
     if (!self.presentingViewController) {
         self.progressIndicator = (SCProgressIndicator *)[CommonUtil getViewFromNibName:@"SCProgressIndicator"];
     }
-    self.progressIndicator.progressTitle.stringValue = @"正在激活设备，请稍后...";
-    [self.progressIndicator layoutSubviews:self.view.frame];
-    [self.view addSubview:self.progressIndicator];
-    [self.progressIndicator startAnimation];
-}
-
-- (void)didStopAndUploadData {
-    if (!self.presentingViewController) {
-        self.progressIndicator = (SCProgressIndicator *)[CommonUtil getViewFromNibName:@"SCProgressIndicator"];
-    }
-    self.progressIndicator.progressTitle.stringValue = @"正在上传数据，请稍后...";
+    self.progressIndicator.progressTitle.stringValue = title.length > 0 ? title : @"请稍后...";
     [self.progressIndicator layoutSubviews:self.view.frame];
     [self.view addSubview:self.progressIndicator];
     [self.progressIndicator startAnimation];

@@ -205,8 +205,8 @@
         return;
     }
     
-    if ([self.delegate respondsToSelector:@selector(didStartAndSaveData)]) {
-        [self.delegate didStartAndSaveData];
+    if ([self.delegate respondsToSelector:@selector(didShowProgressIndicatorWithTitle:)]) {
+        [self.delegate didShowProgressIndicatorWithTitle:@"正在激活设备，请稍后..."];
     }
     
     SCAppVaribleHandleInstance.isStartMeasure = YES;
@@ -234,8 +234,8 @@
         return;
     }
     
-    if ([self.delegate respondsToSelector:@selector(didStopAndUploadData)]) {
-        [self.delegate didStopAndUploadData];
+    if ([self.delegate respondsToSelector:@selector(didShowProgressIndicatorWithTitle:)]) {
+        [self.delegate didShowProgressIndicatorWithTitle:@"正在上传数据，请稍后..."];
     }
     
     [SCBleDataHandle sharedManager].isReadingAllBlock = YES;
@@ -260,11 +260,15 @@
 }
 - (IBAction)getCurrentDetectionDeviceInfoButtonAction:(NSButton *)sender {
     
+    if ([self.delegate respondsToSelector:@selector(didShowProgressIndicatorWithTitle:)]) {
+        [self.delegate didShowProgressIndicatorWithTitle:@"正在获取当前上传进度，请稍后..."];
+    }
+    
     /// 添加一个获取上传进度
     NSString *phone = self.userPhoneValue.stringValue;  // 如果设备里面没有手机号，在判断用户有没有输入手机号，都没有就返回，一个有就登录
     if (![CommonUtil validateMobile:phone]) {
-
         [EMRToast Show:@"请输入手机号！"];
+        [self hiddenProgressIndicator];
         WDLog(LOG_MODUL_BLE,@"请输入手机号！");
         return;
     }
@@ -320,18 +324,21 @@
                             detectionInfo.endPageIndex = [[CommonUtil dataProcessing:responseObject title:@"endPageIndex" isInt:YES] intValue];
                             
                             self.curEcgDataBlockDetail.stringValue = [NSString stringWithFormat:@" 当前数据块索引: %d \n 当前数据页索引: %d \n 块页数结束索引: %d \n 当前进行中的24小时检测ID: %d", detectionInfo.dataIndex, detectionInfo.dataPageIndex, detectionInfo.endPageIndex, detectionInfo.detectionId];
-                            
+                            [self hiddenProgressIndicator];
                             
                         } else {
                             [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取当前检测信息失败"]];
+                            [self hiddenProgressIndicator];
                         }
                     }];
                 } else {
                     [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取用户信息失败"]];
+                    [self hiddenProgressIndicator];
                 }
             }];
         } else {
             [EMRToast Show:[self handlingInvalidData:responseObject title:@"登录失败"]];
+            [self hiddenProgressIndicator];
         }
     }];
 }
