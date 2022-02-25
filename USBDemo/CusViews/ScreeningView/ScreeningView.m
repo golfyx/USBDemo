@@ -258,6 +258,83 @@
         [self hiddenProgressIndicator];
     }
 }
+- (IBAction)getCurrentDetectionDeviceInfoButtonAction:(NSButton *)sender {
+    
+    /// 添加一个获取上传进度
+    NSString *phone = self.userPhoneValue.stringValue;  // 如果设备里面没有手机号，在判断用户有没有输入手机号，都没有就返回，一个有就登录
+    if (![CommonUtil validateMobile:phone]) {
+
+        [EMRToast Show:@"请输入手机号！"];
+        WDLog(LOG_MODUL_BLE,@"请输入手机号！");
+        return;
+    }
+
+    NSString *captcha = @"998080"; /// 为了筛查写的固定验证码
+
+    SCMultiDeviceInfo *deviceInfo = [SCMultiDeviceInfo new];
+    [SCRequestHandle userLoginWithPhone:phone captcha:captcha completion:^(BOOL success, id  _Nonnull responseObject) {
+        if (success) {
+            deviceInfo.token = responseObject[@"data"];
+            WDLog(LOG_MODUL_HTTPREQUEST,@"登录成功");
+
+            [SCRequestHandle getCurUserInfoCompletion:^(BOOL success, id  _Nonnull responseObject) {
+                if (success) {
+                    WDLog(LOG_MODUL_HTTPREQUEST,@"获取当前用户信息成功");
+
+                    // 记录id用于更新
+                    SCUserInfoModel *userInfoModel = [[SCUserInfoModel alloc] init];
+                    userInfoModel.userID = [[CommonUtil dataProcessing:responseObject title:@"userId" isInt:YES] intValue];
+                    userInfoModel.memberID = [[CommonUtil dataProcessing:responseObject title:@"memberId" isInt:YES] intValue];
+                    userInfoModel.name = [CommonUtil dataProcessing:responseObject title:@"name" isInt:NO];
+                    userInfoModel.genderType = [[CommonUtil dataProcessing:responseObject title:@"gender" isInt:YES] intValue];
+                    userInfoModel.iconUrl = [CommonUtil dataProcessing:responseObject title:@"avatarUrl" isInt:NO];
+                    userInfoModel.birthday = [CommonUtil dataProcessing:responseObject title:@"birthdate" isInt:NO];
+                    userInfoModel.height = [CommonUtil dataProcessing:responseObject title:@"height" isInt:NO];
+                    userInfoModel.weight = [CommonUtil dataProcessing:responseObject title:@"weight" isInt:NO];
+                    userInfoModel.phoneNum = phone;
+                    SCAppVaribleHandleInstance.userInfoModel = userInfoModel;
+                    deviceInfo.userInfoModel = userInfoModel;
+
+                    if ([@"" isEqualToString:userInfoModel.birthday] || !userInfoModel.birthday) {
+                        WDLog(LOG_MODUL_HTTPREQUEST,@"当前账户没有注册,请重新输入手机号！");
+                        [EMRToast Show:@"当前账户没有注册,请重新输入手机号！"];
+                        [self hiddenProgressIndicator];
+                        return;
+                    }
+
+                    self.nameValue.stringValue = userInfoModel.name;
+                    [self.genderValue selectItemAtIndex:(GenderType_male == userInfoModel.genderType ? 0 : GenderType_female == userInfoModel.genderType ? 1 : 2)];
+                    self.ageValue.stringValue = [CommonUtil calAgeByBirthday:userInfoModel.birthday];
+                    self.heightValue.stringValue = userInfoModel.height;
+                    self.weightValue.stringValue = userInfoModel.weight;
+                    self.userPhoneValue.stringValue = phone;
+
+                    [SCRequestHandle getCurrentDetectionDeviceInfo:deviceInfo completion:^(BOOL success, id  _Nonnull responseObject) {
+                        if (success) {
+                            WDLog(LOG_MODUL_HTTPREQUEST,@"获取当前检测信息成功");
+                            SCDetectionInfo *detectionInfo = [SCDetectionInfo new];
+                            detectionInfo.dataIndex = [[CommonUtil dataProcessing:responseObject title:@"dataIndex" isInt:YES] intValue];
+                            detectionInfo.dataPageIndex = [[CommonUtil dataProcessing:responseObject title:@"dataPageIndex" isInt:YES] intValue];
+                            detectionInfo.detectionId = [[CommonUtil dataProcessing:responseObject title:@"detectionId" isInt:YES] intValue];
+                            detectionInfo.detectionId2Minutes = [[CommonUtil dataProcessing:responseObject title:@"detectionId2Minutes" isInt:YES] intValue];
+                            detectionInfo.endPageIndex = [[CommonUtil dataProcessing:responseObject title:@"endPageIndex" isInt:YES] intValue];
+                            
+                            self.curEcgDataBlockDetail.stringValue = [NSString stringWithFormat:@" 当前数据块索引: %d \n 当前数据页索引: %d \n 块页数结束索引: %d \n 当前进行中的24小时检测ID: %d", detectionInfo.dataIndex, detectionInfo.dataPageIndex, detectionInfo.endPageIndex, detectionInfo.detectionId];
+                            
+                            
+                        } else {
+                            [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取当前检测信息失败"]];
+                        }
+                    }];
+                } else {
+                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取用户信息失败"]];
+                }
+            }];
+        } else {
+            [EMRToast Show:[self handlingInvalidData:responseObject title:@"登录失败"]];
+        }
+    }];
+}
 
 - (IBAction)directCompletionButton:(NSButton *)sender {
     [self didFinishUploadAllData];
