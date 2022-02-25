@@ -186,11 +186,11 @@
                     </popUpButtonCell>
                 </popUpButton>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gv6-l1-jN7">
-                    <rect key="frame" x="13" y="352" width="134" height="32"/>
+                    <rect key="frame" x="3" y="352" width="88" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="push" title="登录并开始测量" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RbJ-Eg-6tn">
+                    <buttonCell key="cell" type="push" title="开始测量" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RbJ-Eg-6tn">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
                     </buttonCell>
                     <connections>
                         <action selector="phoneCaptchaLogin:" target="c22-O7-iKe" id="r7q-7D-pzO"/>
@@ -206,11 +206,11 @@
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xpL-7W-6u8">
-                    <rect key="frame" x="158" y="352" width="164" height="32"/>
+                    <rect key="frame" x="108" y="352" width="88" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="push" title="停止并开始上传数据" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FZj-2c-wTC">
+                    <buttonCell key="cell" type="push" title="停止测量" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FZj-2c-wTC">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
                     </buttonCell>
                     <connections>
                         <action selector="stopAndUploadData:" target="c22-O7-iKe" id="2rb-6X-8Qy"/>
@@ -227,11 +227,11 @@
                     </subviews>
                 </customView>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BtW-FE-Ohy">
-                    <rect key="frame" x="393" y="322" width="182" height="20"/>
+                    <rect key="frame" x="442" y="322" width="133" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="是否需要删除设备里面数据" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="hT4-3h-b0O">
+                    <buttonCell key="cell" type="check" title="删除设备里面数据" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="hT4-3h-b0O">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
                     </buttonCell>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XPG-uf-C9D">
@@ -270,7 +270,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AjA-5b-m7a">
-                    <rect key="frame" x="203" y="313" width="134" height="32"/>
+                    <rect key="frame" x="171" y="313" width="134" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="push" title="打开登记文本" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7on-PQ-FB4">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -314,25 +314,49 @@
                     </scroller>
                 </scrollView>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FDQ-N3-7iV">
-                    <rect key="frame" x="357" y="352" width="114" height="32"/>
+                    <rect key="frame" x="399" y="351" width="113" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="push" title="获取上传进度" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Nmd-Ab-ku9">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
                         <action selector="getCurrentDetectionDeviceInfoButtonAction:" target="c22-O7-iKe" id="Oxh-ch-3u3"/>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jMd-0I-ZdM">
-                    <rect key="frame" x="462" y="352" width="114" height="32"/>
+                    <rect key="frame" x="503" y="352" width="79" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="push" title="强制完成检测" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bee-he-qzC">
+                    <buttonCell key="cell" type="push" title="强制完成" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bee-he-qzC">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" size="13" name=".PingFangSC-Regular"/>
                     </buttonCell>
                     <connections>
                         <action selector="directCompletionButton:" target="c22-O7-iKe" id="ML4-Aq-ois"/>
+                    </connections>
+                </button>
+                <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aG6-d4-q21">
+                    <rect key="frame" x="244" y="354" width="161" height="28"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="8ZG-pl-x2t">
+                        <font key="font" metaFont="system"/>
+                        <date key="date" timeIntervalSinceReferenceDate="667485595.53046095">
+                            <!--2022-02-25 12:39:55 +0000-->
+                        </date>
+                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <datePickerElements key="datePickerElements" year="YES" month="YES" day="YES" hour="YES" minute="YES" second="YES"/>
+                    </datePickerCell>
+                </datePicker>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8fx-XJ-nRj">
+                    <rect key="frame" x="321" y="313" width="114" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="设置检测时间" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="r04-S0-FGi">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="saveUserProcessingTimeAction:" target="c22-O7-iKe" id="1G4-fN-NBO"/>
                     </connections>
                 </button>
             </subviews>
@@ -349,11 +373,12 @@
                 <outlet property="nameValue" destination="fWW-9n-Xmm" id="glO-YO-Bdd"/>
                 <outlet property="readingBlockProgress" destination="YTH-Sj-kFU" id="byj-H9-MgO"/>
                 <outlet property="readingBlockProgressValue" destination="uIH-OT-edh" id="6hI-Xd-YfJ"/>
+                <outlet property="saveDatePicker" destination="aG6-d4-q21" id="Fep-ny-VJg"/>
                 <outlet property="serialNumPopUpBtn" destination="KJO-ea-L7E" id="kcy-qv-OF8"/>
                 <outlet property="userPhoneValue" destination="6Bt-dU-qNg" id="hA1-y6-dgn"/>
                 <outlet property="weightValue" destination="3cc-bB-8fE" id="pSF-o0-s0a"/>
             </connections>
-            <point key="canvasLocation" x="71" y="229"/>
+            <point key="canvasLocation" x="70.5" y="229"/>
         </customView>
     </objects>
 </document>

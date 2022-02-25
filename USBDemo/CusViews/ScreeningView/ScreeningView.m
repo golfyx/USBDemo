@@ -258,6 +258,90 @@
         [self hiddenProgressIndicator];
     }
 }
+
+- (IBAction)saveUserProcessingTimeAction:(NSButton *)sender {
+    
+    if ([self.delegate respondsToSelector:@selector(didShowProgressIndicatorWithTitle:)]) {
+        [self.delegate didShowProgressIndicatorWithTitle:@"正在设置服务器的开始时间，请稍后..."];
+    }
+    
+    
+    NSString *phone = self.userPhoneValue.stringValue;  // 如果设备里面没有手机号，在判断用户有没有输入手机号，都没有就返回，一个有就登录
+    if (![CommonUtil validateMobile:phone]) {
+        [EMRToast Show:@"请输入手机号！"];
+        [self hiddenProgressIndicator];
+        WDLog(LOG_MODUL_BLE,@"请输入手机号！");
+        return;
+    }
+
+    NSString *captcha = @"998080"; /// 为了筛查写的固定验证码
+
+    SCMultiDeviceInfo *deviceInfo = [SCMultiDeviceInfo new];
+    NSDate *saveDate = self.saveDatePicker.dateValue;
+    long long _timesp = [saveDate timeIntervalSince1970] * 1000;
+    SCAppVaribleHandleInstance.startRecordTimestamp = _timesp; // 服务器的开始时间以毫秒为单位
+    
+    [SCRequestHandle userLoginWithPhone:phone captcha:captcha completion:^(BOOL success, id  _Nonnull responseObject) {
+        if (success) {
+            deviceInfo.token = responseObject[@"data"];
+            WDLog(LOG_MODUL_HTTPREQUEST,@"登录成功");
+
+            [SCRequestHandle getCurUserInfoCompletion:^(BOOL success, id  _Nonnull responseObject) {
+                if (success) {
+                    WDLog(LOG_MODUL_HTTPREQUEST,@"获取当前用户信息成功");
+
+                    // 记录id用于更新
+                    SCUserInfoModel *userInfoModel = [[SCUserInfoModel alloc] init];
+                    userInfoModel.userID = [[CommonUtil dataProcessing:responseObject title:@"userId" isInt:YES] intValue];
+                    userInfoModel.memberID = [[CommonUtil dataProcessing:responseObject title:@"memberId" isInt:YES] intValue];
+                    userInfoModel.name = [CommonUtil dataProcessing:responseObject title:@"name" isInt:NO];
+                    userInfoModel.genderType = [[CommonUtil dataProcessing:responseObject title:@"gender" isInt:YES] intValue];
+                    userInfoModel.iconUrl = [CommonUtil dataProcessing:responseObject title:@"avatarUrl" isInt:NO];
+                    userInfoModel.birthday = [CommonUtil dataProcessing:responseObject title:@"birthdate" isInt:NO];
+                    userInfoModel.height = [CommonUtil dataProcessing:responseObject title:@"height" isInt:NO];
+                    userInfoModel.weight = [CommonUtil dataProcessing:responseObject title:@"weight" isInt:NO];
+                    userInfoModel.phoneNum = phone;
+                    SCAppVaribleHandleInstance.userInfoModel = userInfoModel;
+                    deviceInfo.userInfoModel = userInfoModel;
+
+                    if ([@"" isEqualToString:userInfoModel.birthday] || !userInfoModel.birthday) {
+                        WDLog(LOG_MODUL_HTTPREQUEST,@"当前账户没有注册,请重新输入手机号！");
+                        [EMRToast Show:@"当前账户没有注册,请重新输入手机号！"];
+                        [self hiddenProgressIndicator];
+                        return;
+                    }
+
+                    self.nameValue.stringValue = userInfoModel.name;
+                    [self.genderValue selectItemAtIndex:(GenderType_male == userInfoModel.genderType ? 0 : GenderType_female == userInfoModel.genderType ? 1 : 2)];
+                    self.ageValue.stringValue = [CommonUtil calAgeByBirthday:userInfoModel.birthday];
+                    self.heightValue.stringValue = userInfoModel.height;
+                    self.weightValue.stringValue = userInfoModel.weight;
+                    self.userPhoneValue.stringValue = phone;
+
+                    [SCRequestHandle saveUserProcessingTimeCompletion:^(BOOL success, id  _Nonnull responseObject) {
+                        if (success) {
+                            [EMRToast Show:@"设置服务器开始测量时间成功"];
+                            WDLog(LOG_MODUL_HTTPREQUEST, @"设置服务器开始测量时间成功");
+                        } else {
+                            [EMRToast Show:[self handlingInvalidData:responseObject title:@"设置服务器开始测量时间失败"]];
+                            WDLog(LOG_MODUL_HTTPREQUEST, @"设置服务器开始测量时间失败");
+                        }
+                        [self hiddenProgressIndicator];
+                    }];
+                } else {
+                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取用户信息失败"]];
+                    [self hiddenProgressIndicator];
+                }
+            }];
+        } else {
+            [EMRToast Show:[self handlingInvalidData:responseObject title:@"登录失败"]];
+            [self hiddenProgressIndicator];
+        }
+    }];
+    
+}
+
+
 - (IBAction)getCurrentDetectionDeviceInfoButtonAction:(NSButton *)sender {
     
     if ([self.delegate respondsToSelector:@selector(didShowProgressIndicatorWithTitle:)]) {
@@ -448,6 +532,78 @@
 //    [pasteboard declareTypes:types owner:nil];
 //    [pasteboard setString:self.usersTableFilePath forType:NSPasteboardTypeString];
     
+//    if ([self.delegate respondsToSelector:@selector(didShowProgressIndicatorWithTitle:)]) {
+//        [self.delegate didShowProgressIndicatorWithTitle:@"正在清空服务器缓存，请稍后..."];
+//    }
+//    NSString *phone = self.userPhoneValue.stringValue;  // 如果设备里面没有手机号，在判断用户有没有输入手机号，都没有就返回，一个有就登录
+//    if (![CommonUtil validateMobile:phone]) {
+//        [EMRToast Show:@"请输入手机号！"];
+//        [self hiddenProgressIndicator];
+//        WDLog(LOG_MODUL_BLE,@"请输入手机号！");
+//        return;
+//    }
+//
+//    NSString *captcha = @"998080"; /// 为了筛查写的固定验证码
+//
+//    SCMultiDeviceInfo *deviceInfo = [SCMultiDeviceInfo new];
+//    [SCRequestHandle userLoginWithPhone:phone captcha:captcha completion:^(BOOL success, id  _Nonnull responseObject) {
+//        if (success) {
+//            deviceInfo.token = responseObject[@"data"];
+//            WDLog(LOG_MODUL_HTTPREQUEST,@"登录成功");
+//
+//            [SCRequestHandle getCurUserInfoCompletion:^(BOOL success, id  _Nonnull responseObject) {
+//                if (success) {
+//                    WDLog(LOG_MODUL_HTTPREQUEST,@"获取当前用户信息成功");
+//
+//                    // 记录id用于更新
+//                    SCUserInfoModel *userInfoModel = [[SCUserInfoModel alloc] init];
+//                    userInfoModel.userID = [[CommonUtil dataProcessing:responseObject title:@"userId" isInt:YES] intValue];
+//                    userInfoModel.memberID = [[CommonUtil dataProcessing:responseObject title:@"memberId" isInt:YES] intValue];
+//                    userInfoModel.name = [CommonUtil dataProcessing:responseObject title:@"name" isInt:NO];
+//                    userInfoModel.genderType = [[CommonUtil dataProcessing:responseObject title:@"gender" isInt:YES] intValue];
+//                    userInfoModel.iconUrl = [CommonUtil dataProcessing:responseObject title:@"avatarUrl" isInt:NO];
+//                    userInfoModel.birthday = [CommonUtil dataProcessing:responseObject title:@"birthdate" isInt:NO];
+//                    userInfoModel.height = [CommonUtil dataProcessing:responseObject title:@"height" isInt:NO];
+//                    userInfoModel.weight = [CommonUtil dataProcessing:responseObject title:@"weight" isInt:NO];
+//                    userInfoModel.phoneNum = phone;
+//                    SCAppVaribleHandleInstance.userInfoModel = userInfoModel;
+//                    deviceInfo.userInfoModel = userInfoModel;
+//
+//                    if ([@"" isEqualToString:userInfoModel.birthday] || !userInfoModel.birthday) {
+//                        WDLog(LOG_MODUL_HTTPREQUEST,@"当前账户没有注册,请重新输入手机号！");
+//                        [EMRToast Show:@"当前账户没有注册,请重新输入手机号！"];
+//                        [self hiddenProgressIndicator];
+//                        return;
+//                    }
+//
+//                    self.nameValue.stringValue = userInfoModel.name;
+//                    [self.genderValue selectItemAtIndex:(GenderType_male == userInfoModel.genderType ? 0 : GenderType_female == userInfoModel.genderType ? 1 : 2)];
+//                    self.ageValue.stringValue = [CommonUtil calAgeByBirthday:userInfoModel.birthday];
+//                    self.heightValue.stringValue = userInfoModel.height;
+//                    self.weightValue.stringValue = userInfoModel.weight;
+//                    self.userPhoneValue.stringValue = phone;
+//
+//                    [SCRequestHandle clearCacheDataDeviceInfo:deviceInfo completion:^(BOOL success, id  _Nonnull responseObject) {
+//                        if (success) {
+//                            WDLog(LOG_MODUL_HTTPREQUEST, @"清除服务器缓存成功");
+//                        } else {
+//                            [EMRToast Show:[self handlingInvalidData:responseObject title:@"清除服务器缓存失败"]];
+//                            WDLog(LOG_MODUL_HTTPREQUEST, @"清除服务器缓存失败");
+//                        }
+//                        [self hiddenProgressIndicator];
+//                    }];
+//                } else {
+//                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取用户信息失败"]];
+//                    [self hiddenProgressIndicator];
+//                }
+//            }];
+//        } else {
+//            [EMRToast Show:[self handlingInvalidData:responseObject title:@"登录失败"]];
+//            [self hiddenProgressIndicator];
+//        }
+//    }];
+    
+    
     
     [[NSWorkspace sharedWorkspace] selectFile:nil inFileViewerRootedAtPath:self.documentPath];
     
@@ -616,7 +772,7 @@
     
     [SCRequestHandle clearCacheDataDeviceInfo:deviceInfo completion:^(BOOL success, id  _Nonnull responseObject) {
         if (success) {
-            WDLog(LOG_MODUL_HTTPREQUEST, @"清除服务器缓存失败");
+            WDLog(LOG_MODUL_HTTPREQUEST, @"清除服务器缓存成功");
             [SCRequestHandle saveUserProcessingTimeCompletion:^(BOOL success, id  _Nonnull responseObject) {
                 if (success) {
                     WDLog(LOG_MODUL_HTTPREQUEST, @"服务器设置开始测量时间成功");
@@ -1009,9 +1165,11 @@
                 deviceInfo.curUploadBlockIndex++;
             }
         } else {
-            [EMRToast Show:[self handlingInvalidData:responseObject title:@"数据上传失败"]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [EMRToast Show:[self handlingInvalidData:responseObject title:@"数据上传失败"]];
+                [self hiddenProgressIndicator];
+            });
             [[SCBleDataHandle sharedManager] exitReadMode:deviceInfo.deviceObject];
-            [self hiddenProgressIndicator];
         }
     }];
 }
@@ -1025,26 +1183,30 @@
             [EMRToast Show:@"数据上传完成！"];
             
             [SCRequestHandle clearCacheDataDeviceInfo:deviceInfo completion:^(BOOL success, id  _Nonnull responseObject) {
-                if (success) {
-                    WDLog(LOG_MODUL_HTTPREQUEST, @"clearCacheDataCompletion");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (success) {
+                        WDLog(LOG_MODUL_HTTPREQUEST, @"clearCacheDataCompletion");
 
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        NSString *timeIntervalStr = [NSString stringWithFormat:@"读取并上传数据共花费的时长为:%0.2fs", -[self.startBlockDate timeIntervalSinceNow]];
-                        WDLog(LOG_MODUL_BLE, @"%@", timeIntervalStr);
-                        self.curEcgDataBlockDetail.stringValue = timeIntervalStr;
-                        self.readingBlockProgress.doubleValue = 0;
-                        self.readingBlockProgressValue.stringValue = @"0/10";
-                    });
-                } else {
-                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"清除缓存失败"]];
-                }
-                [self playVoiceHandler];
-                [self hiddenProgressIndicator];
+                            NSString *timeIntervalStr = [NSString stringWithFormat:@"读取并上传数据共花费的时长为:%0.2fs", -[self.startBlockDate timeIntervalSinceNow]];
+                            WDLog(LOG_MODUL_BLE, @"%@", timeIntervalStr);
+                            self.curEcgDataBlockDetail.stringValue = timeIntervalStr;
+                            self.readingBlockProgress.doubleValue = 0;
+                            self.readingBlockProgressValue.stringValue = @"0/10";
+                        
+                    } else {
+                        [EMRToast Show:[self handlingInvalidData:responseObject title:@"清除缓存失败"]];
+                    }
+                    [self playVoiceHandler];
+                    [self hiddenProgressIndicator];
+                });
+                
             }];
             
         } else {
-            [EMRToast Show:[self handlingInvalidData:responseObject title:@"数据上传失败"]];
-            [self hiddenProgressIndicator];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [EMRToast Show:[self handlingInvalidData:responseObject title:@"数据上传失败"]];
+                [self hiddenProgressIndicator];
+            });
         }
     }];
 }

@@ -80,21 +80,21 @@
                     <rect key="frame" x="349" y="10" width="311" height="386"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="3QV-tc-jdH">
-                        <rect key="frame" x="1" y="1" width="309" height="384"/>
+                        <rect key="frame" x="1" y="1" width="294" height="369"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view id="vt0-Tv-qzi">
-                                <rect key="frame" x="0.0" y="0.0" width="294" height="369"/>
+                                <rect key="frame" x="0.0" y="0.0" width="279" height="354"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </view>
                         </subviews>
                     </clipView>
                     <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="UEU-AO-OHt">
-                        <rect key="frame" x="1" y="369" width="309" height="16"/>
+                        <rect key="frame" x="1" y="370" width="294" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="EDL-Ef-RPZ">
-                        <rect key="frame" x="294" y="1" width="16" height="384"/>
+                        <rect key="frame" x="295" y="1" width="15" height="369"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
@@ -122,21 +122,21 @@
                     <rect key="frame" x="10" y="10" width="291" height="386"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" id="lJZ-aK-DHT">
-                        <rect key="frame" x="1" y="1" width="289" height="384"/>
+                        <rect key="frame" x="1" y="1" width="274" height="369"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view id="gAh-tl-Fe6">
-                                <rect key="frame" x="0.0" y="0.0" width="274" height="369"/>
+                                <rect key="frame" x="0.0" y="0.0" width="259" height="354"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </view>
                         </subviews>
                     </clipView>
                     <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="yZs-dV-YuW">
-                        <rect key="frame" x="1" y="369" width="289" height="16"/>
+                        <rect key="frame" x="1" y="370" width="274" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="2AL-kf-en9">
-                        <rect key="frame" x="274" y="1" width="16" height="384"/>
+                        <rect key="frame" x="275" y="1" width="15" height="369"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
@@ -156,8 +156,8 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="Hww-u1-462">
                         <font key="font" metaFont="system"/>
-                        <date key="date" timeIntervalSinceReferenceDate="662037245.88321805">
-                            <!--2021-12-24 11:14:05 +0000-->
+                        <date key="date" timeIntervalSinceReferenceDate="667478458.58792806">
+                            <!--2022-02-25 10:40:58 +0000-->
                         </date>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
