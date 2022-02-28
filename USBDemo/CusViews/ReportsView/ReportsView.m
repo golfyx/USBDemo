@@ -379,7 +379,13 @@
                     self.genderValue.stringValue = (GenderType_male == genderType ? @"男" : GenderType_female == genderType ? @"女" : @"未知");
                     self.ageValue.stringValue = [CommonUtil calAgeByBirthday:birthday];
                     
-                    [SCRequestHandle getECGRecordList:memberId completion:^(BOOL success, id  _Nonnull responseObject) {
+                    NSDate *date = self.datePicker.dateValue;
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    dateFormatter.dateFormat = @"yyyy-MM-dd";
+                    NSString *time = [dateFormatter stringFromDate:date];
+                    NSString *startTime = [NSString stringWithFormat:@"%@ 00:00:00", time];
+                    NSString *endTime = [NSString stringWithFormat:@"%@ 23:59:59", time];
+                    [SCRequestHandle getECGRecordList:memberId startTime:startTime endTime:endTime completion:^(BOOL success, id  _Nonnull responseObject) {
                         if (success) {
                             self.recordDataArray = [SCReportInfo mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
                             

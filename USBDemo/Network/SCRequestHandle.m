@@ -327,10 +327,12 @@
 }
 
 /// 获取记录列表
-+ (void)getECGRecordList:(int)memberId completion:(void(^)(BOOL success, id responseObject))completion {
++ (void)getECGRecordList:(int)memberId startTime:(NSString *)startTime endTime:(NSString *)endTime completion:(void(^)(BOOL success, id responseObject))completion {
     NSString *url = [NSString stringWithFormat:@"%@%@", ServerUrlString, ECGRecordList];
     NSDictionary *dict = @{
-        @"memberId" : @(memberId)
+        @"memberId" : @(memberId),
+        @"startTime" : startTime,
+        @"endTime" : endTime
     };
     WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, dict = %@", url, dict);
 
