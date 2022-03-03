@@ -416,7 +416,7 @@
                             detectionInfo.detectionId2Minutes = [[CommonUtil dataProcessing:responseObject title:@"detectionId2Minutes" isInt:YES] intValue];
                             detectionInfo.endPageIndex = [[CommonUtil dataProcessing:responseObject title:@"endPageIndex" isInt:YES] intValue];
                             
-                            self.curEcgDataBlockDetail.stringValue = [NSString stringWithFormat:@" 当前数据块索引: %d \n 当前数据页索引: %d \n 块页数结束索引: %d \n 当前进行中的24小时检测ID: %d", detectionInfo.dataIndex, detectionInfo.dataPageIndex, detectionInfo.endPageIndex, detectionInfo.detectionId];
+                            self.curEcgDataBlockDetail.stringValue = [NSString stringWithFormat:@" 当前人的USERID: %d MEMBERID: %d  \n 当前数据块索引: %d \n 当前数据页索引: %d \n 块页数结束索引: %d \n 当前进行中的24小时检测ID: %d", userInfoModel.userID, userInfoModel.memberID, detectionInfo.dataIndex, detectionInfo.dataPageIndex, detectionInfo.endPageIndex, detectionInfo.detectionId];
                             [self hiddenProgressIndicator];
                             
                         } else {
