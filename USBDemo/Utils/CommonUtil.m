@@ -174,7 +174,7 @@
 + (NSString *)calAgeByBirthday:(NSString *)birthday
 {
     if ([@"" isEqualToString:birthday] || !birthday) {
-        return @"0岁";
+        return @"0";
     }
     NSCalendar *calendar = [NSCalendar currentCalendar];//定义一个NSCalendar对象
         
@@ -190,13 +190,13 @@
     NSString *tempAge;
     
     if([date year] >0){
-        tempAge = [NSString stringWithFormat:(@"%ld岁"),(long)[date year]];
+        tempAge = [NSString stringWithFormat:(@"%ld"),(long)[date year]];
 //    }else if([date month] >0){
 //        tempAge = [NSString stringWithFormat:(@"%ld月"),(long)[date month]];
 //    }else if([date day]>0){
 //        tempAge = [NSString stringWithFormat:(@"%ld天"),(long)[date day]];
     }else {
-        tempAge = @"0岁";
+        tempAge = @"0";
     }
     return tempAge;
 }
