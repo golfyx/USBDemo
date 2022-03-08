@@ -42,6 +42,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak) IBOutlet NSScrollView *deviceScrollView;
 
 @property (weak) IBOutlet NSDatePicker *saveDatePicker;
+@property (weak) IBOutlet NSButton *updateUserInfoBtn;
+@property (weak) IBOutlet NSButton *getUploadBtn;
+@property (weak) IBOutlet NSButton *finishButton;
+@property (weak) IBOutlet NSButton *setDetectionTimeBtn;
 
 @property (weak) IBOutlet HolterGriddingView *holterGriddingView;
 @property (weak) IBOutlet HolterChartView *holterChartView;

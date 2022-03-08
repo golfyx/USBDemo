@@ -19,6 +19,7 @@
 #import "WDLog.h"
 
 #import "SCProgressIndicator.h"
+#import "ConfigureHandle.h"
 
 @interface BaseViewController () <ScreeningViewDelegate, ReportsViewDelegate>
 @property (weak) IBOutlet NSView *contentCustomView;
@@ -69,6 +70,10 @@
     
     self.screeningView.frame = CGRectMake(0, 10, self.contentCustomView.frame.size.width, self.contentCustomView.frame.size.height - 10);
     [self.contentCustomView addSubview:self.screeningView];
+    
+    if (ConfigureHandleInstance.isScreeningMode) {
+        self.topSegmentedControl.segmentCount = 2;
+    }
     
 }
 

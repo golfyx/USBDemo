@@ -376,7 +376,9 @@
                 <outlet property="batteryStatus" destination="QTB-fI-ZU5" id="Vqj-tZ-FgN"/>
                 <outlet property="curEcgDataBlockDetail" destination="kwm-pE-Dbp" id="ZQO-Pb-l7s"/>
                 <outlet property="deviceScrollView" destination="R6n-hE-QJf" id="q2v-IU-XR2"/>
+                <outlet property="finishButton" destination="jMd-0I-ZdM" id="v7B-jv-ia4"/>
                 <outlet property="genderValue" destination="gaS-5m-uYA" id="jKo-MC-BcA"/>
+                <outlet property="getUploadBtn" destination="FDQ-N3-7iV" id="PVH-GS-aL6"/>
                 <outlet property="heightValue" destination="S83-i4-I7x" id="TIB-zw-rI8"/>
                 <outlet property="holterChartView" destination="JGq-zl-5Lk" id="rRV-jG-A1d"/>
                 <outlet property="holterGriddingView" destination="fyS-y2-aFk" id="heO-2n-X9O"/>
@@ -386,6 +388,8 @@
                 <outlet property="readingBlockProgressValue" destination="uIH-OT-edh" id="6hI-Xd-YfJ"/>
                 <outlet property="saveDatePicker" destination="aG6-d4-q21" id="Fep-ny-VJg"/>
                 <outlet property="serialNumPopUpBtn" destination="KJO-ea-L7E" id="kcy-qv-OF8"/>
+                <outlet property="setDetectionTimeBtn" destination="8fx-XJ-nRj" id="kpf-RU-Zfn"/>
+                <outlet property="updateUserInfoBtn" destination="YPW-SO-Yam" id="8GL-eI-GoL"/>
                 <outlet property="userPhoneValue" destination="6Bt-dU-qNg" id="hA1-y6-dgn"/>
                 <outlet property="weightValue" destination="3cc-bB-8fE" id="pSF-o0-s0a"/>
             </connections>

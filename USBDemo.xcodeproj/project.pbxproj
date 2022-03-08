@@ -84,6 +84,8 @@
 		E8BCE6E02741F3CC00EE5497 /* SCUploadDataInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E8BCE6DF2741F3CC00EE5497 /* SCUploadDataInfo.m */; };
 		E8BCE6E42743AB3000EE5497 /* HolterChartView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E8BCE6E32743AB3000EE5497 /* HolterChartView.mm */; };
 		E8BCE6EA2743CF9E00EE5497 /* HolterGriddingView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8BCE6E92743CF9E00EE5497 /* HolterGriddingView.m */; };
+		E8C07CED27D7620600A86BF6 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = E8C07CEC27D7620600A86BF6 /* Config.plist */; };
+		E8C07CF527D762F400A86BF6 /* ConfigureHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8C07CF327D762F400A86BF6 /* ConfigureHandle.m */; };
 		E8CA462A271D7DD4007ED787 /* UsbMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = E8CA4629271D7DD4007ED787 /* UsbMonitor.m */; };
 		E8D772EE27C389F200CFE06D /* Crc32Check.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D772EC27C389F200CFE06D /* Crc32Check.m */; };
 		E8D772F127C38A2700CFE06D /* EncipherHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D772F027C38A2700CFE06D /* EncipherHandler.m */; };
@@ -248,6 +250,9 @@
 		E8BCE6E32743AB3000EE5497 /* HolterChartView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HolterChartView.mm; sourceTree = "<group>"; };
 		E8BCE6E82743CF9E00EE5497 /* HolterGriddingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HolterGriddingView.h; sourceTree = "<group>"; };
 		E8BCE6E92743CF9E00EE5497 /* HolterGriddingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HolterGriddingView.m; sourceTree = "<group>"; };
+		E8C07CEC27D7620600A86BF6 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
+		E8C07CF327D762F400A86BF6 /* ConfigureHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigureHandle.m; sourceTree = "<group>"; };
+		E8C07CF427D762F400A86BF6 /* ConfigureHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigureHandle.h; sourceTree = "<group>"; };
 		E8CA4628271D7DD4007ED787 /* UsbMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UsbMonitor.h; sourceTree = "<group>"; };
 		E8CA4629271D7DD4007ED787 /* UsbMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UsbMonitor.m; sourceTree = "<group>"; };
 		E8D1BD0A273E5558009FD379 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -589,6 +594,7 @@
 		E8A9F7DF2771AE57003EC614 /* Handles */ = {
 			isa = PBXGroup;
 			children = (
+				E8C07CF227D762F400A86BF6 /* ConfigureHandle */,
 				E8A9F86D2774247A003EC614 /* SCCacheDirectoryHandle */,
 				E8A9F82B27741143003EC614 /* SCDataBaseManagerHandle */,
 				E8691AA9273E438B002944FD /* SCAppVaribleHandle */,
@@ -709,6 +715,16 @@
 			path = HolterChartView;
 			sourceTree = "<group>";
 		};
+		E8C07CF227D762F400A86BF6 /* ConfigureHandle */ = {
+			isa = PBXGroup;
+			children = (
+				E8C07CEC27D7620600A86BF6 /* Config.plist */,
+				E8C07CF427D762F400A86BF6 /* ConfigureHandle.h */,
+				E8C07CF327D762F400A86BF6 /* ConfigureHandle.m */,
+			);
+			path = ConfigureHandle;
+			sourceTree = "<group>";
+		};
 		E8D772E227C389ED00CFE06D /* EncipherAndCrc */ = {
 			isa = PBXGroup;
 			children = (
@@ -786,6 +802,7 @@
 				E8A03E6327114265009E61EC /* Assets.xcassets in Resources */,
 				E8806A6B2746410D00CB628F /* DeviceInteractionView.xib in Resources */,
 				E8A9F7E52771B61F003EC614 /* ReportsViewCell.xib in Resources */,
+				E8C07CED27D7620600A86BF6 /* Config.plist in Resources */,
 				E84C8CDD279964430041C7E8 /* dingdong.wav in Resources */,
 				E8806A6627463D5E00CB628F /* ScreeningView.xib in Resources */,
 				E8A03E6627114265009E61EC /* Main.storyboard in Resources */,
@@ -910,6 +927,7 @@
 				E8691A6D273E3B41002944FD /* AFSecurityPolicy.m in Sources */,
 				E8A9F7D0277172B6003EC614 /* EMRToast.m in Sources */,
 				E8A9F8732774247A003EC614 /* SCCacheDirectoryHandle.m in Sources */,
+				E8C07CF527D762F400A86BF6 /* ConfigureHandle.m in Sources */,
 				E8691A79273E3B41002944FD /* AFNetworkingUtil.m in Sources */,
 				E8A9F85E27741143003EC614 /* SCDataBaseAbstractOptHandle.m in Sources */,
 				E8691A70273E3B41002944FD /* AFNetworkActivityIndicatorManager.m in Sources */,

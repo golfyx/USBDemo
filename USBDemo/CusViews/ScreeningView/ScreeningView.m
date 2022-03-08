@@ -22,6 +22,8 @@
 #import "DeviceListCell.h"
 #import "SCBulkDeviceInfo.h"
 
+#import "ConfigureHandle.h"
+
 @interface ScreeningView()<SCBleDataHandleDelegate, NSTableViewDelegate, NSTableViewDataSource, DeviceListCellDelegate>
 
 @property (nonatomic, strong) NSTableView *deviceListTableView;
@@ -164,6 +166,15 @@
     [super awakeFromNib];
     
     self.curBattery = 0;
+    
+    if (ConfigureHandleInstance.isScreeningMode) {
+        self.updateUserInfoBtn.hidden = YES;
+        self.getUploadBtn.hidden = YES;
+        self.finishButton.hidden = YES;
+        self.saveDatePicker.hidden = YES;
+        self.setDetectionTimeBtn.hidden = YES;
+        self.isDeleteECGData.hidden = YES;
+    }
     
     self.wantsLayer = YES;
     self.holterGriddingView.layer.shadowOffset = CGSizeMake(0, 5);
