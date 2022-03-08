@@ -143,6 +143,7 @@
 
 - (void)connectDevice:(DeviceListCell *)cell index:(int)index {
     if ([@"连接" isEqualToString:cell.connectDeviceButton.title]) {
+        [SCBleDataHandle sharedManager].connectButtonWasClicked = YES;
         self.selectedDeviceSeri = cell.deviceSeriTField.stringValue;
         cell.connectDeviceButton.title = @"断开";
         SCBulkDeviceInfo *bulkDeviceInfo = [SCBleDataHandle sharedManager].scanDeviceListDict[self.selectedDeviceSeri];
@@ -152,6 +153,7 @@
             [[SCBulkDataHandle sharedManager] connectBleDeviceIndex:index deviceObject:pDev];
         }
     } else {
+        [SCBleDataHandle sharedManager].connectButtonWasClicked = NO;
         [self disconnectDeviceBle:nil];
     }
     
@@ -236,7 +238,7 @@
         [CommonUtil showMessageWithTitle:@"设备还没有返回电量！！！"];
         return;
     }
-    if (self.curBattery <= 45) {
+    if (self.curBattery <= 5) {
         [CommonUtil showMessageWithTitle:@"设备电量少于45%，请充电后再上传！！！"];
         return;
     }
@@ -357,6 +359,67 @@
     
 }
 
+- (IBAction)updateUserInfoAction:(NSButton *)sender {
+    
+    if (![CommonUtil validateMobile:self.userPhoneValue.stringValue]) {
+        [EMRToast Show:@"请填写正确的手机号"];
+        return;
+    }
+    
+    // 出生日期不能小于1901-12-15，否则会导致博声医生端软件崩溃
+    // 所以暂定为1902-01-01，也就是0~120岁之间为合法年龄
+    if (120 <= self.ageValue.intValue || 0 >= self.ageValue.intValue) {
+        [EMRToast Show:@"年龄在0~120之间,请重新输入！"];
+        return;
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(didShowProgressIndicatorWithTitle:)]) {
+        [self.delegate didShowProgressIndicatorWithTitle:@"更新用户信息，请稍后..."];
+    }
+    
+    NSString *captcha = @"998080"; /// 为了筛查写的固定验证码
+    if (self.captchaValue.stringValue.length == 6) {
+        captcha = self.captchaValue.stringValue;
+    }
+    
+    [SCRequestHandle userLoginWithPhone:self.userPhoneValue.stringValue captcha:captcha completion:^(BOOL success, id  _Nonnull responseObject) {
+        if (success) {
+            WDLog(LOG_MODUL_HTTPREQUEST, @"登录成功");
+            [SCRequestHandle getCurUserInfoCompletion:^(BOOL success, id  _Nonnull responseObject) {
+                if (success) {
+                    
+                    WDLog(LOG_MODUL_HTTPREQUEST, @"获取用户信息成功");
+                    SCUserInfoModel *userInfoModel = SCAppVaribleHandleInstance.userInfoModel;
+                    
+                    userInfoModel.userID = [[CommonUtil dataProcessing:responseObject title:@"userId" isInt:YES] intValue];
+                    userInfoModel.memberID = [[CommonUtil dataProcessing:responseObject title:@"memberId" isInt:YES] intValue];
+                    userInfoModel.phoneNum = self.userPhoneValue.stringValue;
+                    userInfoModel.name = [self.nameValue.stringValue isEqualToString:@""] ? [CommonUtil dataProcessing:responseObject title:@"name" isInt:NO] : self.nameValue.stringValue;
+                    userInfoModel.genderType = [@"男" isEqualToString:self.genderValue.selectedItem.title] ? GenderType_male : [@"女" isEqualToString:self.genderValue.selectedItem.title] ? GenderType_female : GenderType_unknow;
+                    userInfoModel.birthday = [self.ageValue.stringValue isEqualToString:@""] ? [CommonUtil dataProcessing:responseObject title:@"birthdate" isInt:NO] : [CommonUtil calBirthdayByAge:self.ageValue.stringValue];
+                    userInfoModel.height = [self.heightValue.stringValue isEqualToString:@""] ? [CommonUtil dataProcessing:responseObject title:@"height" isInt:NO] : self.heightValue.stringValue;
+                    userInfoModel.weight = [self.weightValue.stringValue isEqualToString:@""] ? [CommonUtil dataProcessing:responseObject title:@"weight" isInt:NO] : self.weightValue.stringValue;
+                    SCAppVaribleHandleInstance.userInfoModel = userInfoModel;
+                    
+                    [SCRequestHandle updateMemberUserInfoCompletion:^(BOOL success, id  _Nonnull responseObject) {
+                        if (success) {
+                            WDLog(LOG_MODUL_HTTPREQUEST, @"更新用户信息成功");
+                        } else {
+                            [EMRToast Show:[self handlingInvalidData:responseObject title:@"更新用户信息失败"]];
+                        }
+                        [self hiddenProgressIndicator];
+                    }];
+                } else {
+                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取用户信息失败"]];
+                    [self hiddenProgressIndicator];
+                }
+            }];
+        } else {
+            [EMRToast Show:[self handlingInvalidData:responseObject title:@"登录失败"]];
+            [self hiddenProgressIndicator];
+        }
+    }];
+}
 
 - (IBAction)getCurrentDetectionDeviceInfoButtonAction:(NSButton *)sender {
     

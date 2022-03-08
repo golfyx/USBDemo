@@ -91,6 +91,7 @@ typedef union __SAVE_BULK_DEVICE_RSSI__
 @property (nonatomic, assign) BOOL isExitReadMode; // 是否是退出读取模式
 
 @property (nonatomic, strong) NSMutableDictionary *scanDeviceListDict; // USB Bulk扫描到的设备列表
+@property (nonatomic, assign) BOOL connectButtonWasClicked; // 点击了连接按钮
 
 @property(nonatomic,strong)id<SCBleDataHandleDelegate> delegate;
 

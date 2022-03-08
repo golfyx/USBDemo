@@ -60,6 +60,7 @@
         
         _fileLock = [[NSLock alloc] init];
         _scanDeviceListDict = @{}.mutableCopy;
+        _connectButtonWasClicked = NO;
         
         [SCBulkDataHandle sharedManager].delegate = self;
     }
@@ -491,7 +492,7 @@
                 saveBulkDeviceRssi.uCharValue = tmpCh;
                 bulkDeviceInfo.deviceRssi = saveBulkDeviceRssi.charValue;
                 
-                if (bulkDeviceInfo.deviceSeri.length > 0) {
+                if (bulkDeviceInfo.deviceSeri.length > 0 && !self.connectButtonWasClicked) {
                     if ([self.delegate respondsToSelector:@selector(didReceiveBulkScanDeviceList:)]) {
                         [self.delegate didReceiveBulkScanDeviceList:bulkDeviceInfo];
                     }
@@ -996,6 +997,8 @@
 
 - (void)usbDidRemove:(DeviceObject *)usbObject {
     
+    [SCBleDataHandle sharedManager].connectButtonWasClicked = NO;
+    
     if ([self.delegate respondsToSelector:@selector(usbDidRemove:)]) {
         [self.delegate usbDidRemove:usbObject];
     }
@@ -1003,6 +1006,8 @@
 }
 
 - (void)usbOpenFail {
+    
+    [SCBleDataHandle sharedManager].connectButtonWasClicked = NO;
     
     if ([self.delegate respondsToSelector:@selector(usbOpenFail)]) {
         [self.delegate usbOpenFail];

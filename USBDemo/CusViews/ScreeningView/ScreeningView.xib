@@ -270,7 +270,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AjA-5b-m7a">
-                    <rect key="frame" x="171" y="313" width="134" height="32"/>
+                    <rect key="frame" x="242" y="312" width="134" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="push" title="打开登记文本" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7on-PQ-FB4">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -314,7 +314,7 @@
                     </scroller>
                 </scrollView>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FDQ-N3-7iV">
-                    <rect key="frame" x="399" y="351" width="113" height="32"/>
+                    <rect key="frame" x="374" y="368" width="113" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="push" title="获取上传进度" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Nmd-Ab-ku9">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -325,7 +325,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jMd-0I-ZdM">
-                    <rect key="frame" x="503" y="352" width="79" height="32"/>
+                    <rect key="frame" x="485" y="368" width="79" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="push" title="强制完成" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bee-he-qzC">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -336,12 +336,12 @@
                     </connections>
                 </button>
                 <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aG6-d4-q21">
-                    <rect key="frame" x="244" y="354" width="161" height="28"/>
+                    <rect key="frame" x="298" y="344" width="161" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="8ZG-pl-x2t">
                         <font key="font" metaFont="system"/>
-                        <date key="date" timeIntervalSinceReferenceDate="668316838.43743896">
-                            <!--2022-03-07 03:33:58 +0000-->
+                        <date key="date" timeIntervalSinceReferenceDate="668411964.74060595">
+                            <!--2022-03-08 05:59:24 +0000-->
                         </date>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -349,7 +349,7 @@
                     </datePickerCell>
                 </datePicker>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8fx-XJ-nRj">
-                    <rect key="frame" x="321" y="313" width="114" height="32"/>
+                    <rect key="frame" x="457" y="339" width="114" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="push" title="设置检测时间" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="r04-S0-FGi">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -357,6 +357,17 @@
                     </buttonCell>
                     <connections>
                         <action selector="saveUserProcessingTimeAction:" target="c22-O7-iKe" id="1G4-fN-NBO"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YPW-SO-Yam">
+                    <rect key="frame" x="263" y="368" width="114" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="更新用户信息" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rDz-Ef-uZu">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateUserInfoAction:" target="c22-O7-iKe" id="JWx-zg-7gM"/>
                     </connections>
                 </button>
             </subviews>

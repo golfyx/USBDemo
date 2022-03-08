@@ -23,7 +23,7 @@ typedef union __HALF_WORD_TYPE__
    unsigned char DataByte[2];
    unsigned short DataUShort;
    signed short DataShort;
-}HALD_WORD_TYPE;
+}HALF_WORD_TYPE;
 
 @interface SCSaveDataToFileHandle : NSObject
 

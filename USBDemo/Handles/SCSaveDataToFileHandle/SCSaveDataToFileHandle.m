@@ -65,15 +65,15 @@
     }
     
     // 保存设备数据块的信息
-    NSString *filePathInfo = [self createFileAtPathWithTitle:@"info" startTimestamp:self.deviceInfo.curBlockInfo.start_timestamp blockIndex:self.deviceInfo.curBlockInfo.blockIndex pathExtension:@"txt"];
+    NSString *filePathInfo = [self createFileAtPathWithTitle:@"INFO" startTimestamp:self.deviceInfo.curBlockInfo.start_timestamp blockIndex:self.deviceInfo.curBlockInfo.blockIndex pathExtension:@"txt"];
     [self saveDeviceInfo:filePathInfo];
     
     // 将数据进行3转4后保存为十六进制文件
-    NSString *filePathData = [self createFileAtPathWithTitle:@"hexadecimal" startTimestamp:self.deviceInfo.curBlockInfo.start_timestamp blockIndex:self.deviceInfo.curBlockInfo.blockIndex pathExtension:@"bin"];
+    NSString *filePathData = [self createFileAtPathWithTitle:@"HEX" startTimestamp:self.deviceInfo.curBlockInfo.start_timestamp blockIndex:self.deviceInfo.curBlockInfo.blockIndex pathExtension:@"bin"];
     // 将数据保存为十进制文件
-    NSString *filePathDataDecimalism = [self createFileAtPathWithTitle:@"decimalism" startTimestamp:self.deviceInfo.curBlockInfo.start_timestamp blockIndex:self.deviceInfo.curBlockInfo.blockIndex pathExtension:@"txt"];
+    NSString *filePathDataDecimalism = [self createFileAtPathWithTitle:@"DEC" startTimestamp:self.deviceInfo.curBlockInfo.start_timestamp blockIndex:self.deviceInfo.curBlockInfo.blockIndex pathExtension:@"txt"];
     // 将百惠数据保存为十六进制文件
-    NSString *filePathBaiHuiData = [self createFileAtPathWithTitle:@"baihuihexadecimal" startTimestamp:self.deviceInfo.curBlockInfo.start_timestamp blockIndex:self.deviceInfo.curBlockInfo.blockIndex pathExtension:@"dat"];
+    NSString *filePathBaiHuiData = [self createFileAtPathWithTitle:@"BHHEX" startTimestamp:self.deviceInfo.curBlockInfo.start_timestamp blockIndex:self.deviceInfo.curBlockInfo.blockIndex pathExtension:@"dat"];
     [self.deviceInfo.filePathDataDecimalismArray addObject:filePathDataDecimalism];
     [self.deviceInfo.filePathDataHexadecimalArray addObject:filePathData];
     [self.deviceInfo.filePathBaiHuiDataHexadecimalArray addObject:filePathBaiHuiData];
@@ -84,7 +84,7 @@
 
 - (NSString *)createFileAtPathWithTitle:(NSString *)title startTimestamp:(long long)startTimestamp blockIndex:(UInt16)blockIndex pathExtension:(NSString *)pathExtension {
     
-    NSString *tmpTimestamp = [NSString stringWithFormat:@"%08llX_%@_%d.%@", startTimestamp, title, blockIndex + 1, pathExtension];
+    NSString *tmpTimestamp = [NSString stringWithFormat:@"R_%d_%08llX_%@.%@", blockIndex + 1, startTimestamp, title, pathExtension];
     NSString *filePath = [_docuDirectoryPath stringByAppendingPathComponent:tmpTimestamp];
     
     //文件夹是否存在
@@ -122,7 +122,6 @@
     NSFileHandle *readFileHandle = [NSFileHandle fileHandleForReadingAtPath:filePathData];
     [writeFileHandle truncateFileAtOffset:0]; // 将文件字节截短至0，相当于将文件清空，可供文件填写
     NSFileHandle *writeDataDecimalismFileHandle = [NSFileHandle fileHandleForWritingAtPath:filePathDataDecimalism];
-    NSFileHandle *readDataDecimalismFileHandle = [NSFileHandle fileHandleForReadingAtPath:filePathDataDecimalism];
     [writeDataDecimalismFileHandle truncateFileAtOffset:0]; // 将文件字节截短至0，相当于将文件清空，可供文件填写
     NSFileHandle *writeBaiHuiDataDecimalismFileHandle = [NSFileHandle fileHandleForWritingAtPath:filePathBaiHuiDataDecimalism];
     
@@ -131,7 +130,6 @@
     Byte *resultBytes;
     NSData *tmpData;
     NSMutableData *tmpMutData;
-    NSString *tmpDecimalismStr;
     
     NSArray *tmpArray = self.deviceInfo.responsePageDataArray;
     for (int i = 0; i < tmpArray.count; i++) {
@@ -144,7 +142,6 @@
             
             resultBytes = (Byte *)[tmpData bytes];
             tmpMutData = [NSMutableData data];
-            tmpDecimalismStr = @"";
             for (int k = 0; k < tmpData.length; k+=3) {
                 val1 = resultBytes[k];
                 val2 = resultBytes[k+1];
@@ -155,7 +152,6 @@
                 
                 value1.DataInt = value1.DataInt - 0x800;
                 value2.DataInt = value2.DataInt - 0x800;
-                tmpDecimalismStr = [NSString stringWithFormat:@"%@\n%d\n%d", tmpDecimalismStr, value1.DataInt, value2.DataInt];
                 
 //                value1.DataUint = (value1.DataUint + 0x8000) & 0xFFFF;
 //                value2.DataUint = (value2.DataUint + 0x8000) & 0xFFFF;  // 不需要加0x8000
@@ -172,8 +168,6 @@
             [writeFileHandle writeData:tmpMutData];
             [writeFileHandle seekToEndOfFile];
             
-            [writeDataDecimalismFileHandle writeData:[tmpDecimalismStr dataUsingEncoding:NSUTF8StringEncoding]];
-            [writeDataDecimalismFileHandle seekToEndOfFile];
         }
     }
     
@@ -189,29 +183,36 @@
     [readFileHandle closeFile];
     
     NSMutableData *tmpMutBaiHuiData = [NSMutableData data];
+    NSMutableString *tmpDecimalismStr = @"".mutableCopy;
     int j = 0;
     int intBaiHuiValue = 0;
-    Byte *tmpReadFileBytes = (Byte *)[tmpReadFileData bytes];
+    HALF_WORD_TYPE value3,value4;
     for (int i = 0; i < tmpReadFileData.length; i+=2) {
-        unsigned int m = tmpReadFileBytes[i] | (tmpReadFileBytes[i+1] << 8);
+        memcpy(value3.DataByte, [[tmpReadFileData subdataWithRange:NSMakeRange(i, 2)] bytes], 2);
+        
+        if (tmpDecimalismStr.length > 0) {
+            [tmpDecimalismStr appendFormat:@"\n"];
+        }
+        [tmpDecimalismStr appendFormat:@"%d", value3.DataShort];
+        
         
         if (j % 5 == 0) {
-            m = m * 2 + 1870;
-            intBaiHuiValue = m & 0xff;
+            value3.DataShort = value3.DataShort * 2 + 1870;
+            intBaiHuiValue = value3.DataShort & 0xff;
             [tmpMutBaiHuiData appendBytes:&intBaiHuiValue length:1];
-            intBaiHuiValue = (m>>8) & 0xff;
+            intBaiHuiValue = (value3.DataShort >> 8) & 0xff;
             [tmpMutBaiHuiData appendBytes:&intBaiHuiValue length:1];
         }
         j++;
         
         if (i < tmpReadFileData.length - 2) {
             if (j % 5 == 0) {
-                unsigned int n = tmpReadFileBytes[i+2] | (tmpReadFileBytes[i+3] << 8);
-                unsigned int k = (m + n) / 2;
-                k = k * 2 + 1870;
-                intBaiHuiValue = k & 0xff;
+                memcpy(value4.DataByte, [[tmpReadFileData subdataWithRange:NSMakeRange(i+2, 2)] bytes], 2);
+                value4.DataShort = (value3.DataShort + value4.DataShort) / 2;
+                value4.DataShort = value4.DataShort * 2 + 1870;
+                intBaiHuiValue = value4.DataShort & 0xff;
                 [tmpMutBaiHuiData appendBytes:&intBaiHuiValue length:1];
-                intBaiHuiValue = (k>>8) & 0xff;
+                intBaiHuiValue = (value4.DataShort >> 8) & 0xff;
                 [tmpMutBaiHuiData appendBytes:&intBaiHuiValue length:1];
             }
             j++;
@@ -221,19 +222,11 @@
     [writeBaiHuiDataDecimalismFileHandle writeData:tmpMutBaiHuiData];
     [writeBaiHuiDataDecimalismFileHandle synchronizeFile];
     
+    [writeDataDecimalismFileHandle writeData:[tmpDecimalismStr dataUsingEncoding:NSUTF8StringEncoding]];
+    [writeDataDecimalismFileHandle synchronizeFile];
+    
     [writeBaiHuiDataDecimalismFileHandle closeFile];
-    
-    
-    [writeDataDecimalismFileHandle synchronizeFile];
-    
-    /// 这样写是为了截取掉多余的字节
-    NSData *tmpReadDecimalismFileData = [readDataDecimalismFileHandle readDataOfLength:self.deviceInfo.curBlockInfo.saved_datalen];
-    [writeDataDecimalismFileHandle truncateFileAtOffset:0];
-    [writeDataDecimalismFileHandle writeData:tmpReadDecimalismFileData];
-    [writeDataDecimalismFileHandle synchronizeFile];
-    
     [writeDataDecimalismFileHandle closeFile];
-    [readDataDecimalismFileHandle closeFile];
     
 }
 
@@ -295,13 +288,19 @@
             [writeBaiHuiDataHexadecimalFileHandle truncateFileAtOffset:0]; // 将文件字节截短至0，相当于将文件清空，可供文件填写
             writeDataDecimalismFileHandle = [NSFileHandle fileHandleForWritingAtPath:mergedFilePathDataDecimalism];
             [writeDataDecimalismFileHandle truncateFileAtOffset:0]; // 将文件字节截短至0，相当于将文件清空，可供文件填写
+            
+            tmpDecimalismOfRawDataStr = [NSString stringWithContentsOfFile:self.deviceInfo.filePathDataDecimalismArray[i] encoding:NSUTF8StringEncoding error:nil];
+            [writeDataDecimalismFileHandle writeData:[tmpDecimalismOfRawDataStr dataUsingEncoding:NSUTF8StringEncoding]];
+            [writeDataDecimalismFileHandle seekToEndOfFile];
+        } else {
+            
+            [writeDataDecimalismFileHandle writeData:[@"\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [writeDataDecimalismFileHandle seekToEndOfFile];
+            
+            tmpDecimalismOfRawDataStr = [NSString stringWithContentsOfFile:self.deviceInfo.filePathDataDecimalismArray[i] encoding:NSUTF8StringEncoding error:nil];
+            [writeDataDecimalismFileHandle writeData:[tmpDecimalismOfRawDataStr dataUsingEncoding:NSUTF8StringEncoding]];
+            [writeDataDecimalismFileHandle seekToEndOfFile];
         }
-        
-        tmpDecimalismOfRawDataStr = [NSString stringWithContentsOfFile:self.deviceInfo.filePathDataDecimalismArray[i] encoding:NSUTF8StringEncoding error:nil];
-        [writeDataDecimalismFileHandle writeData:[tmpDecimalismOfRawDataStr dataUsingEncoding:NSUTF8StringEncoding]];
-        [writeDataDecimalismFileHandle seekToEndOfFile];
-        [writeDataDecimalismFileHandle writeData:[@"\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        [writeDataDecimalismFileHandle seekToEndOfFile];
         
         tmpHexadecimalData = [NSData dataWithContentsOfFile:self.deviceInfo.filePathDataHexadecimalArray[i]];
         [writeDataHexadecimalFileHandle writeData:tmpHexadecimalData];

@@ -26,6 +26,10 @@
     // add toast to window
     [[NSApplication sharedApplication].mainWindow.contentView addSubview:toast];
     
+    if (!toast || ![toast superview]) {
+        return;
+    }
+    
     // make toast center in the bottom
     NSLayoutConstraint *makeToastCenter = [NSLayoutConstraint constraintWithItem:toast
                                                                        attribute:NSLayoutAttributeCenterX
