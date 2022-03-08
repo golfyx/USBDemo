@@ -238,7 +238,7 @@
         [CommonUtil showMessageWithTitle:@"设备还没有返回电量！！！"];
         return;
     }
-    if (self.curBattery <= 5) {
+    if (self.curBattery <= 45) {
         [CommonUtil showMessageWithTitle:@"设备电量少于45%，请充电后再上传！！！"];
         return;
     }
