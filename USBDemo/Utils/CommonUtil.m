@@ -25,6 +25,51 @@
     return [passWordPredicate evaluateWithObject:passWord];
 }
 
+/// 用户名判断是否为中文英文数字组合
++ (BOOL)validateUserName:(NSString *)userName {
+    unichar uniCh;
+    for (int i = 0; i < userName.length; i++) {
+        uniCh = [userName characterAtIndex:i];
+        if ((uniCh >= 0x4E00) && (uniCh <= 0x9fff)) {
+//            NSLog(@"字符串中含有中文");
+        } else if ((uniCh >= 65) && (uniCh <= 90)) {
+//            NSLog(@"字符串中含有大写英文字母");
+        } else if ((uniCh >= 97) && (uniCh <= 122)) {
+//            NSLog(@"字符串中含有小写英文字母");
+        } else if ((uniCh >= 48) && (uniCh <= 57)) {
+//            NSLog(@"字符串中含有数字");
+        } else {
+//            NSLog(@"字符串中含有非法字符");
+            return 0;
+        }
+    }
+    
+    return 1;
+}
+
+/// 用户名判断是否为中文英文数字组合,有就截取非法字符之前的
++ (NSString *)validateUserNameAndInterception:(NSString *)userName {
+    
+    unichar uniCh;
+    NSMutableString *tmpUserName = @"".mutableCopy;
+    for (int i = 0; i < userName.length; i++) {
+        uniCh = [userName characterAtIndex:i];
+        if ((uniCh >= 0x4E00) && (uniCh <= 0x9fff)) {
+            [tmpUserName appendString:[userName substringWithRange:NSMakeRange(i, 1)]];
+        } else if ((uniCh >= 65) && (uniCh <= 90)) {
+            [tmpUserName appendFormat:@"%c", uniCh];
+        } else if ((uniCh >= 97) && (uniCh <= 122)) {
+            [tmpUserName appendFormat:@"%c", uniCh];
+        } else if ((uniCh >= 48) && (uniCh <= 57)) {
+            [tmpUserName appendFormat:@"%c", uniCh];
+        } else {
+//            NSLog(@"字符串中含有非法字符");
+        }
+    }
+    
+    return tmpUserName;
+}
+
 /// 返回值判断
 + (NSString *)validateStrValueIsNull:(id)value {
     if (!value || [value isKindOfClass:NSNull.class]) {

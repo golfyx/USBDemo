@@ -19,6 +19,10 @@ typedef void(^CompleteBlock)(void);
 + (BOOL)validateMobile:(NSString *)mobile;
 /// 密码设置判断
 + (BOOL)validatePassword:(NSString *)passWord;
+/// 用户名判断是否为中文英文数字组合
++ (BOOL)validateUserName:(NSString *)userName;
+/// 用户名判断是否为中文英文数字组合,有就截取非法字符之前的
++ (NSString *)validateUserNameAndInterception:(NSString *)userName;
 /// 返回值判断
 + (NSString *)validateStrValueIsNull:(id)value;
 + (NSNumber *)validateNumValueIsNull:(id)value;

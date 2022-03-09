@@ -75,6 +75,12 @@
         self.topSegmentedControl.segmentCount = 2;
     }
     
+    NSString *tmpStr = @"🀁中(￣▽￣)~*文[jSh😁12🐛j]";
+    tmpStr = @"中文jSh12j";
+    if (![CommonUtil validateUserName:tmpStr]) {
+        NSLog(@"%@", [CommonUtil validateUserNameAndInterception:tmpStr]);
+    }
+    
 }
 
 - (IBAction)topSegmentedControlAction:(NSSegmentedControl *)sender {

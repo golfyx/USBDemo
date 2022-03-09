@@ -1102,6 +1102,52 @@
                         self.weightValue.stringValue = userInfoModel.weight;
                         self.userPhoneValue.stringValue = phone;
                         
+                        // 判断如果上传的时候如果从服务器读取到的名字有特殊符号，去掉特殊符号后更新服务器信息再继续上传
+                        if (![CommonUtil validateUserName:userInfoModel.name]) {
+                            WDLog(LOG_MODUL_HTTPREQUEST, @"字符串中含有非法字符,需要更新用户信息！");
+                            
+                            userInfoModel.name = [CommonUtil validateUserNameAndInterception:userInfoModel.name];
+                            
+                            SCAppVaribleHandleInstance.userInfoModel = userInfoModel;
+                            deviceInfo.userInfoModel = userInfoModel;
+                            self.nameValue.stringValue = userInfoModel.name;
+                            
+                            [SCRequestHandle updateMemberUserInfoCompletion:^(BOOL success, id  _Nonnull responseObject) {
+                                if (success) {
+                                    WDLog(LOG_MODUL_HTTPREQUEST, @"更新用户信息成功");
+                                    
+                                    [SCRequestHandle getCurrentDetectionDeviceInfo:deviceInfo completion:^(BOOL success, id  _Nonnull responseObject) {
+                                        if (success) {
+                                            WDLog(LOG_MODUL_HTTPREQUEST,@"获取当前检测信息成功");
+                                            SCDetectionInfo *detectionInfo = [SCDetectionInfo new];
+                                            detectionInfo.dataIndex = [[CommonUtil dataProcessing:responseObject title:@"dataIndex" isInt:YES] intValue];
+                                            detectionInfo.dataPageIndex = [[CommonUtil dataProcessing:responseObject title:@"dataPageIndex" isInt:YES] intValue];
+                                            detectionInfo.detectionId = [[CommonUtil dataProcessing:responseObject title:@"detectionId" isInt:YES] intValue];
+                                            detectionInfo.detectionId2Minutes = [[CommonUtil dataProcessing:responseObject title:@"detectionId2Minutes" isInt:YES] intValue];
+                                            detectionInfo.endPageIndex = [[CommonUtil dataProcessing:responseObject title:@"endPageIndex" isInt:YES] intValue];
+                                            SCAppVaribleHandleInstance.detectionInfo = detectionInfo;
+                                            
+                                            WDLog(LOG_MODUL_BLE, @"进入读取模式");
+                                            [[SCBleDataHandle sharedManager] enterReadMode:deviceInfo.deviceObject];
+                                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                                WDLog(LOG_MODUL_BLE,@"开始数据全部上传，获取设备数据块！");
+                                                [[SCBleDataHandle sharedManager] getEcgDataBlockCount:deviceInfo.deviceObject];
+                                            });
+                                        } else {
+                                            [EMRToast Show:[self handlingInvalidData:responseObject title:@"获取当前检测信息失败"]];
+                                            [self hiddenProgressIndicator];
+                                        }
+                                    }];
+                                    
+                                } else {
+                                    [EMRToast Show:[self handlingInvalidData:responseObject title:@"更新用户信息失败"]];
+                                    [self hiddenProgressIndicator];
+                                }
+                            }];
+                            
+                            return;
+                        }
+                        
                         [SCRequestHandle getCurrentDetectionDeviceInfo:deviceInfo completion:^(BOOL success, id  _Nonnull responseObject) {
                             if (success) {
                                 WDLog(LOG_MODUL_HTTPREQUEST,@"获取当前检测信息成功");
@@ -1306,8 +1352,12 @@
 }
 
 - (NSString *)handlingInvalidData:(id)responseObject title:(NSString *)title {
+    
     NSString *msg = (responseObject[@"msg"] && ![responseObject isKindOfClass:NSNull.class]) ? responseObject[@"msg"] : title;
     WDLog(LOG_MODUL_HTTPREQUEST, @"%@", msg);
+    
+    
+    
     return msg;
 }
 
