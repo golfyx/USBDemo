@@ -229,7 +229,7 @@
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BtW-FE-Ohy">
                     <rect key="frame" x="442" y="322" width="133" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="删除设备里面数据" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="hT4-3h-b0O">
+                    <buttonCell key="cell" type="check" title="删除设备里面数据" bezelStyle="regularSquare" imagePosition="left" inset="2" id="hT4-3h-b0O">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -340,8 +340,8 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="8ZG-pl-x2t">
                         <font key="font" metaFont="system"/>
-                        <date key="date" timeIntervalSinceReferenceDate="668411964.74060595">
-                            <!--2022-03-08 05:59:24 +0000-->
+                        <date key="date" timeIntervalSinceReferenceDate="668601367.02567196">
+                            <!--2022-03-10 10:36:07 +0000-->
                         </date>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -364,7 +364,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="push" title="更新用户信息" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="rDz-Ef-uZu">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                        <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
                         <action selector="updateUserInfoAction:" target="c22-O7-iKe" id="JWx-zg-7gM"/>

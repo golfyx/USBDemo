@@ -799,6 +799,7 @@
             [self.serialNumPopUpBtn removeAllItems];
             [self.deviceListTableView reloadData];
             self.selectedDeviceSeri = @"";
+            [self hiddenProgressIndicator];
         });
     } else { // 蓝牙设备已连接
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1042,7 +1043,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         __block NSString *phone = deviceInfo.userInfoModel.phoneNum;
         if (![CommonUtil validateMobile:phone]) {
-            WDLog(LOG_MODUL_BLE,@"未获取到设备里手机号");
+            WDLog(LOG_MODUL_BLE,@"未获取到设备里手机号或获取到的手机号格式不对！");
             phone = self.userPhoneValue.stringValue;  // 如果设备里面没有手机号，在判断用户有没有输入手机号，都没有就返回，一个有就登录
             if (![CommonUtil validateMobile:phone]) {
                 [self hiddenProgressIndicator];
