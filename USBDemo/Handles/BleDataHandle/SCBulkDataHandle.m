@@ -297,6 +297,8 @@
         bulkBufferPacket.bulkBasePacket.dataBuffer[i] = sendBuffer[i];
     }
     
+    WDLog(LOG_MODUL_BLE, @"USB Ble发送命令值 --> %@", [NSData dataWithBytes:buffer length:bufLen]);
+    
     return bulkBufferPacket;
 }
 

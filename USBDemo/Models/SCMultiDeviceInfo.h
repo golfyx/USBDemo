@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) int blockCount;
 /* 当前块序号 */
 @property (nonatomic, assign) int curBlockIndex;
-/* 读取页序号的长度 */
+/* 页的内部索引的个数 短包一页有11蓝牙包，长包一页有7个蓝牙包 */
 @property (nonatomic, assign) int intervalPageIndex;
 
 /// 读取时的块内部索引序号
@@ -54,7 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSMutableString *rawDataHexadecimalStr;
 
-@property (nonatomic, assign) uint bleCmdType;
+@property (nonatomic, assign) uint bleCmdType;  // 该包的类型
+@property (nonatomic, assign) uint subBleCmdType; // 该包(读取页的内容时有效)是否为短包还是长包
+@property (nonatomic, assign) uint validPacketLen; // 该包(读取页的内容时有效)的有效数据长度,短包最后一段为0x90,长包的最后一段为0xDE
 @property (nonatomic, assign) uint type;
 @property (nonatomic, assign) uint bagIndex;
 @property (nonatomic, assign) uint bagContentLen;

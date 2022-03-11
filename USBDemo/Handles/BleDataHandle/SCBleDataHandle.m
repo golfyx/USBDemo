@@ -47,7 +47,7 @@
 {
     if (self = [super init])
     {
-        _transportType = 1;
+        _transportType = 0x21; // 0x01 是iOS传输-稍微慢点 0x21 是安卓传输-稍微快点
         _sendSpeed = 0;
         _isReadingAllBlock = NO;
         
@@ -57,6 +57,7 @@
         _isReadingAllBlock = NO;
         
         _isExitReadMode = NO;
+        _isStopReadMode = NO;
         
         _fileLock = [[NSLock alloc] init];
         _scanDeviceListDict = @{}.mutableCopy;
@@ -122,8 +123,10 @@
     WDLog(LOG_MODUL_BLE, @"退出读取模式");
     
     self.isExitReadMode = YES;
+    
     // 设置激活或者停止设备命令，也就是相当于设置退出读取模式
     [self setDongleActive:0x02 device:pDev];
+    
 }
 
 - (void)getEcgDataBlockCount:(DeviceObject *)pDev {
@@ -703,6 +706,7 @@
 
         if (deviceInfo.bagIndex == 0) {
             int preCharLen = 16; // 前面有多少个字节，然后后面从0开始计算
+            deviceInfo.subBleCmdType = readBuffer[15];
             deviceInfo.pageIndex = ((int)readBuffer[2 + preCharLen] << 14)|((int)readBuffer[1 + preCharLen] << 7)|(int)readBuffer[0 + preCharLen];
             deviceInfo.readPageInternalIndex = readBuffer[3 + preCharLen];
             deviceInfo.readDataLen = readBuffer[4 + preCharLen];
@@ -715,14 +719,22 @@
         if (deviceInfo.bagCount - 1 == deviceInfo.bagIndex) { // 判断是否是最后一个包
 //            WDLog(LOG_MODUL_BLE, @"BulkDataBuffer-->%@", deviceInfo.receiveMStr);
 
+            if (deviceInfo.subBleCmdType == 0x95) {  // 短包数据，长度为0x90
+                deviceInfo.validPacketLen = 0x60;
+                deviceInfo.intervalPageIndex = 10;
+            } else if (deviceInfo.subBleCmdType == 0xE3) {  // 长包数据，长度为0xDE
+                deviceInfo.validPacketLen = 0xCC;
+                deviceInfo.intervalPageIndex = 6;
+            }
+            
             int tmpPageIndex = deviceInfo.pageIndex - deviceInfo.curBlockInfo.startpageIndex;
             if (tmpPageIndex < 0) {
                 tmpPageIndex = 0;
             }
 
             NSData *tmpData;
-            if (deviceInfo.readPageInternalIndex == 10) {
-                tmpData = [deviceInfo.perBagData subdataWithRange:NSMakeRange(9, 0x60)];
+            if (deviceInfo.readPageInternalIndex == deviceInfo.intervalPageIndex) {
+                tmpData = [deviceInfo.perBagData subdataWithRange:NSMakeRange(9, deviceInfo.validPacketLen)];
             } else {
                 if (deviceInfo.perBagData.length <= deviceInfo.readDataLen) {
                     return;
@@ -747,7 +759,7 @@
             }
 
             /// 如果接收到的区间页块大于区间结束值才进行读取下一页 并且 是一页的最后一段
-            if (!(deviceInfo.curBlockInfo.endpageIndex == deviceInfo.pageIndex && deviceInfo.readPageInternalIndex == 10))
+            if (!(deviceInfo.curBlockInfo.endpageIndex == deviceInfo.pageIndex && deviceInfo.readPageInternalIndex == deviceInfo.intervalPageIndex))
             {
                 return;
             }
@@ -757,6 +769,18 @@
                 return;
             }
 
+            if (self.isStopReadMode) {
+                
+                self.isStopReadMode = NO;
+                [self exitReadMode:pDev];
+                // 停止读取数据并上传到服务器
+                if ([self.delegate respondsToSelector:@selector(didStopUploadBlockData:)]) {
+                    [self.delegate didStopUploadBlockData:deviceInfo];
+                }
+                
+                return;
+            }
+            
             @synchronized (_fileLock) {
                 [SCSaveDataToFileHandle sharedManager].deviceInfo = deviceInfo;
                 // 将数据保存到本地文件
@@ -805,7 +829,6 @@
         
         int tmpbleCmdType = readBuffer[16];
         if (tmpbleCmdType == 0x02) {
-
             if (self.isExitReadMode) {
                 self.isExitReadMode = NO;
                 if ([self.delegate respondsToSelector:@selector(didReceiveBleReadingStatus:)]) {
@@ -814,7 +837,6 @@
             } else {
                 [self getSaveEcgModelCmd:pDev]; // 获取当前保存模式
             }
-
         } else if (tmpbleCmdType == 0x03) {
 
             if ([self.delegate respondsToSelector:@selector(didReceiveBleReadingStatus:)]) {

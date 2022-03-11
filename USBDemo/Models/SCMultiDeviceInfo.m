@@ -30,7 +30,6 @@ static const int responsePageIntervalDataLen = 11; ///11 的长度
         }
         _rawDataHexadecimalStr = [NSMutableString string];
         _curUploadBlockIndex = 1;
-        _intervalPageIndex = 40;
         
         _filePathDataDecimalismArray = [NSMutableArray array];
         _filePathDataHexadecimalArray = [NSMutableArray array];

@@ -1192,7 +1192,6 @@
 
 - (void)didReceiveBleDeleteData:(SCMultiDeviceInfo *)deviceInfo {
     
-    WDLog(LOG_MODUL_BLE, @"退出读取模式");
     [[SCBleDataHandle sharedManager] exitReadMode:deviceInfo.deviceObject];
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1228,10 +1227,7 @@
             WDLog(LOG_MODUL_HTTPREQUEST,@"获取用户信息失败,请拔下设备重新尝试！");
             [EMRToast Show:@"获取用户信息失败,请拔下设备重新尝试！"];
             [self hiddenProgressIndicator];
-        });
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            WDLog(LOG_MODUL_BLE, @"退出读取模式");
+            
             [[SCBleDataHandle sharedManager] exitReadMode:deviceInfo.deviceObject];
         });
         
@@ -1306,13 +1302,23 @@
                 deviceInfo.curUploadBlockIndex++;
             }
         } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [EMRToast Show:[self handlingInvalidData:responseObject title:@"数据上传失败"]];
-                [self hiddenProgressIndicator];
-            });
-            [[SCBleDataHandle sharedManager] exitReadMode:deviceInfo.deviceObject];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [EMRToast Show:[self handlingInvalidData:responseObject title:@"数据上传失败"]];
+//                [self hiddenProgressIndicator];
+                
+                WDLog(LOG_MODUL_BLE, @"数据上传失败,读完当前块后停止读取");
+                [SCBleDataHandle sharedManager].isStopReadMode = YES;
+//            });
+            
         }
     }];
+}
+
+- (void)didStopUploadBlockData:(SCMultiDeviceInfo *)deviceInfo {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [EMRToast Show:@"数据上传失败"];
+        [self hiddenProgressIndicator];
+    });
 }
 
 - (void)didFinishUploadBlockData:(SCMultiDeviceInfo *)deviceInfo {
@@ -1356,8 +1362,6 @@
     
     NSString *msg = (responseObject[@"msg"] && ![responseObject isKindOfClass:NSNull.class]) ? responseObject[@"msg"] : title;
     WDLog(LOG_MODUL_HTTPREQUEST, @"%@", msg);
-    
-    
     
     return msg;
 }

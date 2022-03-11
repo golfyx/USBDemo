@@ -70,6 +70,7 @@ typedef union __SAVE_BULK_DEVICE_RSSI__
 - (void)didStartUploadFirstBlockData:(SCMultiDeviceInfo *)deviceInfo;
 - (void)didStartUploadBlockData:(SCMultiDeviceInfo *)deviceInfo;
 - (void)didFinishUploadBlockData:(SCMultiDeviceInfo *)deviceInfo;
+- (void)didStopUploadBlockData:(SCMultiDeviceInfo *)deviceInfo;
 
 - (void)usbDidPlunIn:(DeviceObject*)usbObject;
 - (void)usbDidRemove:(DeviceObject*)usbObject;
@@ -89,6 +90,7 @@ typedef union __SAVE_BULK_DEVICE_RSSI__
 /// 是否需要上传数据
 @property (nonatomic, assign) BOOL isNeedUploadData;
 @property (nonatomic, assign) BOOL isExitReadMode; // 是否是退出读取模式
+@property (nonatomic, assign) BOOL isStopReadMode; // 是否停止读取
 
 @property (nonatomic, strong) NSMutableDictionary *scanDeviceListDict; // USB Bulk扫描到的设备列表
 @property (nonatomic, assign) BOOL connectButtonWasClicked; // 点击了连接按钮
