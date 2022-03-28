@@ -45,6 +45,9 @@
 		E8806A7A274740D200CB628F /* SCSaveDataToFileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8806A79274740D200CB628F /* SCSaveDataToFileHandle.m */; };
 		E891DA3C2738F51300B6FDF4 /* DeviceObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E891DA3A2738F51300B6FDF4 /* DeviceObject.m */; };
 		E891DA40273929DB00B6FDF4 /* SCDeviceAllBlockInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E891DA3F273929DB00B6FDF4 /* SCDeviceAllBlockInfo.m */; };
+		E89BF9A927F1419C00EE07D3 /* AES_Encipher.m in Sources */ = {isa = PBXBuildFile; fileRef = E89BF9A327F1419C00EE07D3 /* AES_Encipher.m */; };
+		E89BF9AA27F1419C00EE07D3 /* Crc32Check.m in Sources */ = {isa = PBXBuildFile; fileRef = E89BF9A527F1419C00EE07D3 /* Crc32Check.m */; };
+		E89BF9AB27F1419C00EE07D3 /* EncipherHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E89BF9A827F1419C00EE07D3 /* EncipherHandler.m */; };
 		E8A004D5275F35220023C4A6 /* SCProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A004D4275F35220023C4A6 /* SCProgressIndicator.m */; };
 		E8A004D7275F35310023C4A6 /* SCProgressIndicator.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8A004D6275F35310023C4A6 /* SCProgressIndicator.xib */; };
 		E8A004DA27605D6C0023C4A6 /* SCDetectionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A004D927605D6C0023C4A6 /* SCDetectionInfo.m */; };
@@ -87,9 +90,6 @@
 		E8C07CED27D7620600A86BF6 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = E8C07CEC27D7620600A86BF6 /* Config.plist */; };
 		E8C07CF527D762F400A86BF6 /* ConfigureHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = E8C07CF327D762F400A86BF6 /* ConfigureHandle.m */; };
 		E8CA462A271D7DD4007ED787 /* UsbMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = E8CA4629271D7DD4007ED787 /* UsbMonitor.m */; };
-		E8D772EE27C389F200CFE06D /* Crc32Check.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D772EC27C389F200CFE06D /* Crc32Check.m */; };
-		E8D772F127C38A2700CFE06D /* EncipherHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D772F027C38A2700CFE06D /* EncipherHandler.m */; };
-		E8D772F427C38B7C00CFE06D /* AES_Encipher.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D772F327C38B7C00CFE06D /* AES_Encipher.m */; };
 		E8D7730327C63E6700CFE06D /* SCBulkDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D7730227C63E6700CFE06D /* SCBulkDeviceInfo.m */; };
 		E8D7730627C7630E00CFE06D /* DeviceListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D7730527C7630E00CFE06D /* DeviceListCell.m */; };
 		E8D7730827C7633A00CFE06D /* DeviceListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8D7730727C7633A00CFE06D /* DeviceListCell.xib */; };
@@ -176,6 +176,12 @@
 		E891DA3B2738F51300B6FDF4 /* DeviceObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceObject.h; sourceTree = "<group>"; };
 		E891DA3E273929DB00B6FDF4 /* SCDeviceAllBlockInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDeviceAllBlockInfo.h; sourceTree = "<group>"; };
 		E891DA3F273929DB00B6FDF4 /* SCDeviceAllBlockInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDeviceAllBlockInfo.m; sourceTree = "<group>"; };
+		E89BF9A327F1419C00EE07D3 /* AES_Encipher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AES_Encipher.m; sourceTree = "<group>"; };
+		E89BF9A427F1419C00EE07D3 /* EncipherHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncipherHandler.h; sourceTree = "<group>"; };
+		E89BF9A527F1419C00EE07D3 /* Crc32Check.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crc32Check.m; sourceTree = "<group>"; };
+		E89BF9A627F1419C00EE07D3 /* AES_Encipher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AES_Encipher.h; sourceTree = "<group>"; };
+		E89BF9A727F1419C00EE07D3 /* Crc32Check.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crc32Check.h; sourceTree = "<group>"; };
+		E89BF9A827F1419C00EE07D3 /* EncipherHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncipherHandler.m; sourceTree = "<group>"; };
 		E8A004D3275F35220023C4A6 /* SCProgressIndicator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCProgressIndicator.h; sourceTree = "<group>"; };
 		E8A004D4275F35220023C4A6 /* SCProgressIndicator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCProgressIndicator.m; sourceTree = "<group>"; };
 		E8A004D6275F35310023C4A6 /* SCProgressIndicator.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SCProgressIndicator.xib; sourceTree = "<group>"; };
@@ -256,12 +262,6 @@
 		E8CA4628271D7DD4007ED787 /* UsbMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UsbMonitor.h; sourceTree = "<group>"; };
 		E8CA4629271D7DD4007ED787 /* UsbMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UsbMonitor.m; sourceTree = "<group>"; };
 		E8D1BD0A273E5558009FD379 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		E8D772EC27C389F200CFE06D /* Crc32Check.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Crc32Check.m; sourceTree = "<group>"; };
-		E8D772ED27C389F200CFE06D /* Crc32Check.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Crc32Check.h; sourceTree = "<group>"; };
-		E8D772EF27C38A2700CFE06D /* EncipherHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EncipherHandler.h; sourceTree = "<group>"; };
-		E8D772F027C38A2700CFE06D /* EncipherHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EncipherHandler.m; sourceTree = "<group>"; };
-		E8D772F227C38B7C00CFE06D /* AES_Encipher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AES_Encipher.h; sourceTree = "<group>"; };
-		E8D772F327C38B7C00CFE06D /* AES_Encipher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AES_Encipher.m; sourceTree = "<group>"; };
 		E8D7730127C63E6700CFE06D /* SCBulkDeviceInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBulkDeviceInfo.h; sourceTree = "<group>"; };
 		E8D7730227C63E6700CFE06D /* SCBulkDeviceInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCBulkDeviceInfo.m; sourceTree = "<group>"; };
 		E8D7730427C7630E00CFE06D /* DeviceListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceListCell.h; sourceTree = "<group>"; };
@@ -301,7 +301,7 @@
 		E8660142273B787C00D36A91 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				E8D772E227C389ED00CFE06D /* EncipherAndCrc */,
+				E89BF9A227F1419C00EE07D3 /* EncipherAndCrc */,
 				E8660144273B787C00D36A91 /* SCGCDTimerUtil.h */,
 				E8660143273B787C00D36A91 /* SCGCDTimerUtil.m */,
 				E8691A96273E3E8D002944FD /* CommonUtil.h */,
@@ -412,6 +412,19 @@
 				E8691AAD273E438B002944FD /* SCAppVaribleHandle.m */,
 			);
 			path = SCAppVaribleHandle;
+			sourceTree = "<group>";
+		};
+		E89BF9A227F1419C00EE07D3 /* EncipherAndCrc */ = {
+			isa = PBXGroup;
+			children = (
+				E89BF9A327F1419C00EE07D3 /* AES_Encipher.m */,
+				E89BF9A427F1419C00EE07D3 /* EncipherHandler.h */,
+				E89BF9A527F1419C00EE07D3 /* Crc32Check.m */,
+				E89BF9A627F1419C00EE07D3 /* AES_Encipher.h */,
+				E89BF9A727F1419C00EE07D3 /* Crc32Check.h */,
+				E89BF9A827F1419C00EE07D3 /* EncipherHandler.m */,
+			);
+			path = EncipherAndCrc;
 			sourceTree = "<group>";
 		};
 		E8A004D2275F34A20023C4A6 /* SCProgressIndicator */ = {
@@ -725,20 +738,6 @@
 			path = ConfigureHandle;
 			sourceTree = "<group>";
 		};
-		E8D772E227C389ED00CFE06D /* EncipherAndCrc */ = {
-			isa = PBXGroup;
-			children = (
-				E8D772ED27C389F200CFE06D /* Crc32Check.h */,
-				E8D772EC27C389F200CFE06D /* Crc32Check.m */,
-				E8D772F227C38B7C00CFE06D /* AES_Encipher.h */,
-				E8D772F327C38B7C00CFE06D /* AES_Encipher.m */,
-				E8D772EF27C38A2700CFE06D /* EncipherHandler.h */,
-				E8D772F027C38A2700CFE06D /* EncipherHandler.m */,
-			);
-			name = EncipherAndCrc;
-			path = ../../../../../../Documents/EncipherAndCrc;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -865,7 +864,7 @@
 				E8379A782711799600D501EB /* USBDeviceTool+robot.m in Sources */,
 				E8806A6E274644D000CB628F /* BaseViewController.m in Sources */,
 				E8A9F7D52771A326003EC614 /* ReportsView.m in Sources */,
-				E8D772EE27C389F200CFE06D /* Crc32Check.m in Sources */,
+				E89BF9AA27F1419C00EE07D3 /* Crc32Check.m in Sources */,
 				E8A9F86327741143003EC614 /* SCEcgFrameDataExportHandle.m in Sources */,
 				E8A9F7F42772B7B9003EC614 /* PersonnelViewCell.m in Sources */,
 				E80D5CB12779C1D1000608D3 /* NSArray+Log.m in Sources */,
@@ -895,7 +894,6 @@
 				E8A9F86227741143003EC614 /* KHLocalFileDirectReadHandle.m in Sources */,
 				E8691A78273E3B41002944FD /* AFURLRequestSerialization.m in Sources */,
 				E8691A76273E3B41002944FD /* AFImageDownloader.m in Sources */,
-				E8D772F127C38A2700CFE06D /* EncipherHandler.m in Sources */,
 				E8A9F86927741835003EC614 /* SCRegFormSaveInfo.m in Sources */,
 				E8BCE6EA2743CF9E00EE5497 /* HolterGriddingView.m in Sources */,
 				E8691A72273E3B41002944FD /* UIButton+AFNetworking.m in Sources */,
@@ -904,6 +902,7 @@
 				E8A9F86427741143003EC614 /* SCDataBaseManagerHandle.m in Sources */,
 				E8A9F86C27741A48003EC614 /* SCRegFormDataBaseOptHandle.m in Sources */,
 				E8A9F827277410E2003EC614 /* FMDatabase.m in Sources */,
+				E89BF9AB27F1419C00EE07D3 /* EncipherHandler.m in Sources */,
 				E8806A742747384300CB628F /* SCBleDataHandle.m in Sources */,
 				E891DA40273929DB00B6FDF4 /* SCDeviceAllBlockInfo.m in Sources */,
 				E8A1B4B827702F5D0001B103 /* WDLogManager.m in Sources */,
@@ -920,13 +919,13 @@
 				E8BCE6E42743AB3000EE5497 /* HolterChartView.mm in Sources */,
 				E8A03E5E27114263009E61EC /* AppDelegate.m in Sources */,
 				E8691A73273E3B41002944FD /* UIActivityIndicatorView+AFNetworking.m in Sources */,
-				E8D772F427C38B7C00CFE06D /* AES_Encipher.m in Sources */,
 				E8691A92273E3B69002944FD /* SCRequestHandle.m in Sources */,
 				E8A9F86127741143003EC614 /* KHLocalFileDirectWriteHandle.m in Sources */,
 				E8660145273B787C00D36A91 /* SCGCDTimerUtil.m in Sources */,
 				E8691A6D273E3B41002944FD /* AFSecurityPolicy.m in Sources */,
 				E8A9F7D0277172B6003EC614 /* EMRToast.m in Sources */,
 				E8A9F8732774247A003EC614 /* SCCacheDirectoryHandle.m in Sources */,
+				E89BF9A927F1419C00EE07D3 /* AES_Encipher.m in Sources */,
 				E8C07CF527D762F400A86BF6 /* ConfigureHandle.m in Sources */,
 				E8691A79273E3B41002944FD /* AFNetworkingUtil.m in Sources */,
 				E8A9F85E27741143003EC614 /* SCDataBaseAbstractOptHandle.m in Sources */,
