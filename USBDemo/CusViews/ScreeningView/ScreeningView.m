@@ -379,7 +379,7 @@
     
     // 出生日期不能小于1901-12-15，否则会导致博声医生端软件崩溃
     // 所以暂定为1902-01-01，也就是0~120岁之间为合法年龄
-    if (120 <= self.ageValue.intValue || 0 >= self.ageValue.intValue) {
+    if ((self.ageValue.stringValue.length > 0) && (120 <= self.ageValue.intValue || 0 >= self.ageValue.intValue)) {
         [EMRToast Show:@"年龄在0~120之间,请重新输入！"];
         return;
     }
