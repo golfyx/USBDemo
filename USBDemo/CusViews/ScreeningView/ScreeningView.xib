@@ -340,8 +340,8 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="8ZG-pl-x2t">
                         <font key="font" metaFont="system"/>
-                        <date key="date" timeIntervalSinceReferenceDate="668601367.02567196">
-                            <!--2022-03-10 10:36:07 +0000-->
+                        <date key="date" timeIntervalSinceReferenceDate="671591145.58154702">
+                            <!--2022-04-14 01:05:45 +0000-->
                         </date>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -368,6 +368,17 @@
                     </buttonCell>
                     <connections>
                         <action selector="updateUserInfoAction:" target="c22-O7-iKe" id="JWx-zg-7gM"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AxT-Pe-ecQ">
+                    <rect key="frame" x="205" y="341" width="88" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="push" title="删除数据" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UTv-jt-taX">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="13" name=".PingFangSC-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="cleanDeviceData:" target="c22-O7-iKe" id="ZsS-Dx-lOq"/>
                     </connections>
                 </button>
             </subviews>

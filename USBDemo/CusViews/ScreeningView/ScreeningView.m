@@ -516,6 +516,20 @@
         }
     }];
 }
+- (IBAction)cleanDeviceData:(NSButton *)sender {
+    
+    for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
+        WDLog(LOG_MODUL_BLE, @"进入读取模式");
+        [[SCBleDataHandle sharedManager] enterReadMode:pDev];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        WDLog(LOG_MODUL_BLE, @"设置删除数据");
+            [[SCBleDataHandle sharedManager] setDeviceSaveEcgModelTypeCmd:0x04 device:pDev];
+        });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[SCBleDataHandle sharedManager] exitReadMode:pDev];
+        });
+    }
+}
 
 - (IBAction)directCompletionButton:(NSButton *)sender {
     [self didFinishUploadAllData];
