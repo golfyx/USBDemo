@@ -14,4 +14,15 @@
 
 @implementation SCReportInfo
 
+-(NSString *)description {
+    
+    NSMutableString *tmpStr = [NSMutableString stringWithFormat:@"%d : ",self.detectionId];
+    
+    for (int i = 0; i < self.doctorInfoVOS.count; i++) {
+        [tmpStr appendString:self.doctorInfoVOS[i][@"reportUrl"]];
+    }
+    
+    return tmpStr;
+}
+
 @end

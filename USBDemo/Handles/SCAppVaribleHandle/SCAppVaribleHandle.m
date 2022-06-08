@@ -47,6 +47,7 @@ static NSString *const endCheckInTimeKey = @"endCheckInTimeKey";
         _isReadBlockUserInfo = NO;
         _isStartMeasure = NO;
         _isStopMeasure = NO;
+        _isDeleteDongleData = NO;
         
         if (!_userInfoArray) {
             _userInfoArray = @[].mutableCopy;

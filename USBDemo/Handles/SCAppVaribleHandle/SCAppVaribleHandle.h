@@ -31,6 +31,7 @@ typedef void (^BleDrawDataBlock)(NSData *data);
 @property (nonatomic, assign) BOOL isReadBlockUserInfo; // 判断是读取块里面的信息还是写入
 @property (nonatomic, assign) BOOL isStartMeasure; // 开始测量
 @property (nonatomic, assign) BOOL isStopMeasure; // 结束测量
+@property (nonatomic, assign) BOOL isDeleteDongleData; // 是否是删除设备数据
 
 @property (nonatomic, assign) NSInteger startSerialNumber; // 登记表格序列号
 @property (nonatomic, strong) NSString *startCheckInTime; // 登记时间

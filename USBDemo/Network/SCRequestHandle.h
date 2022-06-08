@@ -53,6 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 获取当前用户检测 进行判断当前上传的页数
 + (void)getCurrentDetectionDeviceInfo:(SCMultiDeviceInfo *)deviceInfo completion:(void(^)(BOOL success, id responseObject))completion;
 
+/// 绑定医生
++ (void)bindingDoctor:(int)memberId qrCodeStr:(NSString *)qrCodeStr completion:(void(^)(BOOL success, id responseObject))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

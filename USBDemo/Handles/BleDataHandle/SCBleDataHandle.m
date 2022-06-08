@@ -51,7 +51,7 @@
         _sendSpeed = 0;
         _isReadingAllBlock = NO;
         
-        _isHexadecimalDisplay = NO;
+        _isHexadecimalDisplay = YES;
         _isDeleteECGData = YES;
         _isReadingAllBlock = NO;
         _isReadingAllBlock = NO;
@@ -659,6 +659,8 @@
                         [deviceInfo clearFileCache];
                         
                         deviceInfo.curBlockInfo = deviceInfo.allBlockInfo.allBlockInfoArray[deviceInfo.curBlockIndex];
+                        deviceInfo.curUploadBlockIndex = 1;
+                        
                     } else if (SCAppVaribleHandleInstance.detectionInfo.dataIndex == deviceInfo.blockCount - 1) {
                         if (SCAppVaribleHandleInstance.detectionInfo.dataPageIndex == deviceInfo.curBlockInfo.endpageIndex) {
                             // 完成数据上传到服务器
@@ -912,8 +914,10 @@
             }
         } else if (tmpbleCmdType == 0x04) { // 擦除模式
             WDLog(LOG_MODUL_BLE, @"数据擦除成功");
-            if ([self.delegate respondsToSelector:@selector(didReceiveBleDeleteData:)]) {
-                [self.delegate didReceiveBleDeleteData:deviceInfo];
+            if (!SCAppVaribleHandleInstance.isDeleteDongleData) {
+                if ([self.delegate respondsToSelector:@selector(didReceiveBleDeleteData:)]) {
+                    [self.delegate didReceiveBleDeleteData:deviceInfo];
+                }
             }
         } else {
 

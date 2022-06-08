@@ -10,7 +10,7 @@
 #define ConstServerHeader_h
 
 // 测试服务器需要定义该宏, 正式环境则去掉此宏(Target macr中已配置此宏)
-//#define DEBUG_ENVIRONMNET
+#define DEBUG_ENVIRONMNET
 #ifdef DEBUG_ENVIRONMNET // 开发环境
 #define ServerUrlString @"https://miniprogram-dev.semacare.cn:8009/"
 #else // 生产环境
@@ -52,5 +52,8 @@
 
 /// 获取当前用户检测 进行判断当前上传的页数
 #define GetCurrentDetection @"api/detection/get-current-detection"
+
+/// 绑定医生
+#define BindingDoctor @"api/detection/binding-doctor"
 
 #endif /* ConstServerHeader_h */

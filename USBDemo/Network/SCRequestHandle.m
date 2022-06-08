@@ -421,4 +421,28 @@
     }];
 }
 
+/// 绑定医生
++ (void)bindingDoctor:(int)memberId qrCodeStr:(NSString *)qrCodeStr completion:(void(^)(BOOL success, id responseObject))completion {
+    NSString *url = [NSString stringWithFormat:@"%@%@", ServerUrlString, BindingDoctor];
+    NSDictionary *dict = @{
+        @"memberId" : @(memberId),
+        @"qrcodeStr" : qrCodeStr
+    };
+    WDLog(LOG_MODUL_HTTPREQUEST, @"url = %@, dict = %@", url, dict);
+
+    [NetworkHelper POST:url parameters:dict success:^(id  _Nonnull responseObject, NSInteger successCode) {
+        //
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", responseObject[@"data"]);
+        if (ResponseErrCode_Success == successCode) {
+            if (completion) completion(YES, responseObject);
+        } else {
+            if (completion) completion(NO, responseObject);
+        }
+
+    } failure:^(NSError * _Nonnull error) {
+        WDLog(LOG_MODUL_HTTPREQUEST, @"%@", error.description);
+        if (completion) completion(NO, nil);
+    }];
+}
+    
 @end

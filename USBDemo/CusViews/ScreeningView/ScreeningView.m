@@ -519,14 +519,17 @@
 - (IBAction)cleanDeviceData:(NSButton *)sender {
     
     for (DeviceObject *pDev in [[SCBleDataHandle sharedManager] getDeviceArray]) {
-        WDLog(LOG_MODUL_BLE, @"进入读取模式");
+        SCAppVaribleHandleInstance.isDeleteDongleData = YES;
         [[SCBleDataHandle sharedManager] enterReadMode:pDev];
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        WDLog(LOG_MODUL_BLE, @"设置删除数据");
+            WDLog(LOG_MODUL_BLE, @"设置删除数据");
             [[SCBleDataHandle sharedManager] setDeviceSaveEcgModelTypeCmd:0x04 device:pDev];
         });
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [[SCBleDataHandle sharedManager] exitReadMode:pDev];
+            SCAppVaribleHandleInstance.isDeleteDongleData = NO;
         });
     }
 }
@@ -1027,11 +1030,15 @@
                                     [SCRequestHandle updateMemberUserInfoCompletion:^(BOOL success, id  _Nonnull responseObject) {
                                         if (success) {
                                             WDLog(LOG_MODUL_HTTPREQUEST, @"更新用户信息成功");
-                                            WDLog(LOG_MODUL_BLE, @"设置设备时间");
-                                            [[SCBleDataHandle sharedManager] setDongleTime:deviceInfo.deviceObject]; // 设置设备时间
-                                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                [self writeStartCheckInDataToFile];
-                                            });
+                                            [SCRequestHandle bindingDoctor:userInfoModel.memberID qrCodeStr:@"bbzV9lqciPyBtU0c9lCJJJ0o%3DqkL%3D" completion:^(BOOL success, id  _Nonnull responseObject) {
+                                                if (success) {
+                                                    WDLog(LOG_MODUL_BLE, @"设置设备时间");
+                                                    [[SCBleDataHandle sharedManager] setDongleTime:deviceInfo.deviceObject]; // 设置设备时间
+                                                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                                        [self writeStartCheckInDataToFile];
+                                                    });
+                                                }
+                                            }];
                                         } else {
                                             [EMRToast Show:[self handlingInvalidData:responseObject title:@"更新用户信息失败"]];
                                             [self hiddenProgressIndicator];
@@ -1309,7 +1316,7 @@
     SCAppVaribleHandleInstance.token = deviceInfo.token;
     [SCRequestHandle uploadDataFor24HoursWithUploadDataInfo:uploadDataInfo Completion:^(BOOL success, id  _Nonnull responseObject) {
         if (success) {
-            WDLog(LOG_MODUL_HTTPREQUEST, @"数据上传成功");
+            WDLog(LOG_MODUL_HTTPREQUEST, @"数据上传成功，当前块：%d <--> 总块：%d",deviceInfo.curUploadBlockIndex, deviceInfo.blockCount);
             if (deviceInfo.curUploadBlockIndex == deviceInfo.blockCount) {
                 [self didFinishUploadBlockData:deviceInfo];
             } else {
